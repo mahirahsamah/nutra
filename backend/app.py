@@ -21,5 +21,10 @@ class Custom(db.Model):
 def home():
     return "Test Page"
 
+
+@app.route('/dummy')
+def dummy():
+    return {"custom": ["custom1", "custom2", "custom3"]}
+
 if __name__ == '__main__':
     app.run()
