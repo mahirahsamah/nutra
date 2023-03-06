@@ -5,9 +5,18 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:admin@localhost/capstone'
 db = SQLAlchemy(app)
 
-class Custom(db.model):
-    id = db.Column(db.interger, primary_key=True)
+class Custom(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    price = db.Column(db.Integer, nullable=False)
+    score = db.Column(db.Integer, nullable=False)
 
+    def __repr__(self):
+        return f"Event: {self.price}"
+
+    def __init__(self, price, score):
+        self.price = price 
+        self.score = score
+    
 @app.route('/')
 def home():
     return "Test Page"
