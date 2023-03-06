@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import Profile from './components/Profile'
 
 function App() {
 
@@ -24,6 +25,8 @@ function App() {
           <p key={i}>{custom}</p>
         ))
       )}
+
+  <Profile />
     </div>
   )
 }
