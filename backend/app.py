@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy 
+from flask_cors import CORS
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:11072000@localhost/capstone'
 db = SQLAlchemy(app)
-
+CORS(app)
 
 class Custom(db.Model):
     itemID = db.Column(db.Integer, primary_key=True)
@@ -148,7 +149,7 @@ def format_event(event):
     }
 
 #create an event
-@app.route('/event', methods=['POST'])
+@app.route('/events', methods=['POST'])
 def create_event():
     price = request.json['price']
     event = Custom(price)
@@ -157,7 +158,7 @@ def create_event():
     return format_event(event)
 
 # get all events
-@app.route('/event', methods=['GET'])
+@app.route('/events', methods=['GET'])
 def get_events():
     events = Custom.query.order_by(Custom.itemID.asc()).all()
     event_list = []
@@ -167,14 +168,14 @@ def get_events():
     return {'events': event_list}
 
 # get single event
-@app.route('/event/<itemID>', methods=['GET'])
+@app.route('/events/<itemID>', methods=['GET'])
 def single_event(itemID):
     event = Custom.query.filter_by(itemID = itemID).one()
     formatted_event = format_event(event)
     return {'event':formatted_event}
 
 #def delete an event
-@app.route('/event/<itemID>', methods=['DELETE'])
+@app.route('/events/<itemID>', methods=['DELETE'])
 def delete_event(itemID):
     event = Custom.query.filter_by(itemID=itemID).one()
     db.session.delete(event)
@@ -182,7 +183,7 @@ def delete_event(itemID):
     return f'Event (id: {itemID}) deleted.'
 
 # edit an event
-@app.route('/event/<itemID>', methods=['PUT'])
+@app.route('/events/<itemID>', methods=['PUT'])
 def update_event(itemID):
     event = Custom.query.filter_by(itemID=itemID)
     price = request.json['price']
