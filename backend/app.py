@@ -181,6 +181,15 @@ def delete_event(itemID):
     db.session.commit()
     return f'Event (id: {itemID}) deleted.'
 
+# edit an event
+@app.route('/event/<itemID>', methods=['PUT'])
+def update_event(itemID):
+    event = Custom.query.filter_by(itemID=itemID)
+    price = request.json['price']
+    event.update(dict(price=price))
+    db.session.commit()
+    return {'event':format_event(event.one())}
+
 
 if __name__ == '__main__':
     app.run()
