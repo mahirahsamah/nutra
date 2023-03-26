@@ -147,6 +147,7 @@ def format_event(event):
         "price":event.price
     }
 
+#create an event
 @app.route('/event', methods=['POST'])
 def create_event():
     price = request.json['price']
@@ -154,6 +155,31 @@ def create_event():
     db.session.add(event)
     db.session.commit()
     return format_event(event)
+
+# get all events
+@app.route('/event', methods=['GET'])
+def get_events():
+    events = Custom.query.order_by(Custom.itemID.asc()).all()
+    event_list = []
+    for event in events:
+        #print(event.itemID)
+        event_list.append(format_event(event))
+    return {'events': event_list}
+
+# get single event
+@app.route('/event/<itemID>', methods=['GET'])
+def single_event(itemID):
+    event = Custom.query.filter_by(itemID = itemID).one()
+    formatted_event = format_event(event)
+    return {'event':formatted_event}
+
+#def delete an event
+@app.route('/event/<itemID>', methods=['DELETE'])
+def delete_event(itemID):
+    event = Custom.query.filter_by(itemID=itemID).one()
+    db.session.delete(event)
+    db.session.commit()
+    return f'Event (id: {itemID}) deleted.'
 
 
 if __name__ == '__main__':
