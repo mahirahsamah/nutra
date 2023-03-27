@@ -1,34 +1,48 @@
-import React, {useState, useEffect} from 'react'
-import Profile from './components/Profile'
+import {useEffect, useState} from 'react';
+import axios from 'axios';
+//import {format} from "date-fns"
+
+import './App.css';
+
+const baseurl = "http://localhost:5000";
 
 function App() {
 
-  const [data, setData] = useState([{}])
+  const [price, setPrice] = useState("");
+  const [eventsList, setEventsList] = useState([]);
+
+  const fetchEvents = async () => {
+    const data = await axios.get(`${baseurl}/events`)
+    const {events} = data.data
+    setEventsList(events);
+    console.log("data: ", data)
+  }
+
+  const handleChange = e => {
+    setPrice(e.target.value);
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    console.log(price);
+  }
 
   useEffect(() => {
-    fetch("/dummy").then(
-      res => res.json()
-    ).then(
-      data => {
-        setData(data)
-        console.log(data)
-      }
-    )
+    fetchEvents();
   }, [])
 
   return (
-    <div>
-      {(typeof data.custom === 'undefined')? (
-        <p>Loading...</p>
-      ) : (
-        data.custom.map((custom, i) => (
-          <p key={i}>{custom}</p>
-        ))
-      )}
+    <div className="App">
+      <header className="App-header">
+        <form onSubmit={handleSubmit}>
+          <label htmlFor='price'>Price</label>
+          <input onChange={handleChange} type="text" name="price" id="price" value={price} />
+          <button type='submit'>Submit</button>
+        </form>
 
-  <Profile />
+      </header>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
