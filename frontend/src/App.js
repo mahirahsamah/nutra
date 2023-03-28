@@ -33,14 +33,22 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
+      <section>
         <form onSubmit={handleSubmit}>
           <label htmlFor='price'>Price</label>
           <input onChange={handleChange} type="text" name="price" id="price" value={price} />
           <button type='submit'>Submit</button>
         </form>
-
-      </header>
+      </section>
+      <section>
+        <ul>
+          {eventsList.map(event  => {
+            return (
+              <li key={event.itemID}>{event.price}</li>
+            )
+          })}
+        </ul>
+      </section>
     </div>
   );
 }
