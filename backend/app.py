@@ -14,7 +14,15 @@ class User(db.Model):
     username = db.Column(db.String)
     email = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
-    
+
+    # user body info
+    gender = db.Column(db.String)
+    weight_lbs = db.Column(db.Float)
+    age = db.Column(db.Integer)
+    height_feet = db.Column(db.Integer)
+    height_inches = db.Column(db.Integer)
+    activity_level=db.Column(db.String)
+
     # user dietary
     vegitarian = db.Column(db.Boolean)
     vegan = db.Column(db.Boolean)
@@ -41,10 +49,16 @@ class User(db.Model):
     def __repr__(self):
         return f"User: {self.username}"
     
-    def __init__(self, username, email, password, vegitarian, vegan, halal, kosher, gluten_free, dairy_free, lactose_int, low_sodium, low_carb, high_protein, keto, paleo, preferences, restricitons):
+    def __init__(self, username, email, password, gender, weight_lbs, age, height_feet, height_inches, activity_level, vegitarian, vegan, halal, kosher, gluten_free, dairy_free, lactose_int, low_sodium, low_carb, high_protein, keto, paleo, preferences, restricitons):
         self.username = username
         self.email = email
         self.password = password
+        self.gender = gender
+        self.weight_lbs = weight_lbs
+        self.age = age
+        self.height_feet = height_feet
+        self.height_inches = height_inches
+        self.activity_level=activity_level
         self.vegitarian = vegitarian
         self.vegan = vegan
         self.halal = halal
@@ -79,6 +93,12 @@ def post_whole_user():
     username = request.json['username']
     email = request.json['email']
     password = request.json['password']
+    gender = request.json['gender']
+    weight_lbs = request.json['weight_lbs']
+    age = request.json['age']
+    height_feet = request.json['height_feet']
+    height_inches = request.json['height_inches']
+    activity_level=request.json['activity_level']
     vegitarian = request.json['vegitarian']
     vegan = request.json['vegan']
     halal = request.json['halal']
@@ -94,7 +114,8 @@ def post_whole_user():
     preferences = request.json['preferences']
     restrictions = request.json['restrictions']
 
-    thisUser = User(username, email, password, vegitarian, vegan, halal, kosher, gluten_free, 
+    thisUser = User(username, email, password, gender, weight_lbs, age, height_feet,
+                    height_inches, activity_level, vegitarian, vegan, halal, kosher, gluten_free, 
                     dairy_free, lactose_int, low_sodium, low_carb, high_protein,
                     keto, paleo, preferences, restrictions)
     
@@ -287,44 +308,44 @@ def create_event_restrictions():
 
 
 
-# get all events
-@app.route('/events', methods=['GET'])
+# get all users
+@app.route('/get_users_info', methods=['GET'])
 def get_events():
-    events = User.query.order_by(User.itemID.asc()).all()
+    events = User.query.order_by(User.userID.asc()).all()
     event_list = []
     for event in events:
-        #print(event.itemID)
         event_list.append(format_user(event))
     return {'events': event_list}
 
-# get single event
-@app.route('/events/<itemID>', methods=['GET'])
-def single_event(itemID):
-    event = User.query.filter_by(itemID = itemID).one()
+# get single user
+@app.route('/get_user/<userID>', methods=['GET'])
+def single_event(userID):
+    event = User.query.filter_by(userID = userID).one()
     formatted_event = format_user(event)
     return {'event':formatted_event}
 
-#def delete an event
-@app.route('/events/<itemID>', methods=['DELETE'])
-def delete_event(itemID):
-    event = User.query.filter_by(itemID=itemID).one()
+# delete an event
+@app.route('/delete_user/<userID>', methods=['DELETE'])
+def delete_event(userID):
+    event = User.query.filter_by(userID=userID).one()
     db.session.delete(event)
     db.session.commit()
-    return f'Event (id: {itemID}) deleted.'
+    return f'Event (id: {userID}) deleted.'
 
-# edit an event
-@app.route('/events/<itemID>', methods=['PUT'])
-def update_event(itemID):
-    event = User.query.filter_by(itemID=itemID)
-    price = request.json['price']
-    event.update(dict(price=price))
+# edit a user -- NOT DONE
+@app.route('/edit_user/<edit_column>/<userID>', methods=['PUT'])
+def update_event(edit_column, userID):
+    event = User.query.filter_by(userID=userID)
+    to_edit = request.json[edit_column]
+    #return to_edit
+    event.update(dict(edit_column=to_edit))
     db.session.commit()
     return {'event':format_user(event.one())}
 
 
   
 @app.route('/nutrition')
-def nutrients_amounts(gender, weight_lbs, age, height_feet, height_inches, activity_level, strength_training):
+def nutrients_amounts(gender, weight_lbs, age, height_feet, height_inches, activity_level):
     # returns an array in the format: [kcals, protein, fat, carbs, ...]
     
     # protein
