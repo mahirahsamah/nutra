@@ -343,9 +343,29 @@ def update_event(edit_column, userID):
     return {'event':format_user(event.one())}
 
 
-  
-@app.route('/nutrition')
-def nutrients_amounts(gender, weight_lbs, age, height_feet, height_inches, activity_level):
+
+@app.route('/get_nutrition/<userID>', methods=['GET'])
+#def nutrients_amounts(gender, weight_lbs, age, height_feet, height_inches, activity_level):
+def nutrients_amounts(userID):
+    energy = 0
+    protein = 0
+    fat = 0
+    carbs = 0
+    ree = 0
+
+    calcium = 0
+    iron = 0
+    potassium = 0
+
+    vitD = 0
+    vitC = 0
+    vitA = 0
+    vitE = 0
+    
+    this_user = User.query.filter_by(userID = userID).one()
+    #print(this_user.username)
+    #return this_user.username
+    
     # returns an array in the format: [kcals, protein, fat, carbs, ...]
     
     # protein
@@ -354,28 +374,28 @@ def nutrients_amounts(gender, weight_lbs, age, height_feet, height_inches, activ
     # vitamins
     # minerals
 
-    weight_kg = weight_lbs/2.20462262185
-    height_cm = (height_feet + height_inches/12) * 30.48
+    weight_kg = this_user.weight_lbs/2.20462262185
+    height_cm = (this_user.height_feet + this_user.height_inches/12) * 30.48
     
     # MACROS
     # ree: resting energy expenditure
-    if(gender=='M'):
-        ree = (10*weight_kg) + (6.25*height_cm) - (5 * age) + 5
-    elif(gender == "W"):
-        ree = (10*weight_kg) + (6.25*height_cm) - (5 * age) - 161
+    if(this_user.gender=='M'):
+        ree = (10*weight_kg) + (6.25*height_cm) - (5 * this_user.age) + 5
+    elif(this_user.gender == "W"):
+        ree = (10*weight_kg) + (6.25*height_cm) - (5 * this_user.age) - 161
     
     # energy with activity level
-    if(activity_level == 'sedentary'):
+    if(this_user.activity_level == 'sedentary'):
         energy = ree*1.2
-    elif(activity_level == 'light'):
+    elif(this_user.activity_level == 'low'):
         energy = ree*1.375
-    elif(activity_level == 'moderate'):
+    elif(this_user.activity_level == 'medium'):
         energy = ree*1.55
-    elif(activity_level == 'high'):
+    elif(this_user.activity_level == 'high'):
         energy = ree*1.725
     
     # protein
-    protein = weight_lbs * 0.825
+    protein = this_user.weight_lbs * 0.825
     
     # fats
     fat = 0.3*energy
@@ -387,79 +407,78 @@ def nutrients_amounts(gender, weight_lbs, age, height_feet, height_inches, activ
     
     # in the format of: [energy, vitD(micrograms/d), vitC(micrograms/d), vitA(micrograms/d), vitE(mg/d), calcium (mg/d), iron(mg/d), potassium (mg/d)]
     
-    if(age>=1 and age<=3):
+    if(this_user.age>=1 and this_user.age<=3):
         calcium = 700
         iron = 7
         potassium = 2000
-    elif(age>3 and age<=8):
+    elif(this_user.age>3 and this_user.age<=8):
         calcium = 1000
         iron = 10
         potassium =2300
     else:
-        if(gender=='M'):
+        if(this_user.gender=='M'):
             vitD = 15
             vitC = 90
             vitA = 900
             vitE = 15
-            if(age>8 and age<=13):
+            if(this_user.age>8 and this_user.age<=13):
                 calcium = 1300
                 iron = 8
                 potassium =2500
-            elif(age>13 and age <=18):
+            elif(this_user.age>13 and this_user.age <=18):
                 calcium = 1300
                 iron = 11
                 potassium = 3000
-            elif(age>18 and age <=30):
+            elif(this_user.age>18 and this_user.age <=30):
                 calcium = 1000
                 iron = 8
                 potassium = 3400
-            elif(age>30 and age <=50):
+            elif(this_user.age>30 and this_user.age <=50):
                 calcium = 1000
                 iron = 8
                 potassium =3400
-            elif(age>50 and age <=70):
+            elif(this_user.age>50 and this_user.age <=70):
                 calcium = 1000
                 iron = 8
                 potassium =3400
-            elif(age>70):
+            elif(this_user.age>70):
                 calcium = 1200 
                 iron = 8
                 potassium =3400
             
             
-        elif(gender=="F"):
+        elif(this_user.gender=="F"):
             vitD = 15
             vitC = 75
             vitA = 700
             vitE = 15
-            if(age>8 and age<=13):
+            if(this_user.age>8 and this_user.age<=13):
                 calcium = 1300
                 iron = 8
                 potassium = 2300
-            elif(age>13 and age <=18):
+            elif(this_user.age>13 and this_user.age <=18):
                 calcium = 1300
                 iron = 15
                 potassium = 2300
-            elif(age>18 and age <=30):
+            elif(this_user.age>18 and this_user.age <=30):
                 calcium = 1000
                 iron = 18
                 potassium = 2600
-            elif(age>30 and age <=50):
+            elif(this_user.age>30 and this_user.age <=50):
                 calcium = 1000
                 iron = 18
                 potassium = 2600
-            elif(age>50 and age <=70):
+            elif(this_user.age>50 and this_user.age <=70):
                 calcium = 1200
                 iron = 8
                 potassium = 2600
-            elif(age>70):
+            elif(this_user.age>70):
                 calcium = 1200
                 iron = 8
                 potassium = 2600
     
 
-    return [energy, vitD, vitC, vitA, vitE, calcium, iron, potassium]
-
+    return [energy, protein, fat, carbs, vitD, vitC, vitA, vitE, calcium, iron, potassium]
 
 
 if __name__ == '__main__':
