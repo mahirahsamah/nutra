@@ -379,11 +379,11 @@ def nutrients_amounts(userID):
     
     # MACROS
     # ree: resting energy expenditure
-    if(this_user.gender=='M'):
+    if(this_user.gender=='male'):
         ree = (10*weight_kg) + (6.25*height_cm) - (5 * this_user.age) + 5
-    elif(this_user.gender == "W"):
+    elif(this_user.gender == 'female'):
         ree = (10*weight_kg) + (6.25*height_cm) - (5 * this_user.age) - 161
-    
+    #return [ree]
     # energy with activity level
     if(this_user.activity_level == 'sedentary'):
         energy = ree*1.2
@@ -394,11 +394,12 @@ def nutrients_amounts(userID):
     elif(this_user.activity_level == 'high'):
         energy = ree*1.725
     
+    #return [energy]
     # protein
     protein = this_user.weight_lbs * 0.825
     
     # fats
-    fat = 0.3*energy
+    fat = (0.3*energy)/9
     
     # carbs
     carbs = (energy - (protein*4) - (fat*9))/4
@@ -416,7 +417,7 @@ def nutrients_amounts(userID):
         iron = 10
         potassium =2300
     else:
-        if(this_user.gender=='M'):
+        if(this_user.gender=='male'):
             vitD = 15
             vitC = 90
             vitA = 900
@@ -447,7 +448,7 @@ def nutrients_amounts(userID):
                 potassium =3400
             
             
-        elif(this_user.gender=="F"):
+        elif(this_user.gender=='female'):
             vitD = 15
             vitC = 75
             vitA = 700
