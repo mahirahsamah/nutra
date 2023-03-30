@@ -1,11 +1,17 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy 
 from flask_cors import CORS
+import os
+import pprint
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:11072000@localhost/capstone'
 db = SQLAlchemy(app)
 #CORS(app)
+
+# spoonacular api
+#spoonacular_api_key = os.environ["SPOONACULAR_API_KEY"]
+#spoon_url = ""
 
 class User(db.Model):
     
@@ -480,6 +486,55 @@ def nutrients_amounts(userID):
     
 
     return [energy, protein, fat, carbs, vitD, vitC, vitA, vitE, calcium, iron, potassium]
+
+
+@app.route('/get_preferences/<userID>', methods=['GET'])
+def get_preferences(userID):
+    this_user = User.query.filter_by(userID = userID).one()
+    preferences = (this_user.preferences).split(',')
+    return preferences
+
+@app.route('/get_restrictions/<userID>', methods=['GET'])
+def get_restrictions(userID):
+    this_user = User.query.filter_by(userID = userID).one()
+    restrictions = (this_user.restrictions).split(',')
+    return restrictions
+
+def get_grocery_list(userID):
+    
+    # one protein dish
+    # one dish with vegetables
+    # one rice/grains
+    # one dairy
+
+    # first find recipes by nutrients
+    # then remove recipes with restrictions
+    # then select recipes with preferences
+
+    # then get recipes that 
+
+    # may need to split up recipes for variety; do two or three get requests from spoonacular each with less parameters, then calculate each nutrients and do math until nutrients are satisfied
+    
+    # get recipes based on macros
+    # select 2-3 recipes for each week
+    # use recipe ID to see what nutrients each recipe has
+    # fill in rest of the recipes
+
+    nutrients_amounts = nutrients_amounts(userID)
+
+    energy = nutrients_amounts[0]
+    protein = nutrients_amounts[1]
+    fat = nutrients_amounts[2]
+    carbs = nutrients_amounts[3]
+    vitD = nutrients_amounts[4]
+    vitC = nutrients_amounts[5]
+    vitA = nutrients_amounts[6]
+    vitE = nutrients_amounts[7]
+    calcium = nutrients_amounts[8]
+    iron = nutrients_amounts[9]
+    potassium = nutrients_amounts[10]
+
+    spoon_get_macros = "https://api.spoonacular.com/recipes/findByNutrients?minProtein="+(protein-20)+"&maxProtein="+protein+"&minFat="+(fat-20)+"&maxFat="+fat+"&minCarbs="+(carbs-20)+"&maxCarbs="+carbs+"&minVitaminD="+(vitD-20)+"&maxVitaminD="+vitD+"&minVitaminC="+(vitC-20)+"&maxVitaminC="+vitC+"&minVitaminA="+(vitA-20)+"&maxVitaminA="+vitA+"&minVitaminE="+(vitE-20)+"&maxVitaminE="+vitE+"&minCalcium="+(calcium-20)+"&maxCalcium="+calcium+"&minIron="+(iron-20)+"&maxIron="+iron+"&minPotassium="+(potassium-20)+"&maxPotassium="+potassium+"&number=100"
 
 
 if __name__ == '__main__':
