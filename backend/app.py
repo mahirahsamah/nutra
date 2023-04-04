@@ -551,10 +551,18 @@ def get_grocery_list(userID):
     iron = nutrients_amounts[9]
     potassium = nutrients_amounts[10]
     
+    # ULs
+    vitD_ul = nutrients_amounts[11]
+    vitC_ul = nutrients_amounts[12]
+    vitA_ul = nutrients_amounts[13]
+    vitE_ul = nutrients_amounts[14]
+    calcium_ul = nutrients_amounts[15]
+    iron_ul = nutrients_amounts[16]
+    
     preferences = get_preferences(userID)
     restriction = get_restrictions(userID)
 
-    spoon_get_macros = "https://api.spoonacular.com/recipes/findByNutrients?minProtein="+(protein-20)+"&maxProtein="+(protein+20)+"&minFat="+(fat-20)+"&maxFat="+(fat+20)+"&minCarbs="+(carbs-20)+"&maxCarbs="+(carbs+20)+"&minVitaminD="+(vitD-20)+"&maxVitaminD="+(vitD+20)+"&minVitaminC="+(vitC-20)+"&maxVitaminC="+(vitC+20)+"&minVitaminA="+(vitA-20)+"&maxVitaminA="+(vitA+20)+"&minVitaminE="+(vitE-20)+"&maxVitaminE="+(vitE+20)+"&minCalcium="+(calcium-20)+"&maxCalcium="+(calcium+20)+"&minIron="+(iron-20)+"&maxIron="+(iron+20)+"&minPotassium="+(potassium-20)+"&maxPotassium="+(potassium+20)+"&number=100"
+    spoon_get_macros = "https://api.spoonacular.com/recipes/findByNutrients?minProtein="+(protein-20)+"&maxProtein="+(protein+20)+"&minFat="+(fat-20)+"&maxFat="+(fat+20)+"&minCarbs="+(carbs-20)+"&maxCarbs="+(carbs+20)+"&minVitaminD="+(vitD-20)+"&maxVitaminD="+((vitD+vitD_ul)/2)+"&minVitaminC="+(vitC-20)+"&maxVitaminC="+((vitC+vitC_ul)/2)+"&minVitaminA="+(vitA-20)+"&maxVitaminA="+((vitA+vitA_ul)/2)+"&minVitaminE="+(vitE-20)+"&maxVitaminE="+((vitE+vitE_ul)/2)+"&minCalcium="+(calcium-20)+"&maxCalcium="+((calcium+calcium_ul)/2)+"&minIron="+(iron-20)+"&maxIron="+((iron+iron_ul)/2)+"&minPotassium="+(potassium-20)+"&maxPotassium="+(potassium+20)+"&number=100"
 
 
 if __name__ == '__main__':
