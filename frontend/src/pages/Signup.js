@@ -5,6 +5,7 @@ import classes from './Login.module.css';
 
 
 const SignupPage = () => {
+     const [nameone, setName] = useState("");
      const [username, setUsername] = useState("");
      const [password, setPassword] = useState("");
      const navigate = useNavigate();
@@ -31,8 +32,8 @@ const SignupPage = () => {
                                         type="text"
                                         placeholder="Name"
                                         className={classes.input_field}
-                                        value={username}
-                                        onChange={(e) => setUsername(e.target.value)}
+                                        value={nameone}
+                                        onChange={(e) => setName(e.target.value)}
                                    />
                               </li>
                               <li>
