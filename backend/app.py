@@ -1,6 +1,8 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for, redirect, jsonify
 from flask_sqlalchemy import SQLAlchemy 
-from flask_cors import CORS
+import json
+#from flask_cors import CORS
+import requests
 import os
 import pprint
 
@@ -10,8 +12,8 @@ db = SQLAlchemy(app)
 #CORS(app)
 
 # spoonacular api
-spoonacular_api_key = os.environ["SPOONACULAR_API_KEY"]
-spoon_url = "https://api.spoonacular.com/recipes/findByNutrients"
+#spoonacular_api_key = os.environ["SPOONACULAR_API_KEY"]
+api_key = "b5a30a9a3c4f4d4b889eb051ad05ae9d"
 
 class User(db.Model):
     
@@ -189,7 +191,7 @@ def update_event(edit_column, userID):
 
 @app.route('/get_nutrition/<userID>', methods=['GET'])
 #def nutrients_amounts(gender, weight_lbs, age, height_feet, height_inches, activity_level):
-def nutrients_amounts(userID):
+def get_nutrition(userID):
     energy = 0
     protein = 0
     fat = 0
@@ -501,15 +503,17 @@ def nutrients_amounts(userID):
                 calcium_ul = 2000
                 iron_ul = 45
     
-
-    return [energy, protein, fat, carbs, vitD, vitC, vitA, vitE, calcium, iron, potassium, vitD_ul, vitC_ul, vitA_ul, vitE_ul, calcium_ul, iron_ul]
+    return_list = [energy, protein, fat, carbs, vitD, vitC, vitA, vitE, calcium, iron, potassium, vitD_ul, vitC_ul, vitA_ul, vitE_ul, calcium_ul, iron_ul]
+    #print(type(protein))
+    return {"energy":energy, "protein":protein, "fat": fat, "carbs": carbs, "vitD": vitD, "vitC": vitC, "vitA": vitA, "vitE": vitE, "calcium": calcium, "iron": iron, "potassium": potassium, "vitD_ul":vitD_ul, "vitC_ul":vitC_ul, "vitA_ul":vitA_ul, "vitE_ul":vitE_ul, "calcium_ul":calcium_ul, "iron_ul":iron_ul}
+    #return {"nutrients":return_list}
 
 
 @app.route('/get_preferences/<userID>', methods=['GET'])
 def get_preferences(userID):
     this_user = User.query.filter_by(userID = userID).one()
     preferences = (this_user.preferences).split(',')
-    return preferences
+    return preferences 
 
 @app.route('/get_restrictions/<userID>', methods=['GET'])
 def get_restrictions(userID):
@@ -517,12 +521,18 @@ def get_restrictions(userID):
     restrictions = (this_user.restrictions).split(',')
     return restrictions
 
-def get_grocery_list(userID):
+@app.route('/get_recipes/<userID>', methods=['GET'])
+def get_recipes(userID):
     
-    # one protein dish
-    # one dish with vegetables
-    # one rice/grains
-    # one dairy
+    nutrients_response = requests.get(f'http://localhost:5000/get_nutrition/{userID}')
+    nutrients_amounts = nutrients_response.json()
+    
+    data = json.loads('{"lat":444, "lon":555}')
+    k = str(data['lat'])
+    
+    #return nutrients_amounts
+    #return nutrients_amounts
+    #data = json.loads(nutrients_amounts)
 
     # first find recipes by nutrients
     # then remove recipes with restrictions
@@ -537,33 +547,40 @@ def get_grocery_list(userID):
     # use recipe ID to see what nutrients each recipe has
     # fill in rest of the recipes
 
-    nutrients_amounts = nutrients_amounts(userID)
+    #nutrients_amounts = nutrients_amounts(userID)
 
-    energy = nutrients_amounts[0]
-    protein = nutrients_amounts[1]
-    fat = nutrients_amounts[2]
-    carbs = nutrients_amounts[3]
-    vitD = nutrients_amounts[4]
-    vitC = nutrients_amounts[5]
-    vitA = nutrients_amounts[6]
-    vitE = nutrients_amounts[7]
-    calcium = nutrients_amounts[8]
-    iron = nutrients_amounts[9]
-    potassium = nutrients_amounts[10]
+    energy = str(nutrients_amounts['energy'])
+    protein = str(nutrients_amounts['protein'])
+    fat = str(nutrients_amounts['fat'])
+    carbs = str(nutrients_amounts['carbs'])
+    vitD = str(nutrients_amounts['vitD'])
+    vitC =str(nutrients_amounts['vitC'])
+    vitA = str(nutrients_amounts['vitA'])
+    vitE = str(nutrients_amounts['vitE'])
+    calcium = str(nutrients_amounts['calcium'])
+    iron = str(nutrients_amounts['iron'])
+    potassium = str(nutrients_amounts['potassium'])
     
     # ULs
-    vitD_ul = nutrients_amounts[11]
-    vitC_ul = nutrients_amounts[12]
-    vitA_ul = nutrients_amounts[13]
-    vitE_ul = nutrients_amounts[14]
-    calcium_ul = nutrients_amounts[15]
-    iron_ul = nutrients_amounts[16]
+    vitD_ul = str(nutrients_amounts['vitD_ul'])
+    vitC_ul = str(nutrients_amounts['vitC_ul'])
+    vitA_ul = str(nutrients_amounts['vitA_ul'])
+    vitE_ul = str(nutrients_amounts['vitE_ul'])
+    calcium_ul = str(nutrients_amounts['calcium_ul'])
+    iron_ul = 200#nutrients_amounts[16]
     
     preferences = get_preferences(userID)
     restriction = get_restrictions(userID)
+    
+    find_by_nutrients_url = "https://api.spoonacular.com/recipes/findByNutrients"
 
-    spoon_get_macros = "https://api.spoonacular.com/recipes/findByNutrients?minProtein="+(protein-20)+"&maxProtein="+(protein+20)+"&minFat="+(fat-20)+"&maxFat="+(fat+20)+"&minCarbs="+(carbs-20)+"&maxCarbs="+(carbs+20)+"&minVitaminD="+(vitD-20)+"&maxVitaminD="+((vitD+vitD_ul)/2)+"&minVitaminC="+(vitC-20)+"&maxVitaminC="+((vitC+vitC_ul)/2)+"&minVitaminA="+(vitA-20)+"&maxVitaminA="+((vitA+vitA_ul)/2)+"&minVitaminE="+(vitE-20)+"&maxVitaminE="+((vitE+vitE_ul)/2)+"&minCalcium="+(calcium-20)+"&maxCalcium="+((calcium+calcium_ul)/2)+"&minIron="+(iron-20)+"&maxIron="+((iron+iron_ul)/2)+"&minPotassium="+(potassium-20)+"&maxPotassium="+(potassium+20)+"&number=100"
-
+    macros_query_params = "?apiKey=" + api_key + "&minProtein="+str(float(protein)-20)+"&maxProtein="+str(float(protein)+20)+"&minFat="+str(float(fat)-20)+"&maxFat="+str(float(fat)+20)+"&minCarbs="+str(float(carbs)-20)+"&maxCarbs="+str(float(carbs)+20)+"&minVitaminD="+str(float(vitD)-20)+"&maxVitaminD="+str((float(vitD)+float(vitD_ul))/2)+"&minVitaminC="+str(float(vitC)-20)+"&maxVitaminC="+str((float(vitC)+float(vitC_ul))/2)+"&minVitaminA="+str(float(vitA)-20)+"&maxVitaminA="+str((float(vitA)+float(vitA_ul))/2)+"&minVitaminE="+str(float(vitE)-20)+"&maxVitaminE="+str((float(vitE)+float(vitE_ul))/2)+"&minCalcium="+str(float(calcium)-20)+"&maxCalcium="+str((float(calcium)+float(calcium_ul))/2)+"&minIron="+str(float(iron)-20)+"&maxIron="+str((float(iron)+float(iron_ul))/2)+"&minPotassium="+str(float(potassium)-20)+"&maxPotassium="+str(float(potassium)+20)+"&number=10"
+    
+    macros_query =  find_by_nutrients_url + "?" + macros_query_params 
+    
+    macros_response = requests.get(macros_query)
+    return macros_response.json()
+    pprint.pprint(macros_response.json())
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
