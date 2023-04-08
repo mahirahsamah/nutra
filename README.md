@@ -3,8 +3,11 @@
 In the backend folder, type:
 
 python
+
 from app import app, db
+
 app.app_context().push()
+
 db.create_all()
 
 ## Running REST
