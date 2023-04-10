@@ -11,9 +11,11 @@ const SignupPage = () => {
      const navigate = useNavigate();
 
      const handleMakeAccount = () => {
-
-          alert("Save signup info");
-
+          localStorage.setItem("curruser", username);
+          localStorage.setItem("currpasswd", password);
+          alert("Welcome " + localStorage.getItem('curruser') + " !");
+          navigate("/landing-page");
+          
      };
 
      const goToLogin = () => {

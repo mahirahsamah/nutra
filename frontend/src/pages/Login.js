@@ -10,7 +10,8 @@ const LoginPage = () => {
      const navigate = useNavigate();
 
      const handleLogin = () => {
-
+          localStorage.setItem("curruser", username);
+          localStorage.setItem("currpasswd", password);
           if (username === "user" && password === "password") {
                navigate("/landing-page");
           } else {
