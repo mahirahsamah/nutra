@@ -144,11 +144,33 @@ class UserNutrition(db.Model):
         self.vitE_ul = vitE_ul
 
 
+class WeeklyRecipes(db.Model):
+    __tablename__ = 'users_weekly_recipes_table'
+    __table_args__ = {'schema': 'public'}
+
+    week_number_ID = db.Column(db.Integer, primary_key=True)
+    userID = db.Column(db.Integer, db.ForeignKey('public.users_table.userID'))
+    recipeIDs = db.Column(db.String) # this is a string of comma-separated recipe IDs
+
+    def __repr__(self):
+        return f"User: {self.userID}"
+    
+    def __init__(self, userID, recipeIDs):
+        self.userID = userID
+        self.recipeIDs = recipeIDs
 
 @app.route('/')
 def home():
     return "Test Page"
 
+@app.route('/post_recipes/<userID>', methods=['POST'])
+def post_recipes(userID):
+    recipeID = request.json['recipeID']
+    recipes = WeeklyRecipes(userID, recipeID)
+
+    db.session.add(recipes)
+    db.session.commit()
+    return "recipe added"
 
 def format_user(user):
     return{
@@ -199,6 +221,12 @@ def post_whole_user():
     "username" :"mahirah",
     "email" :"mahirah@gmail.com",
     "password" :"examplepass",
+    "gender": "female",
+    "weight_lbs" : 126,
+    "age" : 30,
+    "height_feet" :5,
+    "height_inches" :5,
+    "activity_level":"low",
     "vegitarian" :false,
     "vegan" :false,
     "halal" :true,
@@ -598,9 +626,6 @@ def get_recipes(userID):
     nutrients_response = requests.get(f'http://localhost:5000/get_nutrition/{userID}')
     nutrients_amounts = nutrients_response.json()
     
-    data = json.loads('{"lat":444, "lon":555}')
-    k = str(data['lat'])
-    
     #return nutrients_amounts
     #return nutrients_amounts
     #data = json.loads(nutrients_amounts)
@@ -648,12 +673,70 @@ def get_recipes(userID):
     find_by_nutrients_url = "https://api.spoonacular.com/recipes/findByNutrients"
 
     # divide nutrients by 2 to account for lunch and dinner meals
-    macros_query_params = "apiKey=" + api_key + "&minProtein="+str(float(protein)/2-20)+"&maxProtein="+str(float(protein)/2+20)+"&minFat="+str(float(fat)/2-20)+"&maxFat="+str(float(fat)/2+20)+"&minCarbs="+str(float(carbs)/2-20)+"&maxCarbs="+str(float(carbs)/2+20) # +"&number=10" #+"&minVitaminD="+str(float(vitD)-20)+"&maxVitaminD="+str((float(vitD)+float(vitD_ul))/2)+"&minVitaminC="+str(float(vitC)-20)+"&maxVitaminC="+str((float(vitC)+float(vitC_ul))/2)+"&minVitaminA="+str(float(vitA)-20)+"&maxVitaminA="+str((float(vitA)+float(vitA_ul))/2)+"&minVitaminE="+str(float(vitE)-20)+"&maxVitaminE="+str((float(vitE)+float(vitE_ul))/2)+"&minCalcium="+str(float(calcium)-20)+"&maxCalcium="+str((float(calcium)+float(calcium_ul))/2)+"&minIron="+str(float(iron)-20)+"&maxIron="+str((float(iron)+float(iron_ul))/2)+"&minPotassium="+str(float(potassium)-20)+"&maxPotassium="+str(float(potassium)+20)+"&number=10"
+    macros_query_params = "apiKey=" + api_key + "&minProtein="+str(float(protein)/2-20)+"&maxProtein="+str(float(protein)/2+20)+"&minFat="+str(float(fat)/2-20)+"&maxFat="+str(float(fat)/2+20)+"&minCarbs="+str(float(carbs)/2-20)+"&maxCarbs="+str(float(carbs)/2+20)#+"&minVitaminD="+str(float(vitD)/2-2)+"&maxVitaminD="+str((float(vitD)+float(vitD_ul))/4)#+"&minVitaminC="+str(float(vitC)-20)+"&maxVitaminC="+str((float(vitC)+float(vitC_ul))/2)+"&minVitaminA="+str(float(vitA)-20)+"&maxVitaminA="+str((float(vitA)+float(vitA_ul))/2)+"&minVitaminE="+str(float(vitE)-20)+"&maxVitaminE="+str((float(vitE)+float(vitE_ul))/2)+"&minCalcium="+str(float(calcium)-20)+"&maxCalcium="+str((float(calcium)+float(calcium_ul))/2)+"&minIron="+str(float(iron)-20)+"&maxIron="+str((float(iron)+float(iron_ul))/2)+"&minPotassium="+str(float(potassium)-20)+"&maxPotassium="+str(float(potassium)+20)+"&number=10"
     
+    # having the micronutrients in the query params makes it more constricting. so i am just going to let the user choose from list of recipes and then fill the rest of the nutrients in with snacks
+
     macros_query =  find_by_nutrients_url + "?" + macros_query_params 
     
     macros_response = requests.get(macros_query)
     return macros_response.json()
+
+@app.route('/get_remaining_nutrition/<userID>', methods=['GET'])
+def get_remaining_nutrition(userID):
+
+    # get recipes IDs from the weekly recipes table
+    recipe_ids = WeeklyRecipes.query.filter_by(userID = userID).one()
+    recipes = (recipe_ids.recipeIDs.replace(" ", "")).split(',')
+
+    micronutrients_response = requests.get(f'http://localhost:5000/get_nutrition/{userID}')
+    micronutrients_amounts = micronutrients_response.json()
+
+    energy = str(micronutrients_amounts['energy'])
+
+    vitD = str(micronutrients_amounts['vitD'])
+    vitC =str(micronutrients_amounts['vitC'])
+    vitA = str(micronutrients_amounts['vitA'])
+    vitE = str(micronutrients_amounts['vitE'])
+    calcium = str(micronutrients_amounts['calcium'])
+    iron = str(micronutrients_amounts['iron'])
+    potassium = str(micronutrients_amounts['potassium'])
+
+    # ULs
+    vitD_ul = str(micronutrients_amounts['vitD_ul'])
+    vitC_ul = str(micronutrients_amounts['vitC_ul'])
+    vitA_ul = str(micronutrients_amounts['vitA_ul'])
+    vitE_ul = str(micronutrients_amounts['vitE_ul'])
+    calcium_ul = str(micronutrients_amounts['calcium_ul'])
+    iron_ul = str(micronutrients_amounts['iron_ul'])
+
+    # total nutrition (sum) from recipes
+    energy_sum = 0
+    vitD_sum = 0
+    vitC_sum =0
+    vitA_sum = 0
+    vitE_sum = 0
+    calcium_sum =0 
+    iron_sum = 0
+    potassium_sum = 0
+    vitD_ul_sum = 0
+    vitC_ul_sum = 0
+    vitA_ul_sum =0
+    vitE_ul_sum = 0
+    calcium_ul_sum =0 
+    iron_ul_sum = 0
+
+    # one json object to hold all the nutrients in all the recipes
+    recipe_nutrition_info_json = {}
+
+    # get nutrients of all the recipe IDs
+    for recipe in recipes:
+        recipe_nutrients_url = f"https://api.spoonacular.com/recipes/{recipe}/nutritionWidget.json?apiKey={api_key}"
+        response = requests.get(recipe_nutrients_url)
+        recipe_nutrition_info_json[recipe]=response.json()
+
+    # loop through recipe_nutrition_info to get all nutritions
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
