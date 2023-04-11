@@ -7,8 +7,6 @@ function LandingPage() {
      // };
 
      return (
-          
-          // <p id='namehere'> hello </p>
           <div> Hello { localStorage.getItem('curruser') }!! </div>
      );
 

@@ -1,13 +1,18 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy 
 from flask_cors import CORS
+from flask import jsonify
+import json
+import sqlalchemy
+from sqlalchemy import create_engine, text
 import os
 import pprint
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:admin@localhost/capstone'
 db = SQLAlchemy(app)
-#CORS(app)
+engine = create_engine('postgresql://postgres:admin@localhost/capstone')
+CORS(app)
 
 # spoonacular api
 #spoonacular_api_key = os.environ["SPOONACULAR_API_KEY"]
@@ -82,13 +87,35 @@ class User(db.Model):
   
 @app.route('/')
 def home():
-    return "Test Page"
+    return "Backend"
 
 
 def format_user(user):
     return{
-        "userID":user.userID,
-        "username" :user.username
+        "userID": user.userID,
+        "username": user.username,
+        "email": user.email,
+        "password": user.password,
+        "gender": user.gender,
+        "weight_lbs": user.weight_lbs,
+        "age": user.age,
+        "height_feet": user.height_feet,
+        "height_inches": user.height_inches,
+        "activity_level": user.activity_level,
+        "vegitarian": user.vegitarian,
+        "vegan": user.vegan,
+        "halal": user.halal,
+        "kosher": user.kosher,
+        "gluten_free": user.gluten_free,
+        "dairy_free": user.dairy_free,
+        "lactose_int": user.lactose_int,
+        "low_sodium": user.low_sodium,
+        "low_carb": user.low_carb,
+        "high_protein": user.high_protein,
+        "keto": user.keto,
+        "paleo": user.paleo,
+        "preferences": user.preferences,
+        "restrictions": user.restrictions
     }
 
 # POST user information
@@ -150,6 +177,29 @@ def post_whole_user():
     "restrictions" :"none"
 }
 '''
+
+
+@app.route('/checklogin', methods=['GET'])
+def check_login():
+    # with engine.connect() as con:
+    #     user = request.args.get('user')
+    #     pss = request.args.get('pass')
+    #     query = text('SELECT * FROM public.\"user\" WHERE username=\''+ user +'\' AND password=\''+pss+'\'')
+    #     results = con.execute(query)
+    #     print(results)
+    #     values = []
+    #     for r in results:
+    #         values.append(r[0])
+
+    #     return values
+    user = request.args.get('user')
+    pss = request.args.get('pass')
+    result = db.session.query(User).filter_by(username=user, password=pss)
+    users = []
+    for user in result:
+        users.append(format_user(user))
+    # formatted_user = format_user(result)
+    return {'user': users}
 
 @app.route('/events', methods=['POST'])
 def create_event1():

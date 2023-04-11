@@ -1,5 +1,5 @@
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import classes from './Login.module.css';
 
@@ -9,15 +9,26 @@ const LoginPage = () => {
      const [password, setPassword] = useState("");
      const navigate = useNavigate();
 
-     const handleLogin = () => {
-          localStorage.setItem("curruser", username);
-          localStorage.setItem("currpasswd", password);
-          if (username === "user" && password === "password") {
-               navigate("/landing-page");
+     const handleLogin = async () => {
+          // const link = 'ttp://127.0.0.1:5000/checklogin?user='+username}'&'password;
+          const data = await axios.get(`http://127.0.0.1:5000/checklogin?user=${username}&pass=${password}`)
+          // const { users } = data.data
+          console.log(data.data.user.length);
+
+          if(data.data.user.length === 0){
+               alert("No matching username and password combo.");
           } else {
-               // Show error message if login fails
-               alert("Invalid username or password.");
+               localStorage.setItem("curruser", username);
+               navigate("/landing-page");
           }
+          // localStorage.setItem("curruser", username);
+          // localStorage.setItem("currpasswd", password);
+          // if (username === "user" && password === "password") {
+          //      navigate("/landing-page");
+          // } else {
+          //      // Show error message if login fails
+          //      alert("No matching username and password combo.");
+          // }
      };
 
      const goToSignup = () => {
