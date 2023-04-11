@@ -1,7 +1,9 @@
-from flask import Blueprint
+from flask import Blueprint, render_template
 
 nutrition = Blueprint('nutrition', __name__)
 
-@nutrition.route('/nutrition')
+@nutrition.route('/groceries')
 def home():
-    return "groceriiies"
+    return render_template("groceries.html")
+
+# stopped at 42:52
