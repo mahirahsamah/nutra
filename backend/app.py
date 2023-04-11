@@ -159,7 +159,7 @@ class WeeklyRecipes(db.Model):
         self.userID = userID
         self.recipeIDs = recipeIDs
 
-@app.route('/')
+@app.route('/groceries')
 def home():
     return "Test Page"
 
@@ -737,6 +737,3 @@ def get_remaining_nutrition(userID):
 
     # loop through recipe_nutrition_info to get all nutritions
     
-
-if __name__ == '__main__':
-    app.run(debug=True)
