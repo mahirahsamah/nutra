@@ -60,30 +60,35 @@ class User(db.Model):
     def __repr__(self):
         return f"User: {self.username}"
     
-    def __init__(self, username, email, password, gender, weight_lbs, age, height_feet, height_inches, activity_level, vegitarian, vegan, halal, kosher, gluten_free, dairy_free, lactose_int, low_sodium, low_carb, high_protein, keto, paleo, preferences, restricitons):
+    def __init__(self, username, email, password):
         self.username = username
         self.email = email
         self.password = password
-        self.gender = gender
-        self.weight_lbs = weight_lbs
-        self.age = age
-        self.height_feet = height_feet
-        self.height_inches = height_inches
-        self.activity_level=activity_level
-        self.vegitarian = vegitarian
-        self.vegan = vegan
-        self.halal = halal
-        self.kosher = kosher
-        self.gluten_free = gluten_free
-        self.dairy_free = dairy_free
-        self.lactose_int = lactose_int
-        self.low_sodium = low_sodium
-        self.low_carb = low_carb
-        self.high_protein = high_protein
-        self.keto = keto
-        self.paleo = paleo
-        self.preferences = preferences
-        self.restrictions = restricitons
+    
+    # def __init__(self, username, email, password, gender, weight_lbs, age, height_feet, height_inches, activity_level, vegitarian, vegan, halal, kosher, gluten_free, dairy_free, lactose_int, low_sodium, low_carb, high_protein, keto, paleo, preferences, restricitons):
+    #     self.username = username
+    #     self.email = email
+    #     self.password = password
+    #     self.gender = gender
+    #     self.weight_lbs = weight_lbs
+    #     self.age = age
+    #     self.height_feet = height_feet
+    #     self.height_inches = height_inches
+    #     self.activity_level=activity_level
+    #     self.vegitarian = vegitarian
+    #     self.vegan = vegan
+    #     self.halal = halal
+    #     self.kosher = kosher
+    #     self.gluten_free = gluten_free
+    #     self.dairy_free = dairy_free
+    #     self.lactose_int = lactose_int
+    #     self.low_sodium = low_sodium
+    #     self.low_carb = low_carb
+    #     self.high_protein = high_protein
+    #     self.keto = keto
+    #     self.paleo = paleo
+    #     self.preferences = preferences
+    #     self.restrictions = restricitons
   
 @app.route('/')
 def home():
@@ -178,20 +183,9 @@ def post_whole_user():
 }
 '''
 
-
+# Checks for user and password match, returns user if exist
 @app.route('/checklogin', methods=['GET'])
 def check_login():
-    # with engine.connect() as con:
-    #     user = request.args.get('user')
-    #     pss = request.args.get('pass')
-    #     query = text('SELECT * FROM public.\"user\" WHERE username=\''+ user +'\' AND password=\''+pss+'\'')
-    #     results = con.execute(query)
-    #     print(results)
-    #     values = []
-    #     for r in results:
-    #         values.append(r[0])
-
-    #     return values
     user = request.args.get('user')
     pss = request.args.get('pass')
     result = db.session.query(User).filter_by(username=user, password=pss)
@@ -200,6 +194,28 @@ def check_login():
         users.append(format_user(user))
     # formatted_user = format_user(result)
     return {'user': users}
+
+# Creates account if username is unique
+@app.route('/createuser', methods=['POST'])
+def create_user():
+    user = request.args.get('user')
+    pss = request.args.get('pass')
+    eml = request.args.get('email')
+
+    result = db.session.query(User).filter_by(username=user)
+    users = []
+    for user in result:
+        users.append(format_user(user))
+
+    if(len(users) == 0):
+        newUser = User(username= user,
+                       password= pss,
+                       email= eml)
+        db.session.add(newUser)
+        db.session.commit()
+        return {'user': users}
+    else:
+        return {'user': users}
 
 @app.route('/events', methods=['POST'])
 def create_event1():

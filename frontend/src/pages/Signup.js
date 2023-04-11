@@ -1,5 +1,6 @@
 
 import React, { useState } from "react";
+import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import classes from './Login.module.css';
 
@@ -10,12 +11,19 @@ const SignupPage = () => {
      const [password, setPassword] = useState("");
      const navigate = useNavigate();
 
-     const handleMakeAccount = () => {
-          localStorage.setItem("curruser", username);
-          localStorage.setItem("currpasswd", password);
-          alert("Welcome " + localStorage.getItem('curruser') + " !");
-          navigate("/landing-page");
-          
+     const handleMakeAccount = async () => {
+          const data = await axios.post(`http://127.0.0.1:5000/createuser?user=${username}&pass=${password}&email=${email}`)
+          console.log(username.length)
+
+          if(email.length === 0 || username.length === 0 || password.length === 0){
+               alert("Missing field");
+          }
+          else if(data.data.user.length === 0){
+               localStorage.setItem("curruser", username);
+               navigate("/landing-page");
+          } else {
+               alert("Username already exist");
+          }  
      };
 
      const goToLogin = () => {
