@@ -216,6 +216,15 @@ def create_user():
         return {'user': users}
     else:
         return {'user': users}
+    
+# Updates user
+@app.route('/updateuser', methods=['PUT'])
+def update_user():
+    user = request.args.get('user')
+    user = User.query.filter_by(username=user)
+    user.update(dict())
+    db.session.commit()
+    return {'user': format_user(user.one())}
 
 @app.route('/events', methods=['POST'])
 def create_event1():
