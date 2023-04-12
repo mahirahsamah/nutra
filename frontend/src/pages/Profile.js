@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import classes from './Profile.module.css';
+import { Header } from './../components/'
+
 
 
 const ProfilePage = () => {
@@ -72,6 +74,9 @@ const ProfilePage = () => {
   
 };
   return (
+    <div>
+      <Header />
+    
     <div className={classes.contained}>
       <div className={classes.form}>
         <h1>User Info Form </h1>
@@ -303,6 +308,7 @@ const ProfilePage = () => {
               </li>     
             </ul>
         </div>
+    </div>
     </div>
   );
 };
