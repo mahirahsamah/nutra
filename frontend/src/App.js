@@ -1,47 +1,43 @@
-import {useEffect, useState} from 'react';
-import axios from 'axios';
-//import {format} from "date-fns"
+import { Route, Routes } from 'react-router-dom';
 
-import './App.css';
 
-const baseurl = "http://localhost:5000";
+import LoginPage from './pages/Login';
+import SignupPage from './pages/Signup';
+import Home from './pages/Landing';
+import Profile from './pages/Profile';
+import Ingredients from './pages/Ingredient';
 
 function App() {
-
-  const [price, setPrice] = useState("");
-  const [eventsList, setEventsList] = useState([]);
-
-  const fetchEvents = async () => {
-    const data = await axios.get(`${baseurl}/events`)
-    const {events} = data.data
-    setEventsList(events);
-    console.log("data: ", data)
-  }
-
-  const handleChange = e => {
-    setPrice(e.target.value);
-  }
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    console.log(price);
-  }
-
-  useEffect(() => {
-    fetchEvents();
-  }, [])
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <form onSubmit={handleSubmit}>
-          <label htmlFor='price'>Price</label>
-          <input onChange={handleChange} type="text" name="price" id="price" value={price} />
-          <button type='submit'>Submit</button>
-        </form>
 
-      </header>
-    </div>
+    <Routes>
+      <Route path='/' element = {<LoginPage/>} />
+      <Route path='/signup' element = {<SignupPage/>} />
+      <Route path='/home' element = {<Home/>} />
+      <Route path='/profile' element = {<Profile/>} />
+      <Route path ='/ingredient' element = {<Ingredients/>}/>
+    </Routes>
+
+
+    // <div className="App">
+    //   <section>
+    //     <form onSubmit={handleSubmit}>
+    //       <label htmlFor='price'>Price</label>
+    //       <input onChange={handleChange} type="text" name="price" id="price" value={price} />
+    //       <button type='submit'>Submit</button>
+    //     </form>
+    //   </section>
+    //   <section>
+    //     <ul>
+    //       {eventsList.map(event  => {
+    //         return (
+    //           <li key={event.itemID}>{event.price}</li>
+    //         )
+    //       })}
+    //     </ul>
+    //   </section>
+    // </div>
+
   );
 }
 

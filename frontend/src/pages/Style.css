@@ -1,0 +1,14 @@
+.blurb{
+    display:flex;
+    height:30vh;
+    width: 40vw;
+    margin-left: 3vw;
+    margin-right: 3vw;
+    background-color: rgb(225, 247, 217);
+    border-radius: 10%;
+    font-size: x-large;
+    justify-content:center;
+    font-style: italic;
+    align-items:center;
+    padding: 2vw;
+}
