@@ -1,28 +1,31 @@
-from flask import Flask, render_template, request
-from flask_sqlalchemy import SQLAlchemy 
-from flask_cors import CORS
-from flask import jsonify
+from flask import Flask, render_template, request, url_for, redirect, jsonify
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import relationship 
 import json
-import sqlalchemy
-from sqlalchemy import create_engine, text
+#from flask_cors import CORS
+import requests
 import os
 import pprint
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:admin@localhost/capstone'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:11072000@localhost/capstone'
 db = SQLAlchemy(app)
-engine = create_engine('postgresql://postgres:admin@localhost/capstone')
-CORS(app)
+#CORS(app)
 
 # spoonacular api
 #spoonacular_api_key = os.environ["SPOONACULAR_API_KEY"]
-#spoon_url = ""
+api_key = "b5a30a9a3c4f4d4b889eb051ad05ae9d"
 
 class User(db.Model):
+
+    __tablename__ = 'users_table'
+    __table_args__ = {'schema': 'public'}
     
+    nutrition = relationship("UserNutrition")
+
     # user auth
     userID = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String, nullable=False)
+    username = db.Column(db.String)
     email = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
 
@@ -60,67 +63,119 @@ class User(db.Model):
     def __repr__(self):
         return f"User: {self.username}"
     
-    def __init__(self, username, email, password):
+    def __init__(self, username, email, password, gender, weight_lbs, age, height_feet, height_inches, activity_level, vegitarian, vegan, halal, kosher, gluten_free, dairy_free, lactose_int, low_sodium, low_carb, high_protein, keto, paleo, preferences, restricitons):
         self.username = username
         self.email = email
         self.password = password
-    
-    # def __init__(self, username, email, password, gender, weight_lbs, age, height_feet, height_inches, activity_level, vegitarian, vegan, halal, kosher, gluten_free, dairy_free, lactose_int, low_sodium, low_carb, high_protein, keto, paleo, preferences, restricitons):
-    #     self.username = username
-    #     self.email = email
-    #     self.password = password
-    #     self.gender = gender
-    #     self.weight_lbs = weight_lbs
-    #     self.age = age
-    #     self.height_feet = height_feet
-    #     self.height_inches = height_inches
-    #     self.activity_level=activity_level
-    #     self.vegitarian = vegitarian
-    #     self.vegan = vegan
-    #     self.halal = halal
-    #     self.kosher = kosher
-    #     self.gluten_free = gluten_free
-    #     self.dairy_free = dairy_free
-    #     self.lactose_int = lactose_int
-    #     self.low_sodium = low_sodium
-    #     self.low_carb = low_carb
-    #     self.high_protein = high_protein
-    #     self.keto = keto
-    #     self.paleo = paleo
-    #     self.preferences = preferences
-    #     self.restrictions = restricitons
+        self.gender = gender
+        self.weight_lbs = weight_lbs
+        self.age = age
+        self.height_feet = height_feet
+        self.height_inches = height_inches
+        self.activity_level=activity_level
+        self.vegitarian = vegitarian
+        self.vegan = vegan
+        self.halal = halal
+        self.kosher = kosher
+        self.gluten_free = gluten_free
+        self.dairy_free = dairy_free
+        self.lactose_int = lactose_int
+        self.low_sodium = low_sodium
+        self.low_carb = low_carb
+        self.high_protein = high_protein
+        self.keto = keto
+        self.paleo = paleo
+        self.preferences = preferences
+        self.restrictions = restricitons
   
-@app.route('/')
-def home():
-    return "Backend"
 
+class UserNutrition(db.Model):
+
+    __tablename__ = 'users_nutrition_table'
+    __table_args__ = {'schema': 'public'}
+    nutritionID = db.Column(db.Integer, primary_key=True)
+    userID = db.Column(db.Integer, db.ForeignKey('public.users_table.userID'))
+    #user_nutrition = relationship("User")
+
+
+    energy = db.Column(db.Float)
+    protein = db.Column(db.Float)
+    fat = db.Column(db.Float)
+    carbs = db.Column(db.Float)
+
+    calcium = db.Column(db.Float)
+    iron = db.Column(db.Float)
+    potassium = db.Column(db.Float)
+    
+    calcium_ul = db.Column(db.Float)
+    iron_ul = db.Column(db.Float)
+
+    vitD = db.Column(db.Float)
+    vitC = db.Column(db.Float)
+    vitA = db.Column(db.Float)
+    vitE = db.Column(db.Float)
+    
+    vitD_ul = db.Column(db.Float)
+    vitC_ul = db.Column(db.Float)
+    vitA_ul = db.Column(db.Float)
+    vitE_ul = db.Column(db.Float)
+
+    def __repr__(self):
+        return f"User: {self.userID}"
+    
+    def __init__(self, userID, energy, protein, fat, carbs, calcium, iron, potassium, calcium_ul, iron_ul, vitA, vitD,vitC,vitE, vitA_ul, vitD_ul,vitC_ul,vitE_ul):
+        self.userID = userID
+        self.energy = energy
+        self.protein = protein
+        self.fat = fat
+        self.carbs = carbs
+        self.calcium = calcium
+        self.iron = iron
+        self.potassium = potassium
+        self.calcium_ul=calcium_ul
+        self.iron_ul = iron_ul
+        self.vitA = vitA
+        self.vitD = vitD
+        self.vitC = vitC
+        self.vitE = vitE
+        self.vitA_ul = vitA_ul
+        self.vitD_ul = vitD_ul
+        self.vitC_ul = vitC_ul
+        self.vitE_ul = vitE_ul
+
+
+class WeeklyRecipes(db.Model):
+    __tablename__ = 'users_weekly_recipes_table'
+    __table_args__ = {'schema': 'public'}
+
+    week_number_ID = db.Column(db.Integer, primary_key=True)
+    userID = db.Column(db.Integer, db.ForeignKey('public.users_table.userID'))
+    recipeIDs = db.Column(db.String) # this is a string of comma-separated recipe IDs
+
+    def __repr__(self):
+        return f"User: {self.userID}"
+    
+    def __init__(self, userID, recipeIDs):
+        self.userID = userID
+        self.recipeIDs = recipeIDs
+
+@app.route('/groceries')
+def home():
+    return "Test Page"
+
+@app.route('/post_recipes/<userID>', methods=['POST'])
+def post_recipes(userID):
+    recipeID = request.json['recipeID']
+    recipes = WeeklyRecipes(userID, recipeID)
+
+    db.session.add(recipes)
+    db.session.commit()
+    return "recipe added"
 
 def format_user(user):
     return{
-        "userID": user.userID,
-        "username": user.username,
-        "email": user.email,
-        "password": user.password,
-        "gender": user.gender,
-        "weight_lbs": user.weight_lbs,
-        "age": user.age,
-        "height_feet": user.height_feet,
-        "height_inches": user.height_inches,
-        "activity_level": user.activity_level,
-        "vegitarian": user.vegitarian,
-        "vegan": user.vegan,
-        "halal": user.halal,
-        "kosher": user.kosher,
-        "gluten_free": user.gluten_free,
-        "dairy_free": user.dairy_free,
-        "lactose_int": user.lactose_int,
-        "low_sodium": user.low_sodium,
-        "low_carb": user.low_carb,
-        "high_protein": user.high_protein,
-        "keto": user.keto,
-        "paleo": user.paleo,
-        "preferences": user.preferences,
-        "restrictions": user.restrictions
+        "userID":user.userID,
+        "username" :user.username
     }
 
 # POST user information
@@ -166,6 +221,12 @@ def post_whole_user():
     "username" :"mahirah",
     "email" :"mahirah@gmail.com",
     "password" :"examplepass",
+    "gender": "female",
+    "weight_lbs" : 126,
+    "age" : 30,
+    "height_feet" :5,
+    "height_inches" :5,
+    "activity_level":"low",
     "vegitarian" :false,
     "vegan" :false,
     "halal" :true,
@@ -182,211 +243,6 @@ def post_whole_user():
     "restrictions" :"none"
 }
 '''
-
-# Checks for user and password match, returns user if exist
-@app.route('/checklogin', methods=['GET'])
-def check_login():
-    user = request.args.get('user')
-    pss = request.args.get('pass')
-    result = db.session.query(User).filter_by(username=user, password=pss)
-    users = []
-    for user in result:
-        users.append(format_user(user))
-    # formatted_user = format_user(result)
-    return {'user': users}
-
-# Creates account if username is unique
-@app.route('/createuser', methods=['POST'])
-def create_user():
-    user = request.args.get('user')
-    pss = request.args.get('pass')
-    eml = request.args.get('email')
-
-    result = db.session.query(User).filter_by(username=user)
-    users = []
-    for user in result:
-        users.append(format_user(user))
-
-    if(len(users) == 0):
-        newUser = User(username= user,
-                       password= pss,
-                       email= eml)
-        db.session.add(newUser)
-        db.session.commit()
-        return {'user': users}
-    else:
-        return {'user': users}
-    
-# Updates user
-@app.route('/updateuser', methods=['PUT'])
-def update_user():
-    user = request.args.get('user')
-    user = User.query.filter_by(username=user)
-    user.update(dict())
-    db.session.commit()
-    return {'user': format_user(user.one())}
-
-@app.route('/events', methods=['POST'])
-def create_event1():
-    username = request.json['username']
-    event = User(username)
-    db.session.add(event)
-    db.session.commit()
-    return format_user(event)
-
-# POST username
-@app.route('/username', methods=['POST'])
-def create_event_username():
-    username = request.json['username']
-    event = User(username)
-    db.session.add(event)
-    db.session.commit()
-    return format_user(event)
-
-# POST email
-@app.route('/email', methods=['POST'])
-def create_event_email():
-    email = request.json['email']
-    event = User(email)
-    db.session.add(event)
-    db.session.commit()
-    return format_user(event)
-
-# POST password
-@app.route('/password', methods=['POST'])
-def create_event_password():
-    password = request.json['password']
-    event = User(password)
-    db.session.add(event)
-    db.session.commit()
-    return format_user(event)
-
-# POST username
-@app.route('/vegitarian', methods=['POST'])
-def create_event_vegitarian():
-    vegitarian = request.json['vegitarian']
-    event = User(vegitarian)
-    db.session.add(event)
-    db.session.commit()
-    return format_user(event)
-
-# POST username
-@app.route('/vegan', methods=['POST'])
-def create_event_vegan():
-    vegan = request.json['vegan']
-    event = User(vegan)
-    db.session.add(event)
-    db.session.commit()
-    return format_user(event)
-
-# POST username
-@app.route('/halal', methods=['POST'])
-def create_event_halal():
-    halal = request.json['halal']
-    event = User(halal)
-    db.session.add(event)
-    db.session.commit()
-    return format_user(event)
-
-# POST kosher
-@app.route('/kosher', methods=['POST'])
-def create_event_kosher():
-    kosher = request.json['kosher']
-    event = User(kosher)
-    db.session.add(event)
-    db.session.commit()
-    return format_user(event)
-
-# POST username
-@app.route('/gluten_free', methods=['POST'])
-def create_event_gluten_free():
-    gluten_free = request.json['gluten_free']
-    event = User(gluten_free)
-    db.session.add(event)
-    db.session.commit()
-    return format_user(event)
-
-# POST username
-@app.route('/dairy_free', methods=['POST'])
-def create_event_dairy_free():
-    dairy_free = request.json['dairy_free']
-    event = User(dairy_free)
-    db.session.add(event)
-    db.session.commit()
-    return format_user(event)
-
-# POST username
-@app.route('/lactose_int', methods=['POST'])
-def create_event_lactose_int():
-    lactose_int = request.json['lactose_int']
-    event = User(lactose_int)
-    db.session.add(event)
-    db.session.commit()
-    return format_user(event)
-
-# POST username
-@app.route('/low_sodium', methods=['POST'])
-def create_event_low_sodium():
-    low_sodium = request.json['low_sodium']
-    event = User(low_sodium)
-    db.session.add(event)
-    db.session.commit()
-    return format_user(event)
-
-# POST username
-@app.route('/low_carb', methods=['POST'])
-def create_event_low_carb():
-    low_carb = request.json['low_carb']
-    event = User(low_carb)
-    db.session.add(event)
-    db.session.commit()
-    return format_user(event)
-
-# POST username
-@app.route('/high_protein', methods=['POST'])
-def create_event_high_protein():
-    high_protein = request.json['high_protein']
-    event = User(high_protein)
-    db.session.add(event)
-    db.session.commit()
-    return format_user(event)
-
-    # POST username
-@app.route('/keto', methods=['POST'])
-def create_event_keto():
-    keto = request.json['keto']
-    event = User(keto)
-    db.session.add(event)
-    db.session.commit()
-    return format_user(event)
-
-# POST username
-@app.route('/paleo', methods=['POST'])
-def create_event_paleo():
-    paleo = request.json['paleo']
-    event = User(paleo)
-    db.session.add(event)
-    db.session.commit()
-    return format_user(event)
-
-# POST username
-@app.route('/preferences', methods=['POST'])
-def create_event_preferences():
-    preferences = request.json['preferences']
-    event = User(preferences)
-    db.session.add(event)
-    db.session.commit()
-    return format_user(event)
-
-# POST username
-@app.route('/restrictions', methods=['POST'])
-def create_event_restrictions():
-    restrictions = request.json['restrictions']
-    event = User(restrictions)
-    db.session.add(event)
-    db.session.commit()
-    return format_user(event)
-
 
 
 # get all users
@@ -423,11 +279,9 @@ def update_event(edit_column, userID):
     db.session.commit()
     return {'event':format_user(event.one())}
 
-
-
-@app.route('/get_nutrition/<userID>', methods=['GET'])
+@app.route('/get_nutrition/<userID>', methods=['GET', 'POST'])
 #def nutrients_amounts(gender, weight_lbs, age, height_feet, height_inches, activity_level):
-def nutrients_amounts(userID):
+def get_nutrition(userID):
     energy = 0
     protein = 0
     fat = 0
@@ -437,11 +291,19 @@ def nutrients_amounts(userID):
     calcium = 0
     iron = 0
     potassium = 0
+    
+    calcium_ul = 0
+    iron_ul = 0
 
     vitD = 0
     vitC = 0
     vitA = 0
     vitE = 0
+    
+    vitD_ul = 0
+    vitC_ul = 0
+    vitA_ul = 0
+    vitE_ul = 0
     
     this_user = User.query.filter_by(userID = userID).one()
     #print(this_user.username)
@@ -490,84 +352,267 @@ def nutrients_amounts(userID):
     # in the format of: [energy, vitD(micrograms/d), vitC(micrograms/d), vitA(micrograms/d), vitE(mg/d), calcium (mg/d), iron(mg/d), potassium (mg/d)]
     
     if(this_user.age>=1 and this_user.age<=3):
+        vitD = 15
+        vitC = 15
+        vitA = 300
+        vitE = 6
+        
+        vitD_ul = 63
+        vitC_ul = 400
+        vitA_ul = 600
+        vitE_ul = 200
+            
         calcium = 700
         iron = 7
         potassium = 2000
+        
+        calcium_ul = 2500
+        iron_ul = 40
+        # NO potassium_ul
+        
     elif(this_user.age>3 and this_user.age<=8):
+        vitD = 15
+        vitC = 25
+        vitA = 400
+        vitE = 7
+        
+        vitD_ul = 75
+        vitC_ul = 650
+        vitA_ul = 900
+        vitE_ul = 300
+        
         calcium = 1000
         iron = 10
         potassium =2300
+        
+        calcium_ul = 2500
+        iron_ul = 40
+        # NO potassium_ul
+        
     else:
         if(this_user.gender=='male'):
             vitD = 15
             vitC = 90
             vitA = 900
             vitE = 15
+            
             if(this_user.age>8 and this_user.age<=13):
+                vitC = 45
+                vitA = 600
+                vitE = 11
+                
+                vitD_ul = 100
+                vitC_ul = 1200
+                vitA_ul = 1700
+                vitE_ul = 600
+                
                 calcium = 1300
                 iron = 8
                 potassium =2500
+                
+                calcium_ul = 3000
+                iron_ul = 40
+                
             elif(this_user.age>13 and this_user.age <=18):
+                vitC = 75
+                
+                vitD_ul = 100
+                vitC_ul = 1800
+                vitA_ul = 2800
+                vitE_ul = 800
+                
                 calcium = 1300
                 iron = 11
                 potassium = 3000
+                
+                calcium_ul = 3000
+                iron_ul = 45
+                
             elif(this_user.age>18 and this_user.age <=30):
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
                 calcium = 1000
                 iron = 8
                 potassium = 3400
+                
+                calcium_ul = 2500
+                iron_ul = 45
+                
             elif(this_user.age>30 and this_user.age <=50):
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
                 calcium = 1000
                 iron = 8
                 potassium =3400
+                
+                calcium_ul = 2500
+                iron_ul = 45
+                
             elif(this_user.age>50 and this_user.age <=70):
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
                 calcium = 1000
                 iron = 8
                 potassium =3400
+                
+                calcium_ul = 2000
+                iron_ul = 45
+                
             elif(this_user.age>70):
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
+                vitD = 20
+                
                 calcium = 1200 
                 iron = 8
                 potassium =3400
+                
+                calcium_ul = 2000
+                iron_ul = 45
             
             
         elif(this_user.gender=='female'):
-            vitD = 15
-            vitC = 75
-            vitA = 700
-            vitE = 15
+            
             if(this_user.age>8 and this_user.age<=13):
+                vitD = 15
+                vitC = 45
+                vitA = 600
+                vitE = 11
+                
+                vitD_ul = 100
+                vitC_ul = 1200
+                vitA_ul = 1700
+                vitE_ul = 600
+                
                 calcium = 1300
                 iron = 8
                 potassium = 2300
+                
+                calcium_ul = 3000
+                iron_ul = 40
+    
             elif(this_user.age>13 and this_user.age <=18):
+                vitD = 15
+                vitC = 65
+                vitA = 700
+                vitE = 15
+                
+                vitD_ul = 100
+                vitC_ul = 1800
+                vitA_ul = 2800
+                vitE_ul = 800
+                
                 calcium = 1300
                 iron = 15
                 potassium = 2300
+                
+                calcium_ul = 3000
+                iron_ul = 45
+                
             elif(this_user.age>18 and this_user.age <=30):
+                vitD = 15
+                vitC = 65
+                vitA = 700
+                vitE = 15
+                
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
                 calcium = 1000
                 iron = 18
                 potassium = 2600
+                
+                calcium_ul = 2500
+                iron_ul = 45
+                
             elif(this_user.age>30 and this_user.age <=50):
+                vitD = 15
+                vitC = 65
+                vitA = 700
+                vitE = 15
+                
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
                 calcium = 1000
                 iron = 18
                 potassium = 2600
+                
+                calcium_ul = 2500
+                iron_ul = 45
+                
             elif(this_user.age>50 and this_user.age <=70):
+                vitD = 15
+                vitC = 65
+                vitA = 700
+                vitE = 15
+                
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
                 calcium = 1200
                 iron = 8
                 potassium = 2600
+                
+                calcium_ul = 2000
+                iron_ul = 45
+                
             elif(this_user.age>70):
+                vitD = 20
+                vitC = 65
+                vitA = 700
+                vitE = 15
+                
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
                 calcium = 1200
                 iron = 8
                 potassium = 2600
+                
+                calcium_ul = 2000
+                iron_ul = 45
     
+    return_list = [energy, protein, fat, carbs, vitD, vitC, vitA, vitE, calcium, iron, potassium, vitD_ul, vitC_ul, vitA_ul, vitE_ul, calcium_ul, iron_ul]
+    #print(type(protein))
+     
+    nutrition_info = {"energy":energy, "protein":protein, "fat": fat, "carbs": carbs, "vitD": vitD, "vitC": vitC, "vitA": vitA, "vitE": vitE, "calcium": calcium, "iron": iron, "potassium": potassium, "vitD_ul":vitD_ul, "vitC_ul":vitC_ul, "vitA_ul":vitA_ul, "vitE_ul":vitE_ul, "calcium_ul":calcium_ul, "iron_ul":iron_ul}
 
-    return [energy, protein, fat, carbs, vitD, vitC, vitA, vitE, calcium, iron, potassium]
+    # post information to nutrition table in db
+    user_nutrition = UserNutrition(userID, energy, protein, fat, carbs, calcium, iron, potassium, calcium_ul, iron_ul, vitA, vitD,vitC,vitE, vitA_ul, vitD_ul,vitC_ul,vitE_ul)
+    
+    db.session.add(user_nutrition)
+    db.session.commit()
+
+    return nutrition_info
+    #return {"nutrients":return_list}
 
 
 @app.route('/get_preferences/<userID>', methods=['GET'])
 def get_preferences(userID):
     this_user = User.query.filter_by(userID = userID).one()
     preferences = (this_user.preferences).split(',')
-    return preferences
+    return preferences 
 
 @app.route('/get_restrictions/<userID>', methods=['GET'])
 def get_restrictions(userID):
@@ -575,12 +620,15 @@ def get_restrictions(userID):
     restrictions = (this_user.restrictions).split(',')
     return restrictions
 
-def get_grocery_list(userID):
+@app.route('/get_recipes/<userID>', methods=['GET'])
+def get_recipes(userID):
     
-    # one protein dish
-    # one dish with vegetables
-    # one rice/grains
-    # one dairy
+    nutrients_response = requests.get(f'http://localhost:5000/get_nutrition/{userID}')
+    nutrients_amounts = nutrients_response.json()
+    
+    #return nutrients_amounts
+    #return nutrients_amounts
+    #data = json.loads(nutrients_amounts)
 
     # first find recipes by nutrients
     # then remove recipes with restrictions
@@ -588,29 +636,104 @@ def get_grocery_list(userID):
 
     # then get recipes that 
 
-    # may need to split up recipes for variety; do two or three get requests from spoonacular each with less parameters, then calculate each nutrients and do math until nutrients are satisfied
+    # may need to split up recipes for variety; do two or three get 
+    # requests from spoonacular each with less parameters, then 
+    # calculate each nutrients and do math until nutrients are satisfied
     
-    # get recipes based on macros
+    # get recipes based on macros & preferences
     # select 2-3 recipes for each week
     # use recipe ID to see what nutrients each recipe has
     # fill in rest of the recipes
 
-    nutrients_amounts = nutrients_amounts(userID)
+    #nutrients_amounts = nutrients_amounts(userID)
 
-    energy = nutrients_amounts[0]
-    protein = nutrients_amounts[1]
-    fat = nutrients_amounts[2]
-    carbs = nutrients_amounts[3]
-    vitD = nutrients_amounts[4]
-    vitC = nutrients_amounts[5]
-    vitA = nutrients_amounts[6]
-    vitE = nutrients_amounts[7]
-    calcium = nutrients_amounts[8]
-    iron = nutrients_amounts[9]
-    potassium = nutrients_amounts[10]
+    energy = str(nutrients_amounts['energy'])
+    protein = str(nutrients_amounts['protein'])
+    fat = str(nutrients_amounts['fat'])
+    carbs = str(nutrients_amounts['carbs'])
+    vitD = str(nutrients_amounts['vitD'])
+    vitC =str(nutrients_amounts['vitC'])
+    vitA = str(nutrients_amounts['vitA'])
+    vitE = str(nutrients_amounts['vitE'])
+    calcium = str(nutrients_amounts['calcium'])
+    iron = str(nutrients_amounts['iron'])
+    potassium = str(nutrients_amounts['potassium'])
 
-    spoon_get_macros = "https://api.spoonacular.com/recipes/findByNutrients?minProtein="+(protein-20)+"&maxProtein="+protein+"&minFat="+(fat-20)+"&maxFat="+fat+"&minCarbs="+(carbs-20)+"&maxCarbs="+carbs+"&minVitaminD="+(vitD-20)+"&maxVitaminD="+vitD+"&minVitaminC="+(vitC-20)+"&maxVitaminC="+vitC+"&minVitaminA="+(vitA-20)+"&maxVitaminA="+vitA+"&minVitaminE="+(vitE-20)+"&maxVitaminE="+vitE+"&minCalcium="+(calcium-20)+"&maxCalcium="+calcium+"&minIron="+(iron-20)+"&maxIron="+iron+"&minPotassium="+(potassium-20)+"&maxPotassium="+potassium+"&number=100"
+    # ULs
+    vitD_ul = str(nutrients_amounts['vitD_ul'])
+    vitC_ul = str(nutrients_amounts['vitC_ul'])
+    vitA_ul = str(nutrients_amounts['vitA_ul'])
+    vitE_ul = str(nutrients_amounts['vitE_ul'])
+    calcium_ul = str(nutrients_amounts['calcium_ul'])
+    iron_ul = str(nutrients_amounts['iron_ul'])
+    
+    preferences = get_preferences(userID)
+    restriction = get_restrictions(userID)
+    
+    find_by_nutrients_url = "https://api.spoonacular.com/recipes/findByNutrients"
 
+    # divide nutrients by 2 to account for lunch and dinner meals
+    macros_query_params = "apiKey=" + api_key + "&minProtein="+str(float(protein)/2-20)+"&maxProtein="+str(float(protein)/2+20)+"&minFat="+str(float(fat)/2-20)+"&maxFat="+str(float(fat)/2+20)+"&minCarbs="+str(float(carbs)/2-20)+"&maxCarbs="+str(float(carbs)/2+20)#+"&minVitaminD="+str(float(vitD)/2-2)+"&maxVitaminD="+str((float(vitD)+float(vitD_ul))/4)#+"&minVitaminC="+str(float(vitC)-20)+"&maxVitaminC="+str((float(vitC)+float(vitC_ul))/2)+"&minVitaminA="+str(float(vitA)-20)+"&maxVitaminA="+str((float(vitA)+float(vitA_ul))/2)+"&minVitaminE="+str(float(vitE)-20)+"&maxVitaminE="+str((float(vitE)+float(vitE_ul))/2)+"&minCalcium="+str(float(calcium)-20)+"&maxCalcium="+str((float(calcium)+float(calcium_ul))/2)+"&minIron="+str(float(iron)-20)+"&maxIron="+str((float(iron)+float(iron_ul))/2)+"&minPotassium="+str(float(potassium)-20)+"&maxPotassium="+str(float(potassium)+20)+"&number=10"
+    
+    # having the micronutrients in the query params makes it more constricting. so i am just going to let the user choose from list of recipes and then fill the rest of the nutrients in with snacks
 
-if __name__ == '__main__':
-    app.run()
+    macros_query =  find_by_nutrients_url + "?" + macros_query_params 
+    
+    macros_response = requests.get(macros_query)
+    return macros_response.json()
+
+@app.route('/get_remaining_nutrition/<userID>', methods=['GET'])
+def get_remaining_nutrition(userID):
+
+    # get recipes IDs from the weekly recipes table
+    recipe_ids = WeeklyRecipes.query.filter_by(userID = userID).one()
+    recipes = (recipe_ids.recipeIDs.replace(" ", "")).split(',')
+
+    micronutrients = UserNutrition.query.filter_by(userID = userID).one()
+
+    energy = str(micronutrients.energy)
+
+    vitD = str(micronutrients.vitD)
+    vitC =str(micronutrients.vitC)
+    vitA = str(micronutrients.vitA)
+    vitE = str(micronutrients.vitE)
+    calcium = str(micronutrients.calcium)
+    iron = str(micronutrients.iron)
+    potassium = str(micronutrients.potassium)
+
+    # ULs
+    vitD_ul = str(micronutrients.vitD_ul)
+    vitC_ul = str(micronutrients.vitC_ul)
+    vitA_ul = str(micronutrients.vitA_ul)
+    vitE_ul = str(micronutrients.vitE_ul)
+    calcium_ul = str(micronutrients.calcium_ul)
+    iron_ul = str(micronutrients.iron_ul)
+
+    # total nutrition (sum) from recipes
+    energy_sum = 0
+    vitD_sum = 0
+    vitC_sum =0
+    vitA_sum = 0
+    vitE_sum = 0
+    calcium_sum =0 
+    iron_sum = 0
+    potassium_sum = 0
+    vitD_ul_sum = 0
+    vitC_ul_sum = 0
+    vitA_ul_sum =0
+    vitE_ul_sum = 0
+    calcium_ul_sum =0 
+    iron_ul_sum = 0
+
+    # one json object to hold all the nutrients in all the recipes
+    recipe_nutrition_info_json = {}
+
+    # get nutrients of all the recipe IDs
+    for recipe in recipes:
+        recipe_nutrients_url = f"https://api.spoonacular.com/recipes/{recipe}/nutritionWidget.json?apiKey={api_key}"
+        response = requests.get(recipe_nutrients_url)
+        recipe_nutrition_info_json[recipe]=response.json()
+    
+    return recipe_nutrition_info_json
+
+    # loop through recipe_nutrition_info to get all nutritions
