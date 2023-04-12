@@ -21,7 +21,7 @@ const SignupPage = () => {
           }
           else if(data.data.user.length === 0){
                localStorage.setItem("curruser", username);
-               navigate("/landing-page");
+               navigate("/home");
           } else {
                alert("Username already exist");
           }  

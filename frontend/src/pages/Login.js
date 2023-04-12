@@ -17,12 +17,12 @@ const LoginPage = () => {
                alert("No matching username and password combo.");
           } else {
                localStorage.setItem("curruser", username);
-               navigate("/landing-page");
+               navigate("/home");
           }
      };
 
      const goToSignup = () => {
-          navigate("/signup-page");
+          navigate("/signup");
 
      };
 
