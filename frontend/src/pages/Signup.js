@@ -6,13 +6,14 @@ import classes from './Login.module.css';
 
 
 const SignupPage = () => {
+     const backend = "http://localhost:5000"
      const [email, setEmail] = useState("");
      const [username, setUsername] = useState("");
      const [password, setPassword] = useState("");
      const navigate = useNavigate();
 
      const handleMakeAccount = async () => {
-          const data = await axios.post(`http://127.0.0.1:5000/createuser?user=${username}&pass=${password}&email=${email}`)
+          const data = await axios.post(`${backend}/createuser?user=${username}&pass=${password}&email=${email}`)
           console.log(username.length)
 
           if(email.length === 0 || username.length === 0 || password.length === 0){

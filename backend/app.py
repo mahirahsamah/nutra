@@ -221,10 +221,70 @@ def create_user():
 @app.route('/updateuser', methods=['PUT'])
 def update_user():
     user = request.args.get('user')
+    gender = request.args.get('gender')
+    weight_lbs = request.args.get('weight_lbs')
+    age = request.args.get('age')
+    height_feet = request.args.get('height_feet')
+    height_inches = request.args.get('height_inches')
+    activity_level = request.args.get('activity_level')
+    vegitarian = request.args.get('vegitarian')
+    vegan = request.args.get('vegan')
+    halal = request.args.get('halal')
+    kosher = request.args.get('kosher')
+    gluten_free = request.args.get('gluten_free')
+    dairy_free = request.args.get('dairy_free')
+    lactose_int = request.args.get('lactose_int')
+    low_sodium = request.args.get('low_sodium')
+    low_carb = request.args.get('low_carb')
+    high_protein = request.args.get('high_protein')
+    keto = request.args.get('keto')
+    paleo = request.args.get('paleo')
+    preferences = request.args.get('preferences')
+    restrictions = request.args.get('restrictions')
+
+       
+
     user = User.query.filter_by(username=user)
-    user.update(dict())
+    user.update(dict(
+                    gender = gender, 
+                    weight_lbs = weight_lbs,
+                    age = age,
+                    height_feet = height_feet,
+                    height_inches = height_inches, 
+                    activity_level = activity_level, 
+                    vegitarian = eval(vegitarian), 
+                    vegan = eval(vegan),
+                    halal = eval(halal), 
+                    kosher = eval(kosher), 
+                    gluten_free = eval(gluten_free), 
+                    dairy_free = eval(dairy_free), 
+                    lactose_int = eval(lactose_int), 
+                    low_sodium = eval(low_sodium), 
+                    low_carb = eval(low_carb), 
+                    high_protein = eval(high_protein), 
+                    keto = eval(keto), 
+                    paleo = eval(paleo), 
+                    preferences = preferences, 
+                    restrictions = restrictions
+                    ))
     db.session.commit()
     return {'user': format_user(user.one())}
+
+    # user = User.query.filter_by(username=user)
+    # user.update(dict(gender = gender))
+    # db.session.commit()
+    # return {'user': format_user(user.one())}
+
+# Returns requsted user from username
+@app.route('/getuserinfo', methods=['GET'])
+def get_user_info():
+    user = request.args.get('user')
+    result = db.session.query(User).filter_by(username=user)
+    users = []
+    for user in result:
+        users.append(format_user(user))
+    # formatted_user = format_user(result)
+    return {'user': users}
 
 @app.route('/events', methods=['POST'])
 def create_event1():
@@ -614,3 +674,10 @@ def get_grocery_list(userID):
 
 if __name__ == '__main__':
     app.run()
+
+# useEffect(() => {
+#     async function fetchData(){
+#       const result = await axios.get(`${backend}/getuserinfo?user=${currentUser}`)
+#       console.log(result.data)
+#     }
+#   })
