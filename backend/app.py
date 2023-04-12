@@ -4,6 +4,7 @@ from sqlalchemy.orm import relationship
 import json
 #from flask_cors import CORS
 import requests
+import string
 import os
 import pprint
 
@@ -718,12 +719,6 @@ def get_remaining_nutrition(userID):
     calcium_sum =0 
     iron_sum = 0
     potassium_sum = 0
-    vitD_ul_sum = 0
-    vitC_ul_sum = 0
-    vitA_ul_sum =0
-    vitE_ul_sum = 0
-    calcium_ul_sum =0 
-    iron_ul_sum = 0
 
     # one json object to hold all the nutrients in all the recipes
     recipe_nutrition_info_json = {}
@@ -733,7 +728,26 @@ def get_remaining_nutrition(userID):
         recipe_nutrients_url = f"https://api.spoonacular.com/recipes/{recipe}/nutritionWidget.json?apiKey={api_key}"
         response = requests.get(recipe_nutrients_url)
         recipe_nutrition_info_json[recipe]=response.json()
-    
-    return recipe_nutrition_info_json
+        
+        energy_sum += int(recipe_nutrition_info_json[str(recipe)]["bad"][0]["amount"])
+        #return recipe_nutrition_info_json[str(recipe)]["good"][22]["amount"][:-2]
+        vitC_sum +=int(recipe_nutrition_info_json[str(recipe)]["good"][13]["amount"][:-2])
+        vitA_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][6]["amount"][:-2])
+        vitE_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][21]["amount"][:-2])
+        calcium_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][5]["amount"][:-2])
+        iron_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][17]["amount"][:-2])
+        potassium_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][14]["amount"][:-2])
+        vitD_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][22]["amount"][:-2])
 
-    # loop through recipe_nutrition_info to get all nutritions
+    # remaining nutrients
+    energy_remaining = energy - energy_sum
+
+    vitD_remaining = vitD - vitD_sum
+    vitC_remaining = vitC - vitC_sum
+    vitA_remaining = vitA - vitA_sum
+    vitE_remaining = vitE - vitE_sum
+    calcium_remaining = calcium - calcium_sum
+    iron_remaining = iron - iron_sum
+    potassium_remaining = potassium - potassium_sum
+
+    return str(vitD_remaining)
