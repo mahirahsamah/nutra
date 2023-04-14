@@ -2,19 +2,19 @@ from flask import Flask, render_template, request, url_for, redirect, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship 
 import json
-#from flask_cors import CORS
+from flask_cors import CORS
 import requests
 import os
 import pprint
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:11072000@localhost/capstone'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:passwd@localhost/capstone'
 db = SQLAlchemy(app)
-#CORS(app)
+CORS(app)
 
 # spoonacular api
 #spoonacular_api_key = os.environ["SPOONACULAR_API_KEY"]
-api_key = "b5a30a9a3c4f4d4b889eb051ad05ae9d"
+api_key = "13cc54269ca54d258cf7b07e4383154c"
 
 class User(db.Model):
 
