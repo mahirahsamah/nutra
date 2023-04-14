@@ -4,6 +4,7 @@ from sqlalchemy.orm import relationship
 import json
 from flask_cors import CORS
 import requests
+import string
 import os
 import pprint
 
@@ -163,10 +164,10 @@ class WeeklyRecipes(db.Model):
 def home():
     return "Test Page"
 
-@app.route('/post_recipes/<userID>', methods=['POST'])
-def post_recipes(userID):
-    recipeID = request.json['recipeID']
-    recipes = WeeklyRecipes(userID, recipeID)
+@app.route('/post_recipes/<userID>/recipe_string', methods=['POST'])
+def post_recipes(userID, recipe_string):
+    #recipeID = request.json['recipeID']
+    recipes = WeeklyRecipes(userID, recipe_string)
 
     db.session.add(recipes)
     db.session.commit()
@@ -620,8 +621,8 @@ def get_restrictions(userID):
     restrictions = (this_user.restrictions).split(',')
     return restrictions
 
-@app.route('/get_recipes/<userID>', methods=['GET'])
-def get_recipes(userID):
+@app.route('/get_recipe_list/<userID>', methods=['GET'])
+def get_recipe_list(userID):
     
     nutrients_response = requests.get(f'http://localhost:5000/get_nutrition/{userID}')
     nutrients_amounts = nutrients_response.json()
@@ -682,8 +683,10 @@ def get_recipes(userID):
     macros_response = requests.get(macros_query)
     return macros_response.json()
 
-@app.route('/get_remaining_nutrition/<userID>', methods=['GET'])
-def get_remaining_nutrition(userID):
+# NOT DONE 
+
+@app.route('/get_remaining_ingredients/<userID>', methods=['GET'])
+def get_remaining_ingredients(userID):
 
     # get recipes IDs from the weekly recipes table
     recipe_ids = WeeklyRecipes.query.filter_by(userID = userID).one()
@@ -718,12 +721,6 @@ def get_remaining_nutrition(userID):
     calcium_sum =0 
     iron_sum = 0
     potassium_sum = 0
-    vitD_ul_sum = 0
-    vitC_ul_sum = 0
-    vitA_ul_sum =0
-    vitE_ul_sum = 0
-    calcium_ul_sum =0 
-    iron_ul_sum = 0
 
     # one json object to hold all the nutrients in all the recipes
     recipe_nutrition_info_json = {}
@@ -733,7 +730,96 @@ def get_remaining_nutrition(userID):
         recipe_nutrients_url = f"https://api.spoonacular.com/recipes/{recipe}/nutritionWidget.json?apiKey={api_key}"
         response = requests.get(recipe_nutrients_url)
         recipe_nutrition_info_json[recipe]=response.json()
-    
-    return recipe_nutrition_info_json
+        
+        energy_sum += int(recipe_nutrition_info_json[str(recipe)]["bad"][0]["amount"])
 
-    # loop through recipe_nutrition_info to get all nutritions
+        for i in range(len(recipe_nutrition_info_json[str(recipe)]["good"])):
+        
+            if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Calcium":
+                calcium_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+            if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin C":
+                vitC_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+            if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin A":
+                vitA_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+            if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin E":
+                vitE_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+            if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin D":
+                vitD_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+            if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin D":
+                iron_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+            if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin D":
+                potassium_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+        
+    # remaining nutrients
+    energy_remaining = float(energy) - float(energy_sum)
+
+    vitD_remaining = float(vitD) - float(vitD_sum)
+    vitC_remaining = float(vitC) - float(vitC_sum)
+    vitA_remaining = float(vitA) - float(vitA_sum)
+    vitE_remaining = float(vitE) - float(vitE_sum)
+    calcium_remaining = float(calcium) - float(calcium_sum)
+    iron_remaining = float(iron) - float(iron_sum)
+    potassium_remaining = float(potassium) - float(potassium_sum)
+    
+    remaining_json = {"energy_remaining":energy_remaining, "vitD_remaining":vitD_remaining, "vitC_remaining":vitC_remaining, "vitA_remaining":vitA_remaining, "vitE_remaining":vitE_remaining, "calcium_remaining":calcium_remaining, "iron_remaining":iron_remaining, "potassium_remaining":potassium_remaining}
+    
+    for key, value in remaining_json.items():
+        if value <= 0:
+            remaining_json[key] = 0
+            
+            
+    # find snacks that fulfill these remaining nutrients
+    '''
+    find_grocery_products = "https://api.spoonacular.com/food/products/search" # packaged foods
+    find_ingredients = "https://api.spoonacular.com/food/ingredients/search" # whole foods
+
+    # divide nutrients by 2 to account for lunch and dinner meals
+    grocery_query_params = "apiKey=" + api_key + "&number=5"
+    grocery_query =  find_grocery_products + "?" + grocery_query_params 
+    
+    grocery_response = (requests.get(grocery_query)).json()
+    '''
+    return remaining_json
+
+# https://api.spoonacular.com/food/products/search?apiKey=13cc54269ca54d258cf7b07e4383154c&query=pizza&number=5
+
+@app.route('/get_grocery_list/<userID>', methods=['GET'])
+def get_grocery_list(userID):
+    
+    recipe_ids = WeeklyRecipes.query.filter_by(userID = userID).one()
+    recipes = (recipe_ids.recipeIDs.replace(" ", "")).split(',')
+    
+    recipe_ingredients_info_json = {}
+    
+    find_by_nutrients_url = "https://api.spoonacular.com/recipes/{id}/ingredientWidget.json?apiKey=13cc54269ca54d258cf7b07e4383154c"
+    
+    grocery_list_map = {}
+    
+    for recipe in recipes:
+        add = "https://api.spoonacular.com/recipes/"+str(recipe)+"/ingredientWidget.json?apiKey=13cc54269ca54d258cf7b07e4383154c"
+        add_response = requests.get(add)
+        recipe_ingredients_info_json[str(recipe)] = add_response.json()
+        
+        for i in range(len(recipe_ingredients_info_json[recipe]["ingredients"])):
+            #print(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])
+            if (str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"]) in grocery_list_map):
+                
+                # then add to already existing amount
+                temp = float((grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])]).split(" ")[0])
+                #return str(temp)
+                
+                #temp2 = temp.maketrans('','') 
+                
+                #nodigs=temp2.translate(temp2, string.digits)
+                #temp.translate(temp2, nodigs)
+                
+                #temp = float(temp)
+                
+                add = temp + float(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["value"])*7
+                
+                grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])] = add+ " " +str(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["unit"])
+                
+            else:
+                grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])] = str(float(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["value"])*7) + " " +str(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["unit"])
+        
+    return grocery_list_map # weekly
