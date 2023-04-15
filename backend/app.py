@@ -786,6 +786,9 @@ def get_recipe_list(userID):
 # NOT DONE 
 @app.route('/get_remaining_ingredients/<userID>', methods=['GET'])
 def get_remaining_ingredients(userID):
+    this_user = User.query.filter_by(userID = userID).one()
+    preferences = get_preferences(userID)
+    restriction = get_restrictions(userID)
 
     # get recipes IDs from the weekly recipes table
     recipe_ids = WeeklyRecipes.query.filter_by(userID = userID).one()
@@ -851,7 +854,6 @@ def get_remaining_ingredients(userID):
         
     # remaining nutrients
     energy_remaining = float(energy) - float(energy_sum)
-
     vitD_remaining = float(vitD) - float(vitD_sum)
     vitC_remaining = float(vitC) - float(vitC_sum)
     vitA_remaining = float(vitA) - float(vitA_sum)
@@ -876,7 +878,25 @@ def get_remaining_ingredients(userID):
     grocery_query =  find_grocery_products + "?" + grocery_query_params 
     
     grocery_response = (requests.get(grocery_query)).json()
+    
     '''
+    
+    
+    find_remaining_url = "https://api.spoonacular.com/recipes/complexSearch"
+
+    # divide nutrients by 2 to account for lunch and dinner meals
+    
+    # ingredient preferences are randomized, includes will be added less than 20% of the time due to how much it limits the results
+    if(random.random() <= 0.2):
+        macros_query_params = "apiKey=" + api_key + "&minCalories="+str(float(energy_remaining)/2-20)+"&maxCalories="+str(float(energy_remaining)/2+20)+diet_string+includes+excludes
+    else:
+        macros_query_params = "apiKey=" + api_key + "&minProtein="+str(float(protein)/2-20)+"&maxProtein="+str(float(protein)/2+20)+"&minFat="+str(float(fat)/2-20)+"&maxFat="+str(float(fat)/2+20)+"&minCarbs="+str(float(carbs)/2-20)+"&maxCarbs="+str(float(carbs)/2+20)+diet_string+excludes
+    
+    # having the micronutrients in the query params makes it more constricting. so i am just going to let the user choose from list of recipes and then fill the rest of the nutrients in with snacks
+
+    macros_query =  find_remaining_url + "?" + macros_query_params 
+    macros_response = (requests.get(macros_query)).json()
+    
     return remaining_json
 
 # https://api.spoonacular.com/food/products/search?apiKey=13cc54269ca54d258cf7b07e4383154c&query=pizza&number=5
@@ -886,6 +906,8 @@ def get_grocery_list(userID):
     
     recipe_ids = WeeklyRecipes.query.filter_by(userID = userID).one()
     recipes = (recipe_ids.recipeIDs.replace(" ", "")).split(',')
+    
+    num_recipes = len(recipes)
     
     recipe_ingredients_info_json = {}
     
@@ -904,11 +926,11 @@ def get_grocery_list(userID):
                 # then add to already existing amount
                 temp = float((grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])]).split(" ")[0])
                 
-                add = temp + float(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["value"])*7
+                add = temp + float(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["value"])*(7/num_recipes)
                 
                 grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])] = str(add)+ " " +str(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["unit"])
                 
             else:
-                grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])] = str(float(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["value"])*7) + " " +str(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["unit"])
+                grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])] = str(float(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["value"])*(7/num_recipes)) + " " +str(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["unit"])
         
     return grocery_list_map # weekly
