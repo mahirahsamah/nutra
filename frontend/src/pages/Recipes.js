@@ -55,7 +55,7 @@ function RecipesPage() {
 
      useEffect( () => {
           const get_list = async () => {
-               axios.get('http://127.0.0.1:5000/get_recipes/1')
+               axios.get('http://127.0.0.1:5000/get_recipe_list/1')
                .then(response => {
                     setData(response.data);
                     //console.log(response.data[0].calories);

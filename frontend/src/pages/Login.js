@@ -10,7 +10,7 @@ const LoginPage = () => {
      const navigate = useNavigate();
 
      const handleLogin = async () => {
-          const data = await axios.get(`http://127.0.0.1:5000/checklogin?user=${username}&pass=${password}`)
+          const data = await axios.get(`${backend}/check_login?user=${username}&pass=${password}`)
 
           if(data.data.user.length === 0){
                alert("No matching username and password combo.");
