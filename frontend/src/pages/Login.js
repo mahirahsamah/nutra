@@ -17,8 +17,7 @@ const LoginPage = () => {
                alert("No matching username and password combo.");
           } else {
                localStorage.setItem("curruser", username);
-               //localStorage.setItem("curruserID", data.user.userID);
-               console.log("==-> this: " + data.data.user.userID);
+               localStorage.setItem("curruserID", data.data.user[0].userID);
                navigate("/home");
           }
      };

@@ -20,9 +20,10 @@ const ImageGallery = ({ imageLinks, handleImageToggle }) => {
      //WeeklyRecipes
      const sendLinks = async () => {
           const idsString = selectedImages.join(',');
-          // const data = await axios.post(`http://127.0.0.1:5000/post_recipes/1?recipe_string=${idsString}`)
+          const curruserID = localStorage.getItem("curruserID");
+          //await axios.post(`http://127.0.0.1:5000/post_recipes/{curruserID}/{idsString}`)
           //navigate("/grocerylist page");
-          //console.log("==" + localStorage.getItem("curruserID"));
+          //await axios.get(`${backend}/checklogin?user=${username}&pass=${password}`)
           console.log(idsString);
      };
      

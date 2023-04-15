@@ -164,14 +164,28 @@ class WeeklyRecipes(db.Model):
 def home():
     return "Test Page"
 
-@app.route('/post_recipes/<userID>/recipe_string', methods=['POST'])
+@app.route('/post_recipes/<userID>/<recipe_string>', methods=['POST'])
 def post_recipes(userID, recipe_string):
     #recipeID = request.json['recipeID']
-    recipes = WeeklyRecipes(userID, recipe_string)
+    # data = request.get_json()  # Retrieve data from request body
+    # userID = data.get('userID')
+    # recipe_string = data.get('recipestring')
+    # recipes = WeeklyRecipes(userID, recipe_string)
 
-    db.session.add(recipes)
-    db.session.commit()
-    return "recipe added"
+    # db.session.add(recipes)
+    # db.session.commit()
+    return "recipe added " + recipe_string + " " + userID
+
+# @app.route('/checklogin', methods=['GET'])
+# def check_login():
+#     user = request.args.get('user')
+#     pss = request.args.get('pass')
+#     result = db.session.query(User).filter_by(username=user, password=pss)
+#     users = []
+#     for user in result:
+#         users.append(format_user(user))
+#     # formatted_user = format_user(result)
+#     return {'user': users}
 
 def format_user(user):
     return{
