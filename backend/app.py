@@ -9,7 +9,7 @@ import os
 import pprint
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:passwd@localhost/capstone'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:11072000@localhost/capstone'
 db = SQLAlchemy(app)
 CORS(app)
 
@@ -684,7 +684,6 @@ def get_recipe_list(userID):
     return macros_response.json()
 
 # NOT DONE 
-
 @app.route('/get_remaining_ingredients/<userID>', methods=['GET'])
 def get_remaining_ingredients(userID):
 
@@ -801,23 +800,14 @@ def get_grocery_list(userID):
         recipe_ingredients_info_json[str(recipe)] = add_response.json()
         
         for i in range(len(recipe_ingredients_info_json[recipe]["ingredients"])):
-            #print(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])
             if (str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"]) in grocery_list_map):
                 
                 # then add to already existing amount
                 temp = float((grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])]).split(" ")[0])
-                #return str(temp)
-                
-                #temp2 = temp.maketrans('','') 
-                
-                #nodigs=temp2.translate(temp2, string.digits)
-                #temp.translate(temp2, nodigs)
-                
-                #temp = float(temp)
                 
                 add = temp + float(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["value"])*7
                 
-                grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])] = add+ " " +str(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["unit"])
+                grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])] = str(add)+ " " +str(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["unit"])
                 
             else:
                 grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])] = str(float(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["value"])*7) + " " +str(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["unit"])
