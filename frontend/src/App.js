@@ -7,6 +7,7 @@ import Home from './pages/Landing';
 import Profile from './pages/Profile';
 import Ingredients from './pages/Ingredient';
 import RecipesPage from './pages/Recipes';
+import Test from './pages/Test';
 
 function App() {
   return (
@@ -17,7 +18,10 @@ function App() {
       <Route path='/home' element = {<Home/>} />
       <Route path='/profile' element = {<Profile/>} />
       <Route path='/recipes-page' element = {<RecipesPage/>} />
-      <Route path ='/ingredient' element = {<Ingredients/>}/>
+      <Route path ='/ingredient/' element = {<Ingredients/>}/>
+      <Route path ='/ingredient/:term' element = {<Ingredients/>}/>
+      <Route path ='/test' element = {<Test/>}/>
+
     </Routes>
 
 
