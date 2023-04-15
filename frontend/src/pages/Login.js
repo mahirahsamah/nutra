@@ -12,11 +12,13 @@ const LoginPage = () => {
 
      const handleLogin = async () => {
           const data = await axios.get(`${backend}/checklogin?user=${username}&pass=${password}`)
-
+     
           if(data.data.user.length === 0){
                alert("No matching username and password combo.");
           } else {
                localStorage.setItem("curruser", username);
+               //localStorage.setItem("curruserID", data.user.userID);
+               console.log("==-> this: " + data.data.user.userID);
                navigate("/home");
           }
      };
