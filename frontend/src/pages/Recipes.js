@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import './Recipes.css';
+import { Header } from './../components/'
+import './Style.css';
 
 
 const ImageGallery = ({ imageLinks, handleImageToggle }) => {
@@ -17,7 +20,10 @@ const ImageGallery = ({ imageLinks, handleImageToggle }) => {
      //WeeklyRecipes
      const sendLinks = async () => {
           const idsString = selectedImages.join(',');
-          // const data = await axios.post(`http://127.0.0.1:5000/post_recipes/1?recipe_string=${idsString}`)
+          const curruserID = localStorage.getItem("curruserID");
+          //await axios.post(`http://127.0.0.1:5000/post_recipes/{curruserID}/{idsString}`)
+          //navigate("/grocerylist page");
+          //await axios.get(`${backend}/checklogin?user=${username}&pass=${password}`)
           console.log(idsString);
      };
      
@@ -55,7 +61,7 @@ function RecipesPage() {
 
      useEffect( () => {
           const get_list = async () => {
-               axios.get('http://127.0.0.1:5000/get_recipes/1')
+               axios.get('http://127.0.0.1:5000/get_recipe_list/1')
                .then(response => {
                     setData(response.data);
                     //console.log(response.data[0].calories);
@@ -87,13 +93,14 @@ function RecipesPage() {
      
 
      return (
-          <div> 
-               <h1>Recipes</h1>
+         
+          <div style={{paddingBottom:"10vh"}} className="App" >
+               <Header />
+               
                <ImageGallery
                imageLinks={link_arr}
                handleImageToggle={handleImageToggle}
                />
-               
 
           </div>
      );
