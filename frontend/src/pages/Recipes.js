@@ -8,7 +8,7 @@ import './Style.css';
 
 const ImageGallery = ({ imageLinks, handleImageToggle }) => {
      const [selectedImages, setSelectedImages] = useState([]);
-   
+     const navigate = useNavigate();
      const handleImageClick = (link) => {
           if (selectedImages.includes(link)) {
                setSelectedImages(selectedImages.filter((selectedLink) => selectedLink !== link));
@@ -21,9 +21,8 @@ const ImageGallery = ({ imageLinks, handleImageToggle }) => {
      const sendLinks = async () => {
           const idsString = selectedImages.join(',');
           const curruserID = localStorage.getItem("curruserID");
-          //await axios.post(`http://127.0.0.1:5000/post_recipes/{curruserID}/{idsString}`)
-          //navigate("/grocerylist page");
-          //await axios.get(`${backend}/checklogin?user=${username}&pass=${password}`)
+          await axios.post(`http://127.0.0.1:5000/post_recipes?userID=${curruserID}&recipe_string=${idsString}`)
+          navigate("/home");
           console.log(idsString);
      };
      
