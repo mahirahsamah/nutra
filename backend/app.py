@@ -10,7 +10,7 @@ import random
 import pprint
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:11072000@localhost/capstone'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:admin@localhost/capstone'
 db = SQLAlchemy(app)
 CORS(app)
 
@@ -27,7 +27,7 @@ class User(db.Model):
 
     # user auth
     userID = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String)
+    username = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
 
@@ -40,9 +40,16 @@ class User(db.Model):
     activity_level=db.Column(db.String)
 
     # user dietary
-    vegetarian = db.Column(db.Boolean)
+    vegitarian = db.Column(db.Boolean)
     vegan = db.Column(db.Boolean)
+    halal = db.Column(db.Boolean)
+    kosher = db.Column(db.Boolean)
     gluten_free = db.Column(db.Boolean)
+    dairy_free = db.Column(db.Boolean)
+    lactose_int = db.Column(db.Boolean)
+    low_sodium = db.Column(db.Boolean)
+    low_carb = db.Column(db.Boolean)
+    high_protein = db.Column(db.Boolean)
     keto = db.Column(db.Boolean)
     paleo = db.Column(db.Boolean)
     pescetarian = db.Column(db.Boolean)
@@ -59,24 +66,24 @@ class User(db.Model):
     def __repr__(self):
         return f"User: {self.username}"
     
-    def __init__(self, username, email, password, gender, weight_lbs, age, height_feet, height_inches, activity_level, vegetarian, vegan, gluten_free, keto, paleo, pescetarian, preferences, restricitons):
+    def __init__(self, username, email, password):
         self.username = username
         self.email = email
         self.password = password
-        self.gender = gender
-        self.weight_lbs = weight_lbs
-        self.age = age
-        self.height_feet = height_feet
-        self.height_inches = height_inches
-        self.activity_level=activity_level
-        self.vegetarian = vegetarian
-        self.vegan = vegan
-        self.gluten_free = gluten_free
-        self.keto = keto
-        self.paleo = paleo
-        self.pescetarian = pescetarian
-        self.preferences = preferences
-        self.restrictions = restricitons
+        # self.gender = gender
+        # self.weight_lbs = weight_lbs
+        # self.age = age
+        # self.height_feet = height_feet
+        # self.height_inches = height_inches
+        # self.activity_level=activity_level
+        # self.vegetarian = vegetarian
+        # self.vegan = vegan
+        # self.gluten_free = gluten_free
+        # self.keto = keto
+        # self.paleo = paleo
+        # self.pescetarian = pescetarian
+        # self.preferences = preferences
+        # self.restrictions = restricitons
   
 
 class UserNutrition(db.Model):
@@ -222,7 +229,7 @@ def post_whole_user():
     height_feet = request.json['height_feet']
     height_inches = request.json['height_inches']
     activity_level=request.json['activity_level']
-    vegetarian = request.json['vegetarian']
+    vegitarian = request.json['vegitarian']
     vegan = request.json['vegan']
     gluten_free = request.json['gluten_free']
     keto = request.json['keto']
@@ -232,7 +239,7 @@ def post_whole_user():
     restrictions = request.json['restrictions']
 
     thisUser = User(username, email, password, gender, weight_lbs, age, height_feet,
-                    height_inches, activity_level, vegetarian, vegan, gluten_free, keto, paleo, pescetarian, preferences, restrictions)
+                    height_inches, activity_level, vegitarian, vegan, gluten_free, keto, paleo, pescetarian, preferences, restrictions)
     
     db.session.add(thisUser)
     db.session.commit()
@@ -268,7 +275,7 @@ def post_whole_user():
 def check_login():
     user = request.args.get('user')
     pss = request.args.get('pass')
-    result = db.session.query(User).filter_by(username=user, password=pss)
+    result = User.query.filter_by(username=user, password=pss)
     users = []
     for user in result:
         users.append(format_user(user))
@@ -281,7 +288,7 @@ def create_user():
     pss = request.args.get('pass')
     eml = request.args.get('email')
 
-    result = db.session.query(User).filter_by(username=user)
+    result = User.query.filter_by(username=user)
     users = []
     for user in result:
         users.append(format_user(user))
@@ -752,8 +759,8 @@ def get_recipe_list(userID):
         diet_types+=",vegan"
     if this_user.keto:
         diet_types+=",ketogenic"
-    if this_user.vegetarian:
-        diet_types+=",vegetarian"
+    if this_user.vegitarian:
+        diet_types+=",vegitarian"
     if this_user.paleo:
         diet_types+=",paleo"
     if this_user.pescetarian:
@@ -840,8 +847,8 @@ def get_remaining_ingredients(userID):
         diet_types+=",vegan"
     if this_user.keto:
         diet_types+=",ketogenic"
-    if this_user.vegetarian:
-        diet_types+=",vegetarian"
+    if this_user.vegitarian:
+        diet_types+=",vegitarian"
     if this_user.paleo:
         diet_types+=",paleo"
     if this_user.pescetarian:
