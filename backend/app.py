@@ -1,21 +1,16 @@
 from flask import Flask, render_template, request, url_for, redirect, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship 
-import json
 from flask_cors import CORS
 import requests
-import string
-import os
 import random
-import pprint
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:11072000@localhost/capstone'
 db = SQLAlchemy(app)
 CORS(app)
 
-# spoonacular api
-#spoonacular_api_key = os.environ["SPOONACULAR_API_KEY"]
+# spoonacular api key
 api_key = "13cc54269ca54d258cf7b07e4383154c"
 
 class User(db.Model):
@@ -178,8 +173,24 @@ def post_recipes(userID):
 
 def format_user(user):
     return{
-        "userID":user.userID,
-        "username" :user.username
+        "userID": user.userID,
+        "username": user.username,
+        "email": user.email,
+        "password": user.password,
+        "gender": user.gender,
+        "weight_lbs": user.weight_lbs,
+        "age": user.age,
+        "height_feet": user.height_feet,
+        "height_inches": user.height_inches,
+        "activity_level": user.activity_level,
+        "vegetarian": user.vegetarian,
+        "vegan": user.vegan,
+        "gluten_free": user.gluten_free,
+        "keto": user.keto,
+        "paleo": user.paleo,
+        "pescetarian":user.pescetarian,
+        "preferences": user.preferences,
+        "restrictions": user.restrictions
     }
 
 # POST user information
@@ -238,7 +249,7 @@ def post_whole_user():
 
 ### THACH'S STUFF
 # Checks for user and password match, returns user if exist
-@app.route('/check_login', methods=['GET'])
+@app.route('/checklogin', methods=['GET'])
 def check_login():
     user = request.args.get('user')
     pss = request.args.get('pass')
@@ -271,6 +282,17 @@ def create_user():
     else:
         return {'user': users}
     
+# Returns requsted user from username
+@app.route('/getuserinfo', methods=['GET'])
+def get_user_info():
+    user = request.args.get('user')
+    result = db.session.query(User).filter_by(username=user)
+    users = []
+    for user in result:
+        users.append(format_user(user))
+    # formatted_user = format_user(result)
+    return {'user': users}
+    
 # Updates user
 @app.route('/updateuser', methods=['PUT'])
 def update_user():
@@ -283,16 +305,10 @@ def update_user():
     activity_level = request.args.get('activity_level')
     vegetarian = request.args.get('vegetarian')
     vegan = request.args.get('vegan')
-    halal = request.args.get('halal')
-    kosher = request.args.get('kosher')
     gluten_free = request.args.get('gluten_free')
-    dairy_free = request.args.get('dairy_free')
-    lactose_int = request.args.get('lactose_int')
-    low_sodium = request.args.get('low_sodium')
-    low_carb = request.args.get('low_carb')
-    high_protein = request.args.get('high_protein')
     keto = request.args.get('keto')
     paleo = request.args.get('paleo')
+    pescetarian = request.args.get('pescetarian')
     preferences = request.args.get('preferences')
     restrictions = request.args.get('restrictions')
 
@@ -308,16 +324,10 @@ def update_user():
                     activity_level = activity_level, 
                     vegetarian = eval(vegetarian), 
                     vegan = eval(vegan),
-                    halal = eval(halal), 
-                    kosher = eval(kosher), 
                     gluten_free = eval(gluten_free), 
-                    dairy_free = eval(dairy_free), 
-                    lactose_int = eval(lactose_int), 
-                    low_sodium = eval(low_sodium), 
-                    low_carb = eval(low_carb), 
-                    high_protein = eval(high_protein), 
                     keto = eval(keto), 
                     paleo = eval(paleo), 
+                    pescetarian = eval(pescetarian),
                     preferences = preferences, 
                     restrictions = restrictions
                     ))
@@ -866,24 +876,24 @@ def get_remaining_ingredients(userID,weekID):
         response = requests.get(recipe_nutrients_url)
         recipe_nutrition_info_json[recipe]=response.json()
         
-        energy_sum += float(recipe_nutrition_info_json[str(recipe)]["bad"][0]["amount"])
+        energy_sum += int(recipe_nutrition_info_json[str(recipe)]["bad"][0]["amount"])
 
         for i in range(len(recipe_nutrition_info_json[str(recipe)]["good"])):
         
             if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Calcium":
-                calcium_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+                calcium_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
             if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin C":
-                vitC_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+                vitC_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
             if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin A":
-                vitA_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+                vitA_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
             if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin E":
-                vitE_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+                vitE_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
             if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin D":
-                vitD_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+                vitD_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
             if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin D":
-                iron_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+                iron_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
             if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin D":
-                potassium_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+                potassium_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
         
     # remaining nutrients
     energy_remaining = float(energy) - float(energy_sum)
@@ -914,6 +924,8 @@ def get_remaining_ingredients(userID,weekID):
     nutrients_query = ""
     for i in range(len(list(largest_values.keys()))):
 
+        if "energy" in remaining_nutrients[i]:
+            nutrients_query += "&minCalories="+str((float(list(largest_values.values())[i]))/2-25)+"&maxCalories="+str((float(list(largest_values.values())[i]))/2+50)
         if "calcium" in remaining_nutrients[i]:
             nutrients_query += "&minCalcium="+str((float(list(largest_values.values())[i]))/2-25)+"&maxCalcium="+str((float(list(largest_values.values())[i]))/2+50)
         if "iron" in remaining_nutrients[i]:
@@ -989,9 +1001,10 @@ def get_grocery_list(userID):
                 
                 add = temp + float(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["value"])*(7/num_recipes)
                 
-                grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])] = str(add)+ " " +str(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["unit"])
+                grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])] = str(round(add, 2))+ " " +str(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["unit"])
                 
             else:
-                grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])] = str(float(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["value"])*(7/num_recipes)) + " " +str(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["unit"])
+                add = float(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["value"])*(7/num_recipes)
+                grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])] = str(round(add ,2) ) + " " +str(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["unit"])
         
     return grocery_list_map # weekly
