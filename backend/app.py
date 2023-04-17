@@ -6,10 +6,11 @@ from flask_cors import CORS
 import requests
 import string
 import os
+import random
 import pprint
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:passwd@localhost/capstone'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:11072000@localhost/capstone'
 db = SQLAlchemy(app)
 CORS(app)
 
@@ -39,18 +40,12 @@ class User(db.Model):
     activity_level=db.Column(db.String)
 
     # user dietary
-    vegitarian = db.Column(db.Boolean)
+    vegetarian = db.Column(db.Boolean)
     vegan = db.Column(db.Boolean)
-    halal = db.Column(db.Boolean)
-    kosher = db.Column(db.Boolean)
     gluten_free = db.Column(db.Boolean)
-    dairy_free = db.Column(db.Boolean)
-    lactose_int = db.Column(db.Boolean)
-    low_sodium = db.Column(db.Boolean)
-    low_carb = db.Column(db.Boolean)
-    high_protein = db.Column(db.Boolean)
     keto = db.Column(db.Boolean)
     paleo = db.Column(db.Boolean)
+    pescetarian = db.Column(db.Boolean)
 
     # user preferences
     preferences = db.Column(db.String)
@@ -64,7 +59,7 @@ class User(db.Model):
     def __repr__(self):
         return f"User: {self.username}"
     
-    def __init__(self, username, email, password, gender, weight_lbs, age, height_feet, height_inches, activity_level, vegitarian, vegan, halal, kosher, gluten_free, dairy_free, lactose_int, low_sodium, low_carb, high_protein, keto, paleo, preferences, restricitons):
+    def __init__(self, username, email, password, gender, weight_lbs, age, height_feet, height_inches, activity_level, vegetarian, vegan, gluten_free, keto, paleo, pescetarian, preferences, restricitons):
         self.username = username
         self.email = email
         self.password = password
@@ -74,18 +69,12 @@ class User(db.Model):
         self.height_feet = height_feet
         self.height_inches = height_inches
         self.activity_level=activity_level
-        self.vegitarian = vegitarian
+        self.vegetarian = vegetarian
         self.vegan = vegan
-        self.halal = halal
-        self.kosher = kosher
         self.gluten_free = gluten_free
-        self.dairy_free = dairy_free
-        self.lactose_int = lactose_int
-        self.low_sodium = low_sodium
-        self.low_carb = low_carb
-        self.high_protein = high_protein
         self.keto = keto
         self.paleo = paleo
+        self.pescetarian = pescetarian
         self.preferences = preferences
         self.restrictions = restricitons
   
@@ -160,6 +149,23 @@ class WeeklyRecipes(db.Model):
         self.userID = userID
         self.recipeIDs = recipeIDs
 
+
+class Latency(db.Model):
+    __tablename__ = 'latency_table'
+    __table_args__ = {'schema': 'public'}
+
+    function_id = db.Column(db.Integer, primary_key=True)
+    function_name = db.Column(db.String)
+    time_taken_s = db.Column(db.Float)
+
+    def __repr__(self):
+        return f"Function ID: {self.function_id}"
+    
+    def __init__(self, function_id, function_name, time_taken_s):
+        self.function_id = function_id
+        self.function_name = function_name
+        self.time_taken_s = time_taken_s
+
 @app.route('/groceries')
 def home():
     return "Test Page"
@@ -174,11 +180,32 @@ def post_recipes():
     db.session.commit()
     return "recipe " + recipe_string + " added to " + userID
 
-
 def format_user(user):
     return{
-        "userID":user.userID,
-        "username" :user.username
+        "userID": user.userID,
+        "username": user.username,
+        "email": user.email,
+        "password": user.password,
+        "gender": user.gender,
+        "weight_lbs": user.weight_lbs,
+        "age": user.age,
+        "height_feet": user.height_feet,
+        "height_inches": user.height_inches,
+        "activity_level": user.activity_level,
+        "vegitarian": user.vegitarian,
+        "vegan": user.vegan,
+        "halal": user.halal,
+        "kosher": user.kosher,
+        "gluten_free": user.gluten_free,
+        "dairy_free": user.dairy_free,
+        "lactose_int": user.lactose_int,
+        "low_sodium": user.low_sodium,
+        "low_carb": user.low_carb,
+        "high_protein": user.high_protein,
+        "keto": user.keto,
+        "paleo": user.paleo,
+        "preferences": user.preferences,
+        "restrictions": user.restrictions
     }
 
 # POST user information
@@ -195,25 +222,17 @@ def post_whole_user():
     height_feet = request.json['height_feet']
     height_inches = request.json['height_inches']
     activity_level=request.json['activity_level']
-    vegitarian = request.json['vegitarian']
+    vegetarian = request.json['vegetarian']
     vegan = request.json['vegan']
-    halal = request.json['halal']
-    kosher = request.json['kosher']
     gluten_free = request.json['gluten_free']
-    dairy_free = request.json['dairy_free']
-    lactose_int = request.json['lactose_int']
-    low_sodium = request.json['low_sodium']
-    low_carb = request.json['low_carb']
-    high_protein = request.json['high_protein']
     keto = request.json['keto']
     paleo = request.json['paleo']
+    pescetarian = request.json['pescetarian']
     preferences = request.json['preferences']
     restrictions = request.json['restrictions']
 
     thisUser = User(username, email, password, gender, weight_lbs, age, height_feet,
-                    height_inches, activity_level, vegitarian, vegan, halal, kosher, gluten_free, 
-                    dairy_free, lactose_int, low_sodium, low_carb, high_protein,
-                    keto, paleo, preferences, restrictions)
+                    height_inches, activity_level, vegetarian, vegan, gluten_free, keto, paleo, pescetarian, preferences, restrictions)
     
     db.session.add(thisUser)
     db.session.commit()
@@ -230,22 +249,110 @@ def post_whole_user():
     "height_feet" :5,
     "height_inches" :5,
     "activity_level":"low",
-    "vegitarian" :false,
-    "vegan" :false,
-    "halal" :true,
-    "kosher" :false,
-    "gluten_free" :false,
-    "dairy_free" :false,
-    "lactose_int" :false,
-    "low_sodium" :false,
-    "low_carb" :false,
-    "high_protein" :false,
-    "keto" :false,
-    "paleo" :false,
+    "vegetarian" : false,
+    "vegan" : false,
+    "gluten_free" : true,
+    "keto" : false,
+    "paleo" : false,
+    "pescetarian": true,
     "preferences" :"chicken, brocolli",
     "restrictions" :"none"
 }
 '''
+
+
+
+### THACH'S STUFF
+# Checks for user and password match, returns user if exist
+@app.route('/checklogin', methods=['GET'])
+def check_login():
+    user = request.args.get('user')
+    pss = request.args.get('pass')
+    result = db.session.query(User).filter_by(username=user, password=pss)
+    users = []
+    for user in result:
+        users.append(format_user(user))
+    # formatted_user = format_user(result)
+    return {'user': users}
+# Creates account if username is unique
+@app.route('/createuser', methods=['POST'])
+def create_user():
+    user = request.args.get('user')
+    pss = request.args.get('pass')
+    eml = request.args.get('email')
+
+    result = db.session.query(User).filter_by(username=user)
+    users = []
+    for user in result:
+        users.append(format_user(user))
+
+    if(len(users) == 0):
+        newUser = User(username= user,
+                       password= pss,
+                       email= eml)
+        db.session.add(newUser)
+        db.session.commit()
+        return {'user': users}
+    else:
+        return {'user': users}
+
+    
+# Updates user
+@app.route('/updateuser', methods=['PUT'])
+def update_user():
+    user = request.args.get('user')
+    gender = request.args.get('gender')
+    weight_lbs = request.args.get('weight_lbs')
+    age = request.args.get('age')
+    height_feet = request.args.get('height_feet')
+    height_inches = request.args.get('height_inches')
+    activity_level = request.args.get('activity_level')
+    vegitarian = request.args.get('vegitarian')
+    vegan = request.args.get('vegan')
+    halal = request.args.get('halal')
+    kosher = request.args.get('kosher')
+    gluten_free = request.args.get('gluten_free')
+    dairy_free = request.args.get('dairy_free')
+    lactose_int = request.args.get('lactose_int')
+    low_sodium = request.args.get('low_sodium')
+    low_carb = request.args.get('low_carb')
+    high_protein = request.args.get('high_protein')
+    keto = request.args.get('keto')
+    paleo = request.args.get('paleo')
+    preferences = request.args.get('preferences')
+    restrictions = request.args.get('restrictions')
+
+       
+
+    user = User.query.filter_by(username=user)
+    user.update(dict(
+                    gender = gender, 
+                    weight_lbs = weight_lbs,
+                    age = age,
+                    height_feet = height_feet,
+                    height_inches = height_inches, 
+                    activity_level = activity_level, 
+                    vegitarian = eval(vegitarian), 
+                    vegan = eval(vegan),
+                    halal = eval(halal), 
+                    kosher = eval(kosher), 
+                    gluten_free = eval(gluten_free), 
+                    dairy_free = eval(dairy_free), 
+                    lactose_int = eval(lactose_int), 
+                    low_sodium = eval(low_sodium), 
+                    low_carb = eval(low_carb), 
+                    high_protein = eval(high_protein), 
+                    keto = eval(keto), 
+                    paleo = eval(paleo), 
+                    preferences = preferences, 
+                    restrictions = restrictions
+                    ))
+    db.session.commit()
+    return {'user': format_user(user.one())}
+
+### END THACH'S STUFF
+
+
 
 
 # get all users
@@ -626,12 +733,38 @@ def get_restrictions(userID):
 @app.route('/get_recipe_list/<userID>', methods=['GET'])
 def get_recipe_list(userID):
     
+    # get restrictions and preferences
+    this_user = User.query.filter_by(userID = userID).one()
+    preferences = (this_user.preferences).split(',')
+    restrictions = (this_user.restrictions).split(',')
+    
+    includes = "&includeIngredients="+this_user.preferences.replace(" ", "")
+    excludes = "&excludeIngredients="+this_user.restrictions.replace(" ", "")
+    
+    
+    # make an array of all user diet info
+    # in this format: [vegetarian, vegan, halal, kosher, gluten_free, dairy_free, lactose_int, low_sodium, low_carb, high_protein, keto, paleo]
+    diet_string ="&diet="
+    diet_types=""
+    if this_user.gluten_free:
+        diet_types+=",gluten free"
+    if this_user.vegan:
+        diet_types+=",vegan"
+    if this_user.keto:
+        diet_types+=",ketogenic"
+    if this_user.vegetarian:
+        diet_types+=",vegetarian"
+    if this_user.paleo:
+        diet_types+=",paleo"
+    if this_user.pescetarian:
+        diet_types+=",pescetarian"
+        
+    diet_string+=diet_types[1:]
+    
+   #user_diet = [this_user.vegetarian, this_user.vegan, this_user.halal, this_user.kosher, this_user.gluten_free, this_user.dairy_free, this_user.lactose_int, this_user.low_sodium, this_user.low_carb, this_user.high_protein, this_user.keto, this_user.paleo]
+    
     nutrients_response = requests.get(f'http://localhost:5000/get_nutrition/{userID}')
     nutrients_amounts = nutrients_response.json()
-    
-    #return nutrients_amounts
-    #return nutrients_amounts
-    #data = json.loads(nutrients_amounts)
 
     # first find recipes by nutrients
     # then remove recipes with restrictions
@@ -673,21 +806,48 @@ def get_recipe_list(userID):
     preferences = get_preferences(userID)
     restriction = get_restrictions(userID)
     
-    find_by_nutrients_url = "https://api.spoonacular.com/recipes/findByNutrients"
+    find_by_nutrients_url = "https://api.spoonacular.com/recipes/complexSearch"
 
     # divide nutrients by 2 to account for lunch and dinner meals
-    macros_query_params = "apiKey=" + api_key + "&minProtein="+str(float(protein)/2-20)+"&maxProtein="+str(float(protein)/2+20)+"&minFat="+str(float(fat)/2-20)+"&maxFat="+str(float(fat)/2+20)+"&minCarbs="+str(float(carbs)/2-20)+"&maxCarbs="+str(float(carbs)/2+20)#+"&minVitaminD="+str(float(vitD)/2-2)+"&maxVitaminD="+str((float(vitD)+float(vitD_ul))/4)#+"&minVitaminC="+str(float(vitC)-20)+"&maxVitaminC="+str((float(vitC)+float(vitC_ul))/2)+"&minVitaminA="+str(float(vitA)-20)+"&maxVitaminA="+str((float(vitA)+float(vitA_ul))/2)+"&minVitaminE="+str(float(vitE)-20)+"&maxVitaminE="+str((float(vitE)+float(vitE_ul))/2)+"&minCalcium="+str(float(calcium)-20)+"&maxCalcium="+str((float(calcium)+float(calcium_ul))/2)+"&minIron="+str(float(iron)-20)+"&maxIron="+str((float(iron)+float(iron_ul))/2)+"&minPotassium="+str(float(potassium)-20)+"&maxPotassium="+str(float(potassium)+20)+"&number=10"
+    
+    # ingredient preferences are randomized, includes will be added less than 20% of the time due to how much it limits the results
+    if(random.random() <= 0.2):
+        macros_query_params = "apiKey=" + api_key + "&minProtein="+str(float(protein)/2-20)+"&maxProtein="+str(float(protein)/2+20)+"&minFat="+str(float(fat)/2-20)+"&maxFat="+str(float(fat)/2+20)+"&minCarbs="+str(float(carbs)/2-20)+"&maxCarbs="+str(float(carbs)/2+20)+diet_string+includes+excludes+"&type=main course"
+    else:
+        macros_query_params = "apiKey=" + api_key + "&minProtein="+str(float(protein)/2-20)+"&maxProtein="+str(float(protein)/2+20)+"&minFat="+str(float(fat)/2-20)+"&maxFat="+str(float(fat)/2+20)+"&minCarbs="+str(float(carbs)/2-20)+"&maxCarbs="+str(float(carbs)/2+20)+diet_string+excludes+"&type=main course"
     
     # having the micronutrients in the query params makes it more constricting. so i am just going to let the user choose from list of recipes and then fill the rest of the nutrients in with snacks
 
     macros_query =  find_by_nutrients_url + "?" + macros_query_params 
-    
+    print(macros_query)
     macros_response = requests.get(macros_query)
     return macros_response.json()
 
-# NOT DONE 
-@app.route('/get_remaining_ingredients/<userID>', methods=['GET'])
+@app.route('/get_remaining_ingredients/<userID>', methods=['GET','POST'])
 def get_remaining_ingredients(userID):
+    this_user = User.query.filter_by(userID = userID).one()
+    preferences = (this_user.preferences).split(',')
+    restrictions = (this_user.restrictions).split(',')
+    
+    includes = "&includeIngredients="+this_user.preferences.replace(" ", "")
+    excludes = "&excludeIngredients="+this_user.restrictions.replace(" ", "")
+
+    diet_string ="&diet="
+    diet_types=""
+    if this_user.gluten_free:
+        diet_types+=",gluten free"
+    if this_user.vegan:
+        diet_types+=",vegan"
+    if this_user.keto:
+        diet_types+=",ketogenic"
+    if this_user.vegetarian:
+        diet_types+=",vegetarian"
+    if this_user.paleo:
+        diet_types+=",paleo"
+    if this_user.pescetarian:
+        diet_types+=",pescetarian"
+        
+    diet_string+=diet_types[1:]
 
     # get recipes IDs from the weekly recipes table
     recipe_ids = WeeklyRecipes.query.filter_by(userID = userID).one()
@@ -706,12 +866,12 @@ def get_remaining_ingredients(userID):
     potassium = str(micronutrients.potassium)
 
     # ULs
-    vitD_ul = str(micronutrients.vitD_ul)
-    vitC_ul = str(micronutrients.vitC_ul)
-    vitA_ul = str(micronutrients.vitA_ul)
-    vitE_ul = str(micronutrients.vitE_ul)
-    calcium_ul = str(micronutrients.calcium_ul)
-    iron_ul = str(micronutrients.iron_ul)
+    vitD_ul = str(micronutrients.vitD_ul-10)
+    vitC_ul = str(micronutrients.vitC_ul-200)
+    vitA_ul = str(micronutrients.vitA_ul-300)
+    vitE_ul = str(micronutrients.vitE_ul-100)
+    calcium_ul = str(micronutrients.calcium_ul - 200)
+    iron_ul = str(micronutrients.iron_ul - 5)
 
     # total nutrition (sum) from recipes
     energy_sum = 0
@@ -753,7 +913,6 @@ def get_remaining_ingredients(userID):
         
     # remaining nutrients
     energy_remaining = float(energy) - float(energy_sum)
-
     vitD_remaining = float(vitD) - float(vitD_sum)
     vitC_remaining = float(vitC) - float(vitC_sum)
     vitA_remaining = float(vitA) - float(vitA_sum)
@@ -767,27 +926,72 @@ def get_remaining_ingredients(userID):
     for key, value in remaining_json.items():
         if value <= 0:
             remaining_json[key] = 0
-            
-            
-    # find snacks that fulfill these remaining nutrients
-    '''
-    find_grocery_products = "https://api.spoonacular.com/food/products/search" # packaged foods
-    find_ingredients = "https://api.spoonacular.com/food/ingredients/search" # whole foods
-    # divide nutrients by 2 to account for lunch and dinner meals
-    grocery_query_params = "apiKey=" + api_key + "&number=5"
-    grocery_query =  find_grocery_products + "?" + grocery_query_params 
-    
-    grocery_response = (requests.get(grocery_query)).json()
-    '''
-    return remaining_json
+    #return remaining_json
+    # find the largest three nutrients they are missing
 
-# https://api.spoonacular.com/food/products/search?apiKey=13cc54269ca54d258cf7b07e4383154c&query=pizza&number=5
+    sorted_values = sorted(remaining_json.values(), reverse=True)
+    largest_values = {}
+    for key, value in remaining_json.items():
+        if value in sorted_values[:2]:
+            largest_values[key] = value
+
+    remaining_nutrients = list(largest_values.keys()) # nutrients to add in url query
+
+    nutrients_query = ""
+    for i in range(len(list(largest_values.keys()))):
+
+        if "calcium" in remaining_nutrients[i]:
+            nutrients_query += "&minCalcium="+str((float(list(largest_values.values())[i]))/2-25)+"&maxCalcium="+str((float(list(largest_values.values())[i]))/2+50)
+        if "iron" in remaining_nutrients[i]:
+            nutrients_query += "&minIron="+str((float(list(largest_values.values())[i]))/2-1)+"&maxIron="+str((float(list(largest_values.values())[i]))/2+3)
+        if "potassium" in remaining_nutrients[i]:
+            nutrients_query += "&minPotassium="+str((float(list(largest_values.values())[i]))/2-250)+"&maxPotassium="+str((float(list(largest_values.values())[i]))/2+500)
+        if "vitD" in remaining_nutrients[i]:
+            nutrients_query += "&minVitaminD="+str((float(list(largest_values.values())[i]))/2-5)+"&maxVitaminD="+str((float(list(largest_values.values())[i]))/2+10)
+        if "vitA" in remaining_nutrients[i]:
+            nutrients_query += "&minVitaminA="+str((float(list(largest_values.values())[i]))/2-50)+"&maxVitaminA="+str((float(list(largest_values.values())[i]))/2+100)
+        if "vitC" in remaining_nutrients[i]:
+            nutrients_query += "&minVitaminC="+str((float(list(largest_values.values())[i]))/2-10)+"&maxVitaminC="+str((float(list(largest_values.values())[i]))/2+20)
+        if "vitE" in remaining_nutrients[i]:
+            nutrients_query += "&minVitaminE="+str((float(list(largest_values.values())[i]))/2-2)+"&maxVitaminE="+str((float(list(largest_values.values())[i]))/2+5)
+    
+    # find snacks that fulfill these remaining nutrients
+
+    find_remaining_url = "https://api.spoonacular.com/recipes/complexSearch"
+
+    # ingredient preferences are randomized, includes will be added less than 20% of the time due to how much it limits the results
+    micros_query_params = ""
+    micros_query_params = "apiKey=" + api_key + nutrients_query + diet_string+excludes+"&type=snack,drink,side dish,appetizer,salad,soup,fingerfood"
+
+    micros_query =  find_remaining_url + "?" + micros_query_params 
+    micros_response = (requests.get(micros_query)).json()
+    ids_list = []
+    for i in range(len(micros_response["results"])):
+        ids_list.append(micros_response["results"][i]["id"])
+
+    # choose at most two - no user choice
+    if len(ids_list) >2:
+        ids_list = random.sample(ids_list, 2)
+
+    # post at most 2 recipes to the db
+    #recipeID = request.json['recipeID']
+    #recipes = WeeklyRecipes(userID, recipeID)
+
+    #db.session.add(recipes)
+    #db.session.commit()
+    #return "recipe added"
+
+
+    return micros_response
+    
 
 @app.route('/get_grocery_list/<userID>', methods=['GET'])
 def get_grocery_list(userID):
     
     recipe_ids = WeeklyRecipes.query.filter_by(userID = userID).one()
     recipes = (recipe_ids.recipeIDs.replace(" ", "")).split(',')
+    
+    num_recipes = len(recipes)
     
     recipe_ingredients_info_json = {}
     
@@ -806,106 +1010,11 @@ def get_grocery_list(userID):
                 # then add to already existing amount
                 temp = float((grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])]).split(" ")[0])
                 
-                add = temp + float(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["value"])*7
+                add = temp + float(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["value"])*(7/num_recipes)
                 
                 grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])] = str(add)+ " " +str(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["unit"])
                 
             else:
-                grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])] = str(float(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["value"])*7) + " " +str(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["unit"])
+                grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])] = str(float(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["value"])*(7/num_recipes)) + " " +str(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["unit"])
         
     return grocery_list_map # weekly
-
-# Checks for user and password match, returns user if exist
-@app.route('/checklogin', methods=['GET'])
-def check_login():
-    user = request.args.get('user')
-    pss = request.args.get('pass')
-    result = db.session.query(User).filter_by(username=user, password=pss)
-    users = []
-    for user in result:
-        users.append(format_user(user))
-    # formatted_user = format_user(result)
-    return {'user': users}
-
-
-# Creates account if username is unique
-@app.route('/createuser', methods=['POST'])
-def create_user():
-    user = request.args.get('user')
-    pss = request.args.get('pass')
-    eml = request.args.get('email')
-
-    result = db.session.query(User).filter_by(username=user)
-    users = []
-    for user in result:
-        users.append(format_user(user))
-
-    if(len(users) == 0):
-        newUser = User(username= user,
-                       password= pss,
-                       email= eml)
-        db.session.add(newUser)
-        db.session.commit()
-        return {'user': users}
-    else:
-        return {'user': users}
-    
-# Updates user
-@app.route('/updateuser', methods=['PUT'])
-def update_user():
-    user = request.args.get('user')
-    gender = request.args.get('gender')
-    weight_lbs = request.args.get('weight_lbs')
-    age = request.args.get('age')
-    height_feet = request.args.get('height_feet')
-    height_inches = request.args.get('height_inches')
-    activity_level = request.args.get('activity_level')
-    vegitarian = request.args.get('vegitarian').capitalize()
-    vegan = request.args.get('vegan').capitalize()
-    halal = request.args.get('halal').capitalize()
-    kosher = request.args.get('kosher').capitalize()
-    gluten_free = request.args.get('gluten_free').capitalize()
-    dairy_free = request.args.get('dairy_free').capitalize()
-    lactose_int = request.args.get('lactose_int').capitalize()
-    low_sodium = request.args.get('low_sodium').capitalize()
-    low_carb = request.args.get('low_carb').capitalize()
-    high_protein = request.args.get('high_protein').capitalize()
-    keto = request.args.get('keto').capitalize()
-    paleo = request.args.get('paleo').capitalize()
-    preferences = request.args.get('preferences')
-    restrictions = request.args.get('restrictions')
-
-    # vegan = eval(vegan.capitalize())
-
-       
-
-    user = User.query.filter_by(username=user)
-    user.update(dict(
-                    gender = gender, 
-                    weight_lbs = weight_lbs,
-                    age = age,
-                    height_feet = height_feet,
-                    height_inches = height_inches, 
-                    activity_level = activity_level, 
-                    vegitarian = eval(vegitarian), 
-                    vegan = eval(vegan),
-                    halal = eval(halal), 
-                    kosher = eval(kosher), 
-                    gluten_free = eval(gluten_free), 
-                    dairy_free = eval(dairy_free), 
-                    lactose_int = eval(lactose_int), 
-                    low_sodium = eval(low_sodium), 
-                    low_carb = eval(low_carb), 
-                    high_protein = eval(high_protein), 
-                    keto = eval(keto), 
-                    paleo = eval(paleo), 
-                    preferences = preferences, 
-                    restrictions = restrictions
-                    ))
-    db.session.commit()
-    return {'user': format_user(user.one())}
-
-    # user = User.query.filter_by(username=user)
-    # user.update(dict(gender = gender))
-    # db.session.commit()
-    # return {'user': format_user(user.one())}
