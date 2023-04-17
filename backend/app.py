@@ -53,9 +53,6 @@ class User(db.Model):
     # user restrictions/allergies
     restrictions = db.Column(db.String)
 
-    #def user_list(self):
-    #    return [self.userID, self.username, self.email, self.password, self.vegitarian, self.vegan, self.halal, self.kosher, self.gluten_free, self.dairy_free, self.lactose_int, self.low_sodium, self.low_carb, self.high_protein, self.keto, self.paleo, self.preferences, self.restricitons]
-
     def __repr__(self):
         return f"User: {self.username}"
     
@@ -284,7 +281,7 @@ def update_user():
     height_feet = request.args.get('height_feet')
     height_inches = request.args.get('height_inches')
     activity_level = request.args.get('activity_level')
-    vegitarian = request.args.get('vegitarian')
+    vegetarian = request.args.get('vegetarian')
     vegan = request.args.get('vegan')
     halal = request.args.get('halal')
     kosher = request.args.get('kosher')
@@ -309,7 +306,7 @@ def update_user():
                     height_feet = height_feet,
                     height_inches = height_inches, 
                     activity_level = activity_level, 
-                    vegitarian = eval(vegitarian), 
+                    vegetarian = eval(vegetarian), 
                     vegan = eval(vegan),
                     halal = eval(halal), 
                     kosher = eval(kosher), 
@@ -800,8 +797,8 @@ def get_recipe_list(userID):
     macros_response = requests.get(macros_query)
     return macros_response.json()
 
-@app.route('/get_remaining_ingredients/<userID>', methods=['GET'])
-def get_remaining_ingredients(userID):
+@app.route('/get_remaining_ingredients/<userID>/<weekID>', methods=['GET','PUT'])
+def get_remaining_ingredients(userID,weekID):
     this_user = User.query.filter_by(userID = userID).one()
     preferences = (this_user.preferences).split(',')
     restrictions = (this_user.restrictions).split(',')
@@ -869,24 +866,24 @@ def get_remaining_ingredients(userID):
         response = requests.get(recipe_nutrients_url)
         recipe_nutrition_info_json[recipe]=response.json()
         
-        energy_sum += int(recipe_nutrition_info_json[str(recipe)]["bad"][0]["amount"])
+        energy_sum += float(recipe_nutrition_info_json[str(recipe)]["bad"][0]["amount"])
 
         for i in range(len(recipe_nutrition_info_json[str(recipe)]["good"])):
         
             if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Calcium":
-                calcium_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+                calcium_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
             if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin C":
-                vitC_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+                vitC_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
             if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin A":
-                vitA_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+                vitA_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
             if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin E":
-                vitE_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+                vitE_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
             if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin D":
-                vitD_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+                vitD_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
             if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin D":
-                iron_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+                iron_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
             if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin D":
-                potassium_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+                potassium_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
         
     # remaining nutrients
     energy_remaining = float(energy) - float(energy_sum)
@@ -942,8 +939,27 @@ def get_remaining_ingredients(userID):
 
     micros_query =  find_remaining_url + "?" + micros_query_params 
     micros_response = (requests.get(micros_query)).json()
+    ids_list = []
+    for i in range(len(micros_response["results"])):
+        ids_list.append(micros_response["results"][i]["id"])
 
-    return micros_response
+    # choose at most two - no user choice
+    if len(ids_list) >2:
+        ids_list = random.sample(ids_list, 2)
+
+    ids_list_str = [str(val) for val in ids_list]
+
+    ids_string = ','.join(ids_list_str)
+    recipes_string = ','.join(recipes)
+
+    put_string = recipes_string + "," + ids_string
+
+    update = WeeklyRecipes.query.filter_by(week_number_ID = weekID, userID = userID)
+    update.update(dict(recipeIDs = put_string))
+
+    db.session.commit()
+
+    return "recipe to fill nutrient requirement added"
     
 
 @app.route('/get_grocery_list/<userID>', methods=['GET'])
