@@ -789,9 +789,9 @@ def get_recipe_list(userID):
     
     # ingredient preferences are randomized, includes will be added less than 20% of the time due to how much it limits the results
     if(random.random() <= 0.2):
-        macros_query_params = "apiKey=" + api_key + "&minProtein="+str(float(protein)/2-20)+"&maxProtein="+str(float(protein)/2+20)+"&minFat="+str(float(fat)/2-20)+"&maxFat="+str(float(fat)/2+20)+"&minCarbs="+str(float(carbs)/2-20)+"&maxCarbs="+str(float(carbs)/2+20)+diet_string+includes+excludes
+        macros_query_params = "apiKey=" + api_key + "&minProtein="+str(float(protein)/2-20)+"&maxProtein="+str(float(protein)/2+20)+"&minFat="+str(float(fat)/2-20)+"&maxFat="+str(float(fat)/2+20)+"&minCarbs="+str(float(carbs)/2-20)+"&maxCarbs="+str(float(carbs)/2+20)+diet_string+includes+excludes+"&type=main course"
     else:
-        macros_query_params = "apiKey=" + api_key + "&minProtein="+str(float(protein)/2-20)+"&maxProtein="+str(float(protein)/2+20)+"&minFat="+str(float(fat)/2-20)+"&maxFat="+str(float(fat)/2+20)+"&minCarbs="+str(float(carbs)/2-20)+"&maxCarbs="+str(float(carbs)/2+20)+diet_string+excludes
+        macros_query_params = "apiKey=" + api_key + "&minProtein="+str(float(protein)/2-20)+"&maxProtein="+str(float(protein)/2+20)+"&minFat="+str(float(fat)/2-20)+"&maxFat="+str(float(fat)/2+20)+"&minCarbs="+str(float(carbs)/2-20)+"&maxCarbs="+str(float(carbs)/2+20)+diet_string+excludes+"&type=main course"
     
     # having the micronutrients in the query params makes it more constricting. so i am just going to let the user choose from list of recipes and then fill the rest of the nutrients in with snacks
 
@@ -800,12 +800,31 @@ def get_recipe_list(userID):
     macros_response = requests.get(macros_query)
     return macros_response.json()
 
-# NOT DONE 
 @app.route('/get_remaining_ingredients/<userID>', methods=['GET'])
 def get_remaining_ingredients(userID):
     this_user = User.query.filter_by(userID = userID).one()
-    preferences = get_preferences(userID)
-    restriction = get_restrictions(userID)
+    preferences = (this_user.preferences).split(',')
+    restrictions = (this_user.restrictions).split(',')
+    
+    includes = "&includeIngredients="+this_user.preferences.replace(" ", "")
+    excludes = "&excludeIngredients="+this_user.restrictions.replace(" ", "")
+
+    diet_string ="&diet="
+    diet_types=""
+    if this_user.gluten_free:
+        diet_types+=",gluten free"
+    if this_user.vegan:
+        diet_types+=",vegan"
+    if this_user.keto:
+        diet_types+=",ketogenic"
+    if this_user.vegetarian:
+        diet_types+=",vegetarian"
+    if this_user.paleo:
+        diet_types+=",paleo"
+    if this_user.pescetarian:
+        diet_types+=",pescetarian"
+        
+    diet_string+=diet_types[1:]
 
     # get recipes IDs from the weekly recipes table
     recipe_ids = WeeklyRecipes.query.filter_by(userID = userID).one()
@@ -824,12 +843,12 @@ def get_remaining_ingredients(userID):
     potassium = str(micronutrients.potassium)
 
     # ULs
-    vitD_ul = str(micronutrients.vitD_ul)
-    vitC_ul = str(micronutrients.vitC_ul)
-    vitA_ul = str(micronutrients.vitA_ul)
-    vitE_ul = str(micronutrients.vitE_ul)
-    calcium_ul = str(micronutrients.calcium_ul)
-    iron_ul = str(micronutrients.iron_ul)
+    vitD_ul = str(micronutrients.vitD_ul-10)
+    vitC_ul = str(micronutrients.vitC_ul-200)
+    vitA_ul = str(micronutrients.vitA_ul-300)
+    vitE_ul = str(micronutrients.vitE_ul-100)
+    calcium_ul = str(micronutrients.calcium_ul - 200)
+    iron_ul = str(micronutrients.iron_ul - 5)
 
     # total nutrition (sum) from recipes
     energy_sum = 0
@@ -884,39 +903,48 @@ def get_remaining_ingredients(userID):
     for key, value in remaining_json.items():
         if value <= 0:
             remaining_json[key] = 0
-            
-            
+    #return remaining_json
+    # find the largest three nutrients they are missing
+
+    sorted_values = sorted(remaining_json.values(), reverse=True)
+    largest_values = {}
+    for key, value in remaining_json.items():
+        if value in sorted_values[:2]:
+            largest_values[key] = value
+
+    remaining_nutrients = list(largest_values.keys()) # nutrients to add in url query
+
+    nutrients_query = ""
+    for i in range(len(list(largest_values.keys()))):
+
+        if "calcium" in remaining_nutrients[i]:
+            nutrients_query += "&minCalcium="+str((float(list(largest_values.values())[i]))/2-25)+"&maxCalcium="+str((float(list(largest_values.values())[i]))/2+50)
+        if "iron" in remaining_nutrients[i]:
+            nutrients_query += "&minIron="+str((float(list(largest_values.values())[i]))/2-1)+"&maxIron="+str((float(list(largest_values.values())[i]))/2+3)
+        if "potassium" in remaining_nutrients[i]:
+            nutrients_query += "&minPotassium="+str((float(list(largest_values.values())[i]))/2-250)+"&maxPotassium="+str((float(list(largest_values.values())[i]))/2+500)
+        if "vitD" in remaining_nutrients[i]:
+            nutrients_query += "&minVitaminD="+str((float(list(largest_values.values())[i]))/2-5)+"&maxVitaminD="+str((float(list(largest_values.values())[i]))/2+10)
+        if "vitA" in remaining_nutrients[i]:
+            nutrients_query += "&minVitaminA="+str((float(list(largest_values.values())[i]))/2-50)+"&maxVitaminA="+str((float(list(largest_values.values())[i]))/2+100)
+        if "vitC" in remaining_nutrients[i]:
+            nutrients_query += "&minVitaminC="+str((float(list(largest_values.values())[i]))/2-10)+"&maxVitaminC="+str((float(list(largest_values.values())[i]))/2+20)
+        if "vitE" in remaining_nutrients[i]:
+            nutrients_query += "&minVitaminE="+str((float(list(largest_values.values())[i]))/2-2)+"&maxVitaminE="+str((float(list(largest_values.values())[i]))/2+5)
+    
     # find snacks that fulfill these remaining nutrients
-    '''
-    find_grocery_products = "https://api.spoonacular.com/food/products/search" # packaged foods
-    find_ingredients = "https://api.spoonacular.com/food/ingredients/search" # whole foods
-    # divide nutrients by 2 to account for lunch and dinner meals
-    grocery_query_params = "apiKey=" + api_key + "&number=5"
-    grocery_query =  find_grocery_products + "?" + grocery_query_params 
-    
-    grocery_response = (requests.get(grocery_query)).json()
-    
-    '''
-    
-    
+
     find_remaining_url = "https://api.spoonacular.com/recipes/complexSearch"
 
-    # divide nutrients by 2 to account for lunch and dinner meals
-    
     # ingredient preferences are randomized, includes will be added less than 20% of the time due to how much it limits the results
-    if(random.random() <= 0.2):
-        macros_query_params = "apiKey=" + api_key + "&minCalories="+str(float(energy_remaining)/2-20)+"&maxCalories="+str(float(energy_remaining)/2+20)+diet_string+includes+excludes
-    else:
-        macros_query_params = "apiKey=" + api_key + "&minProtein="+str(float(protein)/2-20)+"&maxProtein="+str(float(protein)/2+20)+"&minFat="+str(float(fat)/2-20)+"&maxFat="+str(float(fat)/2+20)+"&minCarbs="+str(float(carbs)/2-20)+"&maxCarbs="+str(float(carbs)/2+20)+diet_string+excludes
-    
-    # having the micronutrients in the query params makes it more constricting. so i am just going to let the user choose from list of recipes and then fill the rest of the nutrients in with snacks
+    micros_query_params = ""
+    micros_query_params = "apiKey=" + api_key + nutrients_query + diet_string+excludes+"&type=snack,drink,side dish,appetizer,salad,soup,fingerfood"
 
-    macros_query =  find_remaining_url + "?" + macros_query_params 
-    macros_response = (requests.get(macros_query)).json()
-    
-    return remaining_json
+    micros_query =  find_remaining_url + "?" + micros_query_params 
+    micros_response = (requests.get(micros_query)).json()
 
-# https://api.spoonacular.com/food/products/search?apiKey=13cc54269ca54d258cf7b07e4383154c&query=pizza&number=5
+    return micros_response
+    
 
 @app.route('/get_grocery_list/<userID>', methods=['GET'])
 def get_grocery_list(userID):
