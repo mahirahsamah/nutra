@@ -149,6 +149,23 @@ class WeeklyRecipes(db.Model):
         self.userID = userID
         self.recipeIDs = recipeIDs
 
+
+class Latency(db.Model):
+    __tablename__ = 'latency_table'
+    __table_args__ = {'schema': 'public'}
+
+    function_id = db.Column(db.Integer, primary_key=True)
+    function_name = db.Column(db.String)
+    time_taken_s = db.Column(db.Float)
+
+    def __repr__(self):
+        return f"Function ID: {self.function_id}"
+    
+    def __init__(self, function_id, function_name, time_taken_s):
+        self.function_id = function_id
+        self.function_name = function_name
+        self.time_taken_s = time_taken_s
+
 @app.route('/groceries')
 def home():
     return "Test Page"
