@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship 
 from flask_cors import CORS
 import requests
+import json
 import random
 
 app = Flask(__name__)
