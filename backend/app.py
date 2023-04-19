@@ -844,7 +844,8 @@ def get_recipe_list(userID):
 
     return macros_response.json()
 
-@app.route('/get_remaining_ingredients/<userID>/<weekID>', methods=['GET','PUT'])
+# just run this one function when user selects their recipes 
+@app.route('/get_remaining_ingredients/<userID>/<weekID>', methods=['GET','PUT','POST']) # this function gets remaining ingredients AND posts the final grocery list to the db
 def get_remaining_ingredients(userID, weekID):
     # time start for function
     # time is in seconds
@@ -876,7 +877,7 @@ def get_remaining_ingredients(userID, weekID):
     diet_string+=diet_types[1:]
 
     # get recipes IDs from the weekly recipes table
-    recipe_ids = WeeklyRecipes.query.filter_by(userID = userID).one()
+    recipe_ids = WeeklyRecipes.query.filter_by(userID = userID, week_number_ID = weekID).one()
     recipes = (recipe_ids.recipeIDs.replace(" ", "")).split(',')
 
     micronutrients = UserNutrition.query.filter_by(userID = userID).one()
@@ -918,34 +919,34 @@ def get_remaining_ingredients(userID, weekID):
         response = requests.get(recipe_nutrients_url)
         recipe_nutrition_info_json[recipe]=response.json()
         
-        energy_sum += int(recipe_nutrition_info_json[str(recipe)]["bad"][0]["amount"])
+        energy_sum += float(recipe_nutrition_info_json[str(recipe)]["bad"][0]["amount"])
 
         for i in range(len(recipe_nutrition_info_json[str(recipe)]["good"])):
         
             if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Calcium":
-                calcium_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+                calcium_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
             if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin C":
-                vitC_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+                vitC_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
             if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin A":
-                vitA_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+                vitA_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
             if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin E":
-                vitE_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+                vitE_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
             if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin D":
-                vitD_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+                vitD_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
             if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin D":
-                iron_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+                iron_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
             if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin D":
-                potassium_sum += int(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+                potassium_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
         
     # remaining nutrients
-    energy_remaining = float(energy) - float(energy_sum)
-    vitD_remaining = float(vitD) - float(vitD_sum)
-    vitC_remaining = float(vitC) - float(vitC_sum)
-    vitA_remaining = float(vitA) - float(vitA_sum)
-    vitE_remaining = float(vitE) - float(vitE_sum)
-    calcium_remaining = float(calcium) - float(calcium_sum)
-    iron_remaining = float(iron) - float(iron_sum)
-    potassium_remaining = float(potassium) - float(potassium_sum)
+    energy_remaining = round(float(energy) - float(energy_sum), 2)
+    vitD_remaining = round(float(vitD) - float(vitD_sum), 2)
+    vitC_remaining = round(float(vitC) - float(vitC_sum), 2)
+    vitA_remaining = round(float(vitA) - float(vitA_sum), 2)
+    vitE_remaining = round(float(vitE) - float(vitE_sum), 2)
+    calcium_remaining = round(float(calcium) - float(calcium_sum), 2)
+    iron_remaining = round(float(iron) - float(iron_sum), 2)
+    potassium_remaining = round(float(potassium) - float(potassium_sum), 2)
     
     remaining_json = {"energy_remaining":energy_remaining, "vitD_remaining":vitD_remaining, "vitC_remaining":vitC_remaining, "vitA_remaining":vitA_remaining, "vitE_remaining":vitE_remaining, "calcium_remaining":calcium_remaining, "iron_remaining":iron_remaining, "potassium_remaining":potassium_remaining}
     
@@ -1021,9 +1022,47 @@ def get_remaining_ingredients(userID, weekID):
     db.session.add(time_taken)
     db.session.commit()
 
-    return "recipe to fill nutrient requirement added"
-    
+    # post grocery list:
 
+    recipe_ids = WeeklyRecipes.query.filter_by(userID = userID, week_number_ID = weekID).one()
+    recipes = (recipe_ids.recipeIDs.replace(" ", "")).split(',')
+    
+    num_recipes = len(recipes)
+    
+    recipe_ingredients_info_json = {}
+    
+    find_by_nutrients_url = "https://api.spoonacular.com/recipes/{id}/ingredientWidget.json?apiKey=13cc54269ca54d258cf7b07e4383154c"
+    
+    grocery_list_map = {}
+    
+    for recipe in recipes:
+        add = "https://api.spoonacular.com/recipes/"+str(recipe)+"/ingredientWidget.json?apiKey=13cc54269ca54d258cf7b07e4383154c"
+        add_response = requests.get(add)
+        recipe_ingredients_info_json[str(recipe)] = add_response.json()
+        
+        for i in range(len(recipe_ingredients_info_json[recipe]["ingredients"])):
+            if (str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"]) in grocery_list_map):
+                
+                # then add to already existing amount
+                temp = float((grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])]).split(" ")[0])
+                
+                add = temp + float(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["value"])*(7/num_recipes)
+                
+                grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])] = str(round(add, 2))+ " " +str(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["unit"])
+                
+            else:
+                add = float(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["value"])*(7/num_recipes)
+                grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])] = str(round(add ,2) ) + " " +str(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["unit"])
+    
+    #return json.dumps(grocery_list_map)
+    # post information to nutrition table in db
+    post_grocery_list = GroceryLists(userID, weekID, json.dumps(grocery_list_map))
+  
+    db.session.add(post_grocery_list)
+    db.session.commit()
+
+    return "recipe to fill nutrient requirement added and grocery list is posted"
+    
 @app.route('/post_grocery_list/<userID>/<weekID>', methods=['GET','POST'])
 def post_grocery_list(userID, weekID):
     
@@ -1087,3 +1126,8 @@ def get_grocery_list(userID, weekID):
     grocery_dict = json.loads(get_grocery_list)
     print(grocery_dict)
     return grocery_dict
+
+@app.route('/get_num_weeks/<userID>', methods=['GET'])
+def get_num_weeks(userID):
+    get = db.session.query(WeeklyRecipes.week_number_ID).filter_by(userID = userID).count()
+    return str(get)

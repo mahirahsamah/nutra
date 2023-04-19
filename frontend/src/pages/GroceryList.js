@@ -7,46 +7,51 @@ import { Header } from './../components/'
 import './Style.css';
 
 
-const Container = styled.div`
-  background-color: #f0f0f0;
-  padding: 20px;
-`;
-
-const Title = styled.h1`
-  font-size: 32px;
-  color: #333;
-`;
-
-const Paragraph = styled.p`
-  font-size: 18px;
-  line-height: 1.5;
-`;
-
 function GroceriesPage() {
-  const [data, setData] = useState([]);
+  const [grocery_list, set_grocery_list] = useState(null);
+  const [num_weeks, set_num_weeks] = useState(null);
   
   const curruserID = localStorage.getItem("curruserID");
-  useEffect(() => {
-      axios.get(`http://127.0.0.1:5000/get_grocery_list/${curruserID}/1`)
-      .then(response => {
-          setData(response.data);
-      })
-      .catch(error => {
-          console.error(error);
-      });
+    useEffect(() => {
+      const get_grocery_list  = async () => {
+        axios.get(`http://127.0.0.1:5000/get_grocery_list/${curruserID}/2`)
+        .then(response => {
+          set_grocery_list(response.data);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+      };
+
+      const get_num_weeks  = async () => {
+        axios.get(`http://127.0.0.1:5000/get_num_weeks/${curruserID}`)
+        .then(response => {
+          set_num_weeks(response.data);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+      };
+
+      get_grocery_list();
+      get_num_weeks();
+
   }, []);
 
   return (
     <div>
     <div style={{paddingBottom:"10vh"}} className="App" ><Header /></div>
       <h1>Dictionary Data:</h1>
+      <p>{num_weeks}</p>
+      
       <ul>
-        {Object.keys(data).map((key) => (
+        {Object.keys(grocery_list).map((key) => (
           <li key={key}>
-            {key}: {data[key]}
+            {key}: {grocery_list[key]}
           </li>
         ))}
       </ul>
+
     </div>  
   );
 }
