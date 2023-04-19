@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship 
 from flask_cors import CORS
 import requests
+import json
+import time
 import random
 
 app = Flask(__name__)
@@ -19,6 +21,7 @@ class User(db.Model):
     __table_args__ = {'schema': 'public'}
     
     nutrition = relationship("UserNutrition")
+    grocery_lists = relationship("GroceryLists")
 
     # user auth
     userID = db.Column(db.Integer, primary_key=True)
@@ -130,6 +133,8 @@ class WeeklyRecipes(db.Model):
     __tablename__ = 'users_weekly_recipes_table'
     __table_args__ = {'schema': 'public'}
 
+    grocery_lists = relationship("GroceryLists")
+
     week_number_ID = db.Column(db.Integer, primary_key=True)
     userID = db.Column(db.Integer, db.ForeignKey('public.users_table.userID'))
     recipeIDs = db.Column(db.String) # this is a string of comma-separated recipe IDs
@@ -153,10 +158,27 @@ class Latency(db.Model):
     def __repr__(self):
         return f"Function ID: {self.function_id}"
     
-    def __init__(self, function_id, function_name, time_taken_s):
-        self.function_id = function_id
+    def __init__(self, function_name, time_taken_s):
         self.function_name = function_name
         self.time_taken_s = time_taken_s
+
+class GroceryLists(db.Model):
+    __tablename__ = 'grocery_lists_table'
+    __table_args__ = {'schema': 'public'}
+
+    listID = db.Column(db.Integer, primary_key=True)
+    week_number_ID = db.Column(db.Integer, db.ForeignKey('public.users_weekly_recipes_table.week_number_ID'))
+    userID = db.Column(db.Integer, db.ForeignKey('public.users_table.userID'))
+    grocery_list = db.Column(db.String)
+
+
+    def __repr__(self):
+        return f"List ID: {self.listID}"
+    
+    def __init__(self, userID, week_number_ID, grocery_list):
+        self.userID = userID
+        self.week_number_ID = week_number_ID
+        self.grocery_list = grocery_list
 
 @app.route('/groceries')
 def home():
@@ -716,6 +738,9 @@ def get_restrictions(userID):
 
 @app.route('/get_recipe_list/<userID>', methods=['GET'])
 def get_recipe_list(userID):
+    # time start for function
+    # time is in seconds
+    start_time = time.time()
     
     # get restrictions and preferences
     this_user = User.query.filter_by(userID = userID).one()
@@ -805,10 +830,25 @@ def get_recipe_list(userID):
     macros_query =  find_by_nutrients_url + "?" + macros_query_params 
     print(macros_query)
     macros_response = requests.get(macros_query)
+
+    # time end for function
+    end_time = time.time()
+    total_time = end_time - start_time
+
+    time_taken = Latency("generate_recipes", total_time)
+    db.session.add(time_taken)
+    db.session.commit()
+
+
     return macros_response.json()
 
 @app.route('/get_remaining_ingredients/<userID>/<weekID>', methods=['GET','PUT'])
-def get_remaining_ingredients(userID,weekID):
+def get_remaining_ingredients(userID, weekID):
+    # time start for function
+    # time is in seconds
+    start_time = time.time()
+
+
     this_user = User.query.filter_by(userID = userID).one()
     preferences = (this_user.preferences).split(',')
     restrictions = (this_user.restrictions).split(',')
@@ -971,12 +1011,25 @@ def get_remaining_ingredients(userID,weekID):
 
     db.session.commit()
 
+    # time end for function
+    end_time = time.time()
+    total_time = end_time - start_time
+
+    time_taken = Latency("generate_remaining_recipes", total_time)
+    db.session.add(time_taken)
+    db.session.commit()
+
     return "recipe to fill nutrient requirement added"
     
 
-@app.route('/get_grocery_list/<userID>', methods=['GET'])
-def get_grocery_list(userID):
+@app.route('/get_grocery_list/<userID>/<weekID>', methods=['GET','POST'])
+def get_grocery_list(userID, weekID):
     
+    # time start for function
+    # time is in seconds
+    start_time = time.time()
+
+    ###
     recipe_ids = WeeklyRecipes.query.filter_by(userID = userID).one()
     recipes = (recipe_ids.recipeIDs.replace(" ", "")).split(',')
     
@@ -1006,5 +1059,20 @@ def get_grocery_list(userID):
             else:
                 add = float(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["value"])*(7/num_recipes)
                 grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])] = str(round(add ,2) ) + " " +str(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["unit"])
-        
-    return grocery_list_map # weekly
+    
+    #return json.dumps(grocery_list_map)
+    # post information to nutrition table in db
+    post_grocery_list = GroceryLists(userID, weekID, json.dumps(grocery_list_map))
+  
+    db.session.add(post_grocery_list)
+    db.session.commit()
+
+    # time end for function
+    end_time = time.time()
+    total_time = end_time - start_time
+
+    time_taken = Latency("generate_grocery_list", total_time)
+    db.session.add(time_taken)
+    db.session.commit()
+
+    return "grocery list added to database" # weekly
