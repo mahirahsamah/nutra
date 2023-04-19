@@ -184,14 +184,6 @@ class GroceryLists(db.Model):
 def home():
     return "Test Page"
 
-@app.route('/post_recipes/<userID>', methods=['POST'])
-def post_recipes(userID):
-    recipeID = request.json['recipeID']
-    recipes = WeeklyRecipes(userID, recipeID)
-
-    db.session.add(recipes)
-    db.session.commit()
-    return "recipe added"
 
 @app.route('/post_recipes', methods=['POST'])
 def post_recipes():
