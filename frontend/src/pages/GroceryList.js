@@ -6,6 +6,7 @@ import './Recipes.css';
 import { Header } from './../components/'
 import './Style.css';
 
+
 const Container = styled.div`
   background-color: #f0f0f0;
   padding: 20px;
@@ -22,12 +23,31 @@ const Paragraph = styled.p`
 `;
 
 function GroceriesPage() {
-  return (
-    
-    <div style={{paddingBottom:"10vh"}} className="App" >
-               <Header />
+  const [data, setData] = useState([]);
+  
+  const curruserID = localStorage.getItem("curruserID");
+  useEffect(() => {
+      axios.get(`http://127.0.0.1:5000/get_grocery_list/${curruserID}/1`)
+      .then(response => {
+          setData(response.data);
+      })
+      .catch(error => {
+          console.error(error);
+      });
+  }, []);
 
-          </div>
+  return (
+    <div>
+    <div style={{paddingBottom:"10vh"}} className="App" ><Header /></div>
+      <h1>Dictionary Data:</h1>
+      <ul>
+        {Object.keys(data).map((key) => (
+          <li key={key}>
+            {key}: {data[key]}
+          </li>
+        ))}
+      </ul>
+    </div>  
   );
 }
 

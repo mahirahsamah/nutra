@@ -1024,8 +1024,8 @@ def get_remaining_ingredients(userID, weekID):
     return "recipe to fill nutrient requirement added"
     
 
-@app.route('/get_grocery_list/<userID>/<weekID>', methods=['GET','POST'])
-def get_grocery_list(userID, weekID):
+@app.route('/post_grocery_list/<userID>/<weekID>', methods=['GET','POST'])
+def post_grocery_list(userID, weekID):
     
     # time start for function
     # time is in seconds
@@ -1078,3 +1078,12 @@ def get_grocery_list(userID, weekID):
     db.session.commit()
 
     return "grocery list added to database" # weekly
+
+
+@app.route('/get_grocery_list/<userID>/<weekID>', methods=['GET'])
+def get_grocery_list(userID, weekID):
+    get =  GroceryLists.query.filter_by(userID = userID, week_number_ID = weekID).one()
+    get_grocery_list = get.grocery_list
+    grocery_dict = json.loads(get_grocery_list)
+    print(grocery_dict)
+    return grocery_dict
