@@ -15,18 +15,12 @@ const ProfilePage = () => {
   const [height_feet, setHeight_feet] = useState("");
   const [height_inches, setHeight_inches] = useState("");
   const [activity_level, setActivity_level] = useState("");
-  const [vegitarian, setVegitarian] = useState("");
+  const [vegetarian, setVegetarian] = useState("");
   const [vegan, setVegan] = useState("");
-  const [halal, setHalal] = useState("");
-  const [kosher, setKosher] = useState("");
   const [gluten_free, setGluten_free] = useState("");
-  const [dairy_free, setDairy_free] = useState("");
-  const [lactose_int, setLactose_int] = useState("");
-  const [low_sodium, setLow_sodium] = useState("");
-  const [low_carb, setLow_carb] = useState("");
-  const [high_protein, setHigh_protein] = useState("");
   const [keto, setKeto] = useState("");
   const [paleo, setPaleo] = useState("");
+  const [pescetarian, setPescetarian] = useState("")
   const [preferences, setPreferences] = useState("");
   const [restrictions, setRestrictions] = useState("");
   const [userData, setUserData] = useState("");
@@ -49,26 +43,20 @@ const ProfilePage = () => {
     setHeight_feet(result.data.user[0].height_feet);
     setHeight_inches(result.data.user[0].height_inches);
     setActivity_level(result.data.user[0].activity_level);
-    setVegitarian(result.data.user[0].vegitarian);
+    setVegetarian(result.data.user[0].vegetarian);
     setVegan(result.data.user[0].vegan);
-    setHalal(result.data.user[0].halal);
-    setKosher(result.data.user[0].kosher);
     setGluten_free(result.data.user[0].gluten_free);
-    setDairy_free(result.data.user[0].dairy_free);
-    setLactose_int(result.data.user[0].lactose_int);
-    setLow_sodium(result.data.user[0].low_sodium)
-    setLow_carb(result.data.user[0].low_carb)
-    setHigh_protein(result.data.user[0].high_protein)
-    setKeto(result.data.user[0].keto)
-    setPaleo(result.data.user[0].paleo)
-    setPreferences(result.data.user[0].preferences)
-    setRestrictions(result.data.user[0].restrictions)
+    setKeto(result.data.user[0].keto);
+    setPaleo(result.data.user[0].paleo);
+    setPescetarian(result.data.user[0].pescetarian);
+    setPreferences(result.data.user[0].preferences);
+    setRestrictions(result.data.user[0].restrictions);
 
     // console.log("test"+ gender);
   }, []);
 
   const update = async () => {
-    const updateData = await axios.put(`${backend}/updateuser?user=${currentUser}&gender=${gender}&weight_lbs=${weight_lbs}&age=${age}&height_feet=${height_feet}&height_inches=${height_inches}&activity_level=${activity_level}&vegitarian=${vegitarian}&vegan=${vegan}&halal=${halal}&kosher=${kosher}&gluten_free=${gluten_free}&dairy_free=${dairy_free}&lactose_int=${lactose_int}&low_sodium=${low_sodium}&low_carb=${low_carb}&high_protein=${high_protein}&keto=${keto}&paleo=${paleo}&preferences=${preferences}&restrictions=${restrictions}`)
+    const updateData = await axios.put(`${backend}/updateuser?user=${currentUser}&gender=${gender}&weight_lbs=${weight_lbs}&age=${age}&height_feet=${height_feet}&height_inches=${height_inches}&activity_level=${activity_level}&vegetarian=${vegetarian}&vegan=${vegan}&gluten_free=${gluten_free}&keto=${keto}&paleo=${paleo}&pescetarian=${pescetarian}&preferences=${preferences}&restrictions=${restrictions}`)
     console.log(updateData.data)
 
   
@@ -147,14 +135,14 @@ const ProfilePage = () => {
                 />
               </li>
 
-              <li key={userData.vegitarian}>
-                Vegitarian:
+              <li key={userData.vegetarian}>
+                Vegetarian:
                 <input
                 type="text"
                 placeholder="True or False"
                 className={classes.input_field}
-                value={vegitarian}
-                onChange={(e) => setVegitarian(e.target.value)}
+                value={vegetarian}
+                onChange={(e) => setVegetarian(e.target.value)}
                 />
               </li>
 
@@ -169,28 +157,6 @@ const ProfilePage = () => {
                 />
               </li>
 
-              <li key={userData.halal}>
-                Halal:
-                <input
-                type="text"
-                placeholder="True or False"
-                className={classes.input_field}
-                value={halal}
-                onChange={(e) => setHalal(e.target.value)}
-                />
-              </li>
-
-              <li key={userData.kosher}>
-                Kosher:
-                <input
-                type="text"
-                placeholder="True or False"
-                className={classes.input_field}
-                value={kosher}
-                onChange={(e) => setKosher(e.target.value)}
-                />
-              </li>
-
               <li key={userData.gluten_free}>
                 Gluten Free:
                 <input
@@ -199,61 +165,6 @@ const ProfilePage = () => {
                 className={classes.input_field}
                 value={gluten_free}
                 onChange={(e) => setGluten_free(e.target.value)}
-                />
-              </li>
-
-              <li key={userData.dairy_free}>
-                Diary Free:
-                <input
-                type="text"
-                placeholder="True or False"
-                className={classes.input_field}
-                value={dairy_free}
-                onChange={(e) => setDairy_free(e.target.value)}
-                />
-              </li>
-
-              <li key={userData.lactose_int}>
-                Lactose Intolerant:
-                <input
-                type="text"
-                placeholder="True or False"
-                className={classes.input_field}
-                value={lactose_int}
-                onChange={(e) => setLactose_int(e.target.value)}
-                />
-              </li>
-
-              <li key={userData.low_sodium}>
-                Low Sodium:
-                <input
-                type="text"
-                placeholder="True or False"
-                className={classes.input_field}
-                value={low_sodium}
-                onChange={(e) => setLow_sodium(e.target.value)}
-                />
-              </li>
-
-              <li key={userData.low_carb}>
-                Low Carbs:
-                <input
-                type="text"
-                placeholder="True or False"
-                className={classes.input_field}
-                value={low_carb}
-                onChange={(e) => setLow_carb(e.target.value)}
-                />
-              </li>
-
-              <li key={userData.high_protein}>
-                High Protein:
-                <input
-                type="text"
-                placeholder="True or False"
-                className={classes.input_field}
-                value={high_protein}
-                onChange={(e) => setHigh_protein(e.target.value)}
                 />
               </li>
 
@@ -279,11 +190,22 @@ const ProfilePage = () => {
                 />
               </li>
 
+              <li key={userData.pescetarian}>
+                Pescetarian:
+                <input
+                type="text"
+                placeholder="True or False"
+                className={classes.input_field}
+                value={pescetarian}
+                onChange={(e) => setPescetarian(e.target.value)}
+                />
+              </li>
+
               <li key={userData.preferences}>
                 Preferences:
                 <input
                 type="text"
-                placeholder="True or False"
+                placeholder="Comma seperated list"
                 className={classes.input_field}
                 value={preferences}
                 onChange={(e) => setPreferences(e.target.value)}
@@ -294,7 +216,7 @@ const ProfilePage = () => {
                 Restrictions:
                 <input
                 type="text"
-                placeholder="True or False"
+                placeholder="Comma seperated list"
                 className={classes.input_field}
                 value={restrictions}
                 onChange={(e) => setRestrictions(e.target.value)}

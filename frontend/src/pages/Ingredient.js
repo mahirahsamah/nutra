@@ -77,20 +77,21 @@ function Ingredient() {
  
 
     return (
-        <div style={{paddingBottom:"10vh"}} className="App" >
-            <Header />
-            <input type="text" placeholder={search} onChange = {(e)=>{updateSearch(e.target.value);}}></input>
-            <button id="searchButton" onClick={()=>apiCall()}>Search</button>
-            {results.map((val)=> (
-                <div style={{display:"flex", width:"40vw", margin:"10vh", backgroundColor:"rgb(225, 247, 217)"}}> 
-                    <label>{val.product.title}</label>
-                    <img style={{height:"70%", width:"70%"}} src = {val.product.main_image}></img>
-                    <label>Price: ${val.offers.primary.price}</label>
-                    <button>Select</button>
-                </div>
-            ))}
+        <div>
+            <Header></Header>
+            <div style={{paddingBottom:"10vh", textAlign: "center"}} className="App" >
+                <input type="text" placeholder={search} onChange = {(e)=>{updateSearch(e.target.value);}}></input>
+                <button id="searchButton" onClick={()=>apiCall()}>Search</button>
+                {results.map((val)=> (
+                    <div style={{display:"flex", width:"40vw", margin:"10vh", backgroundColor:"rgb(225, 247, 217)"}}> 
+                        <label>{val.product.title}</label>
+                        <img style={{height:"70%", width:"70%"}} src = {val.product.main_image}></img>
+                        <label>Price: ${val.offers.primary.price}</label>
+                        <button>Select</button>
+                    </div>
+                ))}
+            </div>
         </div>
-        //<div> Hello { localStorage.getItem('curruser') }!! </div>
     );
 
 }

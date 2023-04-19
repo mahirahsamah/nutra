@@ -14,14 +14,14 @@ const SignupPage = () => {
 
      const handleMakeAccount = async () => {
           const data = await axios.post(`${backend}/createuser?user=${username}&pass=${password}&email=${email}`)
-          console.log(username.length)
+          console.log(data)
 
           if(email.length === 0 || username.length === 0 || password.length === 0){
                alert("Missing field");
           }
           else if(data.data.user.length === 0){
                localStorage.setItem("curruser", username);
-               navigate("/home");
+               navigate("/profile");
           } else {
                alert("Username already exist");
           }  

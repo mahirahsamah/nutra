@@ -8,7 +8,7 @@ import time
 import random
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:11072000@localhost/capstone'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:admin@localhost/capstone'
 db = SQLAlchemy(app)
 CORS(app)
 
@@ -54,24 +54,29 @@ class User(db.Model):
     def __repr__(self):
         return f"User: {self.username}"
     
-    def __init__(self, username, email, password, gender, weight_lbs, age, height_feet, height_inches, activity_level, vegetarian, vegan, gluten_free, keto, paleo, pescetarian, preferences, restricitons):
+    def __init__(self, username, email, password):
         self.username = username
         self.email = email
         self.password = password
-        self.gender = gender
-        self.weight_lbs = weight_lbs
-        self.age = age
-        self.height_feet = height_feet
-        self.height_inches = height_inches
-        self.activity_level=activity_level
-        self.vegetarian = vegetarian
-        self.vegan = vegan
-        self.gluten_free = gluten_free
-        self.keto = keto
-        self.paleo = paleo
-        self.pescetarian = pescetarian
-        self.preferences = preferences
-        self.restrictions = restricitons
+    
+    # def __init__(self, username, email, password, gender, weight_lbs, age, height_feet, height_inches, activity_level, vegetarian, vegan, gluten_free, keto, paleo, pescetarian, preferences, restricitons):
+    #     self.username = username
+    #     self.email = email
+    #     self.password = password
+    #     self.gender = gender
+    #     self.weight_lbs = weight_lbs
+    #     self.age = age
+    #     self.height_feet = height_feet
+    #     self.height_inches = height_inches
+    #     self.activity_level=activity_level
+    #     self.vegetarian = vegetarian
+    #     self.vegan = vegan
+    #     self.gluten_free = gluten_free
+    #     self.keto = keto
+    #     self.paleo = paleo
+    #     self.pescetarian = pescetarian
+    #     self.preferences = preferences
+    #     self.restrictions = restricitons
   
 
 class UserNutrition(db.Model):
@@ -276,7 +281,7 @@ def post_whole_user():
 def check_login():
     user = request.args.get('user')
     pss = request.args.get('pass')
-    result = db.session.query(User).filter_by(username=user, password=pss)
+    result = User.query.filter_by(username=user, password=pss)
     users = []
     for user in result:
         users.append(format_user(user))
@@ -290,7 +295,7 @@ def create_user():
     pss = request.args.get('pass')
     eml = request.args.get('email')
 
-    result = db.session.query(User).filter_by(username=user)
+    result = User.query.filter_by(username=user)
     users = []
     for user in result:
         users.append(format_user(user))
@@ -309,7 +314,7 @@ def create_user():
 @app.route('/getuserinfo', methods=['GET'])
 def get_user_info():
     user = request.args.get('user')
-    result = db.session.query(User).filter_by(username=user)
+    result = User.query.filter_by(username=user)
     users = []
     for user in result:
         users.append(format_user(user))
@@ -326,12 +331,12 @@ def update_user():
     height_feet = request.args.get('height_feet')
     height_inches = request.args.get('height_inches')
     activity_level = request.args.get('activity_level')
-    vegetarian = request.args.get('vegetarian')
-    vegan = request.args.get('vegan')
-    gluten_free = request.args.get('gluten_free')
-    keto = request.args.get('keto')
-    paleo = request.args.get('paleo')
-    pescetarian = request.args.get('pescetarian')
+    vegetarian = request.args.get('vegetarian').capitalize()
+    vegan = request.args.get('vegan').capitalize()
+    gluten_free = request.args.get('gluten_free').capitalize()
+    keto = request.args.get('keto').capitalize()
+    paleo = request.args.get('paleo').capitalize()
+    pescetarian = request.args.get('pescetarian').capitalize()
     preferences = request.args.get('preferences')
     restrictions = request.args.get('restrictions')
 
