@@ -1081,6 +1081,7 @@ def post_grocery_list(userID, weekID):
     find_by_nutrients_url = "https://api.spoonacular.com/recipes/{id}/ingredientWidget.json?apiKey=13cc54269ca54d258cf7b07e4383154c"
     
     grocery_list_map = {}
+    grocery_list_map["id"] = weekID
     
     for recipe in recipes:
         add = "https://api.spoonacular.com/recipes/"+str(recipe)+"/ingredientWidget.json?apiKey=13cc54269ca54d258cf7b07e4383154c"
@@ -1100,6 +1101,7 @@ def post_grocery_list(userID, weekID):
             else:
                 add = float(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["value"])*(7/num_recipes)
                 grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])] = str(round(add ,2) ) + " " +str(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["unit"])
+    
     
     #return json.dumps(grocery_list_map)
     # post information to nutrition table in db

@@ -29,6 +29,11 @@ function GroceriesPage() {
     const toggleModal=()=>{
       setModal(!modal)
     }
+
+    const [selectedIndex, setSelectedIndex] = useState(null);
+    const handleClick = index => {
+      setSelectedIndex(index);
+    };
   
     useEffect(() => {
       const curruserID = localStorage.getItem("curruserID");
@@ -52,8 +57,9 @@ function GroceriesPage() {
         for (let i = 1; i < n_int+1; i++) {
           const response = await fetch(`http://127.0.0.1:5000/get_grocery_list/${curruserID}/${i}`);
           const data = await response.json();
-          
+
           groceryArray.push(data);
+          //groceryArray.push({ ...data[i], id: i});
         }
   
         set_grocery_lists(groceryArray);
@@ -75,37 +81,29 @@ function GroceriesPage() {
 
   return (
     <div>
-    <div style={{paddingBottom:"10vh"}} className="App" ><Header /></div>   
-      
-      
-
-      <button onClick={toggleModal} className="btn-modal">
-        <ButtonList buttonData={buttonArray} />  
-      </button>  
-
-      {modal && (
-        <div className="modal">
-          <div onClick={toggleModal} className="overlay">
-            <div className="modal-content">
-              <h2>hello modal</h2>
-              <button className="close-modal" onClick={toggleModal}> close </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {grocery_lists.map(item => (
-          <div key={item.id}>
+      <div style={{paddingBottom:"10vh"}} className="App" ><Header /></div>   
 
 
-            
-            {Object.keys(item).map(key => (
-              <p key={key}>
-                {key}: {item[key]}
-              </p>
-            ))}
-          </div>
+
+
+      <div>
+        {buttonArray.map((name, index) => (
+          <button key={index} onClick={() => handleClick(index)}>
+            {name}
+          </button>
         ))}
+      </div>
+      <div>
+        {selectedIndex !== null && (
+          <div>
+            <h2>{grocery_lists[selectedIndex].ginger}</h2>
+            <p>{grocery_lists[selectedIndex].ginger}</p>
+          </div>
+        )}
+      </div>
+
+
+
 
     </div>  
   );
