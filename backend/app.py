@@ -1071,7 +1071,7 @@ def post_grocery_list(userID, weekID):
     start_time = time.time()
 
     ###
-    recipe_ids = WeeklyRecipes.query.filter_by(userID = userID).one()
+    recipe_ids = WeeklyRecipes.query.filter_by(userID = userID, week_number_ID = weekID).one()
     recipes = (recipe_ids.recipeIDs.replace(" ", "")).split(',')
     
     num_recipes = len(recipes)

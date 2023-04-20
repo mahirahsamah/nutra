@@ -3,6 +3,7 @@ import axios from 'axios';
 import './Recipes.css';
 import { Header } from './../components/'
 import './Style.css';
+import './../components/Modal/Modal.css'
 
 function ButtonList(props) {
   const buttonData = props.buttonData;
@@ -23,19 +24,11 @@ function GroceriesPage() {
     const [grocery_lists, set_grocery_lists] = useState([]);
     const [num_weeks, set_num_weeks] = useState([]);
 
-    // card stuff
-    const [showPopup, setShowPopup] = useState(false);
-    const [popupData, setPopupData] = useState(null);
-    const [showCard, setShowCard] = useState(false);
+    const [modal, setModal] = useState(false);
 
-    const handleButtonClick = () => {
-      setShowCard(true);
-    };
-
-    const handleCardClose = () => {
-      setShowCard(false);
-    };
-    // end card stuff
+    const toggleModal=()=>{
+      setModal(!modal)
+    }
   
     useEffect(() => {
       const curruserID = localStorage.getItem("curruserID");
@@ -82,32 +75,37 @@ function GroceriesPage() {
 
   return (
     <div>
-    <div style={{paddingBottom:"10vh"}} className="App" ><Header /></div>
+    <div style={{paddingBottom:"10vh"}} className="App" ><Header /></div>   
+      
+      
 
-      <button onClick={handleButtonClick}>Show Card</button>
-        {showCard && (
-          <div className="card">
-            <button onClick={handleCardClose}>X</button>
-            <h2>Card Title</h2>
-            <p>Card content goes here.</p>
+      <button onClick={toggleModal} className="btn-modal">
+        <ButtonList buttonData={buttonArray} />  
+      </button>  
+
+      {modal && (
+        <div className="modal">
+          <div onClick={toggleModal} className="overlay">
+            <div className="modal-content">
+              <h2>hello modal</h2>
+              <button className="close-modal" onClick={toggleModal}> close </button>
+            </div>
           </div>
-        )}
-
-      <h1>My Button List</h1>
-      <ButtonList buttonData={buttonArray} />
-
-      {buttonContent.map((button) => (
-        <button key={button.id} onClick={() => handleButtonClick(button)}>
-          {button.label}
-        </button>
-      ))}
-      {showPopup && (
-        <div className="card">
-          <h2>{popupData.label}</h2>
-          <p>{popupData.content}</p>
-          <button onClick={() => setShowPopup(false)}>Close</button>
         </div>
       )}
+
+      {grocery_lists.map(item => (
+          <div key={item.id}>
+
+
+            
+            {Object.keys(item).map(key => (
+              <p key={key}>
+                {key}: {item[key]}
+              </p>
+            ))}
+          </div>
+        ))}
 
     </div>  
   );
