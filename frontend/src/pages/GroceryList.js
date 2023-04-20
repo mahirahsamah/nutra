@@ -19,6 +19,20 @@ function ButtonList(props) {
   );
 }
 
+function MyComponent({ myData, id }) {
+  const myObject = myData[id];
+
+  if (!myObject) {
+    return <div>Object with id {id} not found</div>;
+  }
+
+  const objectElements = Object.entries(myObject).map(([key, value]) => {
+    return <div key={key}>{key}: {value}</div>;
+  });
+
+  return <div>{objectElements}</div>;
+}
+
 function GroceriesPage() {
 
     const [grocery_lists, set_grocery_lists] = useState([]);
@@ -102,10 +116,13 @@ function GroceriesPage() {
         <div className="modal">
           <div onClick={toggleModal} className="overlay">
             <div className="modal-content">
-              <h2>grocery list</h2>
               {selectedIndex !== null && (
-                <div>
-                  <p>{grocery_lists[selectedIndex].ginger}</p>
+                <div key={selectedIndex}>
+                  
+                  <h2>Grocery List for Week {selectedIndex + 1}</h2>
+                  
+                  <MyComponent myData={grocery_lists} id={selectedIndex} />
+
                 </div>
               )}
               <button className="close-modal" onClick={toggleModal}> close </button>
@@ -113,6 +130,8 @@ function GroceriesPage() {
           </div>
         </div>
       )}
+
+
 
     </div>  
   );
