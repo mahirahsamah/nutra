@@ -61,11 +61,12 @@ function RecipesPage() {
      useEffect( () => {
           const get_list = async () => {
                axios.get('http://127.0.0.1:5000/get_recipe_list/1')
+               //.then(response => {console.log(response.data.results);})
+               //.then(data => console.log(data.results[0].id))
                .then(response => {
-                    setData(response.data);
-                    //console.log(response.data[0].calories);
-                    // setLink(response.data.map(obj => obj.image));
-                    const links_index = response.data.map(entity => {
+                    console.log(response.data.results);
+                    setData(response.data.results);
+                    const links_index = data.map(entity => {
                          return {
                               image: entity.image,
                               id: entity.id,
