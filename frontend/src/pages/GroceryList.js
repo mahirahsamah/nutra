@@ -28,6 +28,7 @@ function GroceriesPage() {
 
     const toggleModal=()=>{
       setModal(!modal)
+      console.log(modal);
     }
 
     const [selectedIndex, setSelectedIndex] = useState(null);
@@ -88,22 +89,30 @@ function GroceriesPage() {
 
       <div>
         {buttonArray.map((name, index) => (
-          <button key={index} onClick={() => handleClick(index)}>
+          <button onClick={() => {
+            toggleModal();
+            handleClick(index);
+          }} className="btn-modal" key={index} >
             {name}
           </button>
         ))}
       </div>
-      <div>
-        {selectedIndex !== null && (
-          <div>
-            <h2>{grocery_lists[selectedIndex].ginger}</h2>
-            <p>{grocery_lists[selectedIndex].ginger}</p>
+
+      {modal && (
+        <div className="modal">
+          <div onClick={toggleModal} className="overlay">
+            <div className="modal-content">
+              <h2>grocery list</h2>
+              {selectedIndex !== null && (
+                <div>
+                  <p>{grocery_lists[selectedIndex].ginger}</p>
+                </div>
+              )}
+              <button className="close-modal" onClick={toggleModal}> close </button>
+            </div>
           </div>
-        )}
-      </div>
-
-
-
+        </div>
+      )}
 
     </div>  
   );
