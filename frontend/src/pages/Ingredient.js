@@ -10,7 +10,7 @@ import { useLocation } from 'react-router-dom';
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import './Style.css';
+import './Ingredient.css';
 
 function Ingredient() {
     
@@ -77,21 +77,42 @@ function Ingredient() {
  
 
     return (
-        <div>
-            <Header></Header>
-            <div style={{paddingBottom:"10vh", textAlign: "center"}} className="App" >
-                <input type="text" placeholder={search} onChange = {(e)=>{updateSearch(e.target.value);}}></input>
-                <button id="searchButton" onClick={()=>apiCall()}>Search</button>
-                {results.map((val)=> (
-                    <div style={{display:"flex", width:"40vw", margin:"10vh", backgroundColor:"rgb(225, 247, 217)"}}> 
-                        <label>{val.product.title}</label>
-                        <img style={{height:"70%", width:"70%"}} src = {val.product.main_image}></img>
-                        <label>Price: ${val.offers.primary.price}</label>
-                        <button>Select</button>
+        <div style={{paddingBottom:"10vh", textAlign:"center"}} className="App" >
+            <Header />
+            <input type="text" placeholder={search} onChange = {(e)=>{updateSearch(e.target.value);}}></input>
+            <button id="searchButton" onClick={()=>apiCall()}>Search</button>
+            <main>
+            <section class="cards" style={{paddingTop:"10vh", textAlign:"center"}}>
+            {results.map((val)=> (
+                // <div style={{display:"flex", width:"40vw", margin:"10vh", backgroundColor:"rgb(225, 247, 217)"}}> 
+                //     <label>{val.product.title}</label>
+                //     <img style={{height:"70%", width:"70%"}} src = {val.product.main_image}></img>
+                //     <label>Price: ${val.offers.primary.price}</label>
+                //     <button>Select</button>
+                // </div>
+                
+                    <div class="card" style={{textAlign:"center"}}>
+                        <div class="card__image-container">
+                            <img
+                            src={val.product.main_image}
+                            />
+                        </div>
+                        <div class="card__content">
+                            <p class="card__title text--medium">
+                                {val.product.title}
+                            </p>
+                            <div class="card__info">
+                            <p class="text--medium">Rating: {val.product.rating} ({val.product.ratings_total})</p>
+                            <p class="card__price text--medium">${val.offers.primary.price}</p>
+                            </div>
+                        </div>
                     </div>
-                ))}
-            </div>
+                
+            ))}
+            </section>
+            </main>
         </div>
+        //<div> Hello { localStorage.getItem('curruser') }!! </div>
     );
 
 }
