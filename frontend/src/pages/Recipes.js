@@ -66,6 +66,7 @@ function RecipesPage() {
                .then(response => {
                     console.log(response.data.results);
                     setData(response.data.results);
+                    console.log(response)
                     const links_index = data.map(entity => {
                          return {
                               image: entity.image,
