@@ -34,6 +34,7 @@ function MyComponent({ myData, id }) {
 }
 
 function GroceriesPage() {
+    const backend = "http://localhost:5000";
 
     const [grocery_lists, set_grocery_lists] = useState([]);
     const [num_weeks, set_num_weeks] = useState([]);
@@ -54,7 +55,7 @@ function GroceriesPage() {
       const curruserID = localStorage.getItem("curruserID");
 
       const get_num_weeks  = async () => {
-        axios.get(`http://127.0.0.1:5000/get_num_weeks/${curruserID}`)
+        axios.get(`${backend}/get_num_weeks/${curruserID}`) //${backend}/getuserinfo?user=${currentUser}
         .then(response => {
           set_num_weeks(response.data);
           get_grocery_list(response.data);
@@ -70,7 +71,7 @@ function GroceriesPage() {
         const n_int = parseInt(num_weeks, 10);
   
         for (let i = 1; i < n_int+1; i++) {
-          const response = await fetch(`http://127.0.0.1:5000/get_grocery_list/${curruserID}/${i}`);
+          const response = await fetch(`${backend}/get_grocery_list/${curruserID}/${i}`);
           const data = await response.json();
 
           groceryArray.push(data);
