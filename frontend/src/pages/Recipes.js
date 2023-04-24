@@ -54,20 +54,18 @@ const ImageGallery = ({ imageLinks, handleImageToggle }) => {
      );
 };
 function RecipesPage() {
-     const [data, setData] = useState(null);
+     //const [data, setData] = useState(null);
      const [link_arr, setLink] = useState([]);
-     const [link_str, setString] = useState("");
 
      useEffect( () => {
           const get_list = async () => {
                axios.get('http://127.0.0.1:5000/get_recipe_list/1')
                //.then(response => {console.log(response.data.results);})
-               //.then(data => console.log(data.results[0].id))
                .then(response => {
                     console.log(response.data.results);
-                    setData(response.data.results);
-                    console.log(response)
-                    const links_index = data.map(entity => {
+                    //setData(response.data.results);
+                    console.log(response);
+                    const links_index = response.data.results.map(entity => {
                          return {
                               image: entity.image,
                               id: entity.id,
