@@ -19,9 +19,10 @@ const ImageGallery = ({ imageLinks, handleImageToggle }) => {
 
      //WeeklyRecipes
      const sendLinks = async () => {
+          const backend = "http://localhost:5000";
           const idsString = selectedImages.join(',');
           const curruserID = localStorage.getItem("curruserID");
-          await axios.post(`http://127.0.0.1:5000/post_recipes?userID=${curruserID}&recipe_string=${idsString}`)
+          await axios.post(`${backend}/post_recipes?userID=${curruserID}&recipe_string=${idsString}`)
           navigate("/home");
           console.log(idsString);
      };
@@ -54,12 +55,13 @@ const ImageGallery = ({ imageLinks, handleImageToggle }) => {
      );
 };
 function RecipesPage() {
+     const backend = "http://localhost:5000";
      //const [data, setData] = useState(null);
      const [link_arr, setLink] = useState([]);
 
      useEffect( () => {
           const get_list = async () => {
-               axios.get('http://127.0.0.1:5000/get_recipe_list/1')
+               axios.get(`${backend}/get_recipe_list/1`)
                //.then(response => {console.log(response.data.results);})
                .then(response => {
                     console.log(response.data.results);
