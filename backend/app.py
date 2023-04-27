@@ -6,6 +6,7 @@ import requests
 import json
 import time
 import random
+from sqlalchemy import Column, Integer, String, DateTime, func
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:11072000@localhost/capstone'
@@ -28,6 +29,7 @@ class User(db.Model):
     username = db.Column(db.String)
     email = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
+    created_on = db.Column(db.DateTime, default=func.now())
 
     # user body info
     gender = db.Column(db.String)
@@ -54,29 +56,29 @@ class User(db.Model):
     def __repr__(self):
         return f"User: {self.username}"
     
-    def __init__(self, username, email, password):
-        self.username = username
-        self.email = email
-        self.password = password
+    #def __init__(self, username, email, password):
+    #    self.username = username
+    #    self.email = email
+    #    self.password = password
     
-#     def __init__(self, username, email, password, gender, weight_lbs, age, height_feet, height_inches, activity_level, vegetarian, vegan, gluten_free, keto, paleo, pescetarian, preferences, restricitons):
-#         self.username = username
-#         self.email = email
-#         self.password = password
-#         self.gender = gender
-#         self.weight_lbs = weight_lbs
-#         self.age = age
-#         self.height_feet = height_feet
-#         self.height_inches = height_inches
-#         self.activity_level=activity_level
-#         self.vegetarian = vegetarian
-#         self.vegan = vegan
-#         self.gluten_free = gluten_free
-#         self.keto = keto
-#         self.paleo = paleo
-#         self.pescetarian = pescetarian
-#         self.preferences = preferences
-#         self.restrictions = restricitons
+    def __init__(self, username, email, password, gender, weight_lbs, age, height_feet, height_inches, activity_level, vegetarian, vegan, gluten_free, keto, paleo, pescetarian, preferences, restricitons):
+         self.username = username
+         self.email = email
+         self.password = password
+         self.gender = gender
+         self.weight_lbs = weight_lbs
+         self.age = age
+         self.height_feet = height_feet
+         self.height_inches = height_inches
+         self.activity_level=activity_level
+         self.vegetarian = vegetarian
+         self.vegan = vegan
+         self.gluten_free = gluten_free
+         self.keto = keto
+         self.paleo = paleo
+         self.pescetarian = pescetarian
+         self.preferences = preferences
+         self.restrictions = restricitons
   
 
 class UserNutrition(db.Model):
@@ -250,6 +252,333 @@ def post_whole_user():
     
     db.session.add(thisUser)
     db.session.commit()
+
+    # post user nutrition 
+    energy = 0
+    protein = 0
+    fat = 0
+    carbs = 0
+    ree = 0
+
+    calcium = 0
+    iron = 0
+    potassium = 0
+    
+    calcium_ul = 0
+    iron_ul = 0
+
+    vitD = 0
+    vitC = 0
+    vitA = 0
+    vitE = 0
+    
+    vitD_ul = 0
+    vitC_ul = 0
+    vitA_ul = 0
+    vitE_ul = 0
+
+    getuser = User.query.filter_by(email=email).one()
+    userID = getuser.userID
+    
+    this_user = User.query.filter_by(userID = userID).one()
+    #print(this_user.username)
+    #return this_user.username
+    
+    # returns an array in the format: [kcals, protein, fat, carbs, ...]
+    
+    # protein
+    # fats
+    # carbohydrates
+    # vitamins
+    # minerals
+
+    weight_kg = this_user.weight_lbs/2.20462262185
+    height_cm = (this_user.height_feet + this_user.height_inches/12) * 30.48
+    
+    # MACROS
+    # ree: resting energy expenditure
+    if(this_user.gender=='male'):
+        ree = (10*weight_kg) + (6.25*height_cm) - (5 * this_user.age) + 5
+    elif(this_user.gender == 'female'):
+        ree = (10*weight_kg) + (6.25*height_cm) - (5 * this_user.age) - 161
+    #return [ree]
+    # energy with activity level
+    if(this_user.activity_level == 'sedentary'):
+        energy = ree*1.2
+    elif(this_user.activity_level == 'low'):
+        energy = ree*1.375
+    elif(this_user.activity_level == 'medium'):
+        energy = ree*1.55
+    elif(this_user.activity_level == 'high'):
+        energy = ree*1.725
+    
+    #return [energy]
+    # protein
+    protein = this_user.weight_lbs * 0.825
+    
+    # fats
+    fat = (0.3*energy)/9
+    
+    # carbs
+    carbs = (energy - (protein*4) - (fat*9))/4
+    
+    # MICROS
+    
+    # in the format of: [energy, vitD(micrograms/d), vitC(micrograms/d), vitA(micrograms/d), vitE(mg/d), calcium (mg/d), iron(mg/d), potassium (mg/d)]
+    
+    if(this_user.age>=1 and this_user.age<=3):
+        vitD = 15
+        vitC = 15
+        vitA = 300
+        vitE = 6
+        
+        vitD_ul = 63
+        vitC_ul = 400
+        vitA_ul = 600
+        vitE_ul = 200
+            
+        calcium = 700
+        iron = 7
+        potassium = 2000
+        
+        calcium_ul = 2500
+        iron_ul = 40
+        # NO potassium_ul
+        
+    elif(this_user.age>3 and this_user.age<=8):
+        vitD = 15
+        vitC = 25
+        vitA = 400
+        vitE = 7
+        
+        vitD_ul = 75
+        vitC_ul = 650
+        vitA_ul = 900
+        vitE_ul = 300
+        
+        calcium = 1000
+        iron = 10
+        potassium =2300
+        
+        calcium_ul = 2500
+        iron_ul = 40
+        # NO potassium_ul
+        
+    else:
+        if(this_user.gender=='male'):
+            vitD = 15
+            vitC = 90
+            vitA = 900
+            vitE = 15
+            
+            if(this_user.age>8 and this_user.age<=13):
+                vitC = 45
+                vitA = 600
+                vitE = 11
+                
+                vitD_ul = 100
+                vitC_ul = 1200
+                vitA_ul = 1700
+                vitE_ul = 600
+                
+                calcium = 1300
+                iron = 8
+                potassium =2500
+                
+                calcium_ul = 3000
+                iron_ul = 40
+                
+            elif(this_user.age>13 and this_user.age <=18):
+                vitC = 75
+                
+                vitD_ul = 100
+                vitC_ul = 1800
+                vitA_ul = 2800
+                vitE_ul = 800
+                
+                calcium = 1300
+                iron = 11
+                potassium = 3000
+                
+                calcium_ul = 3000
+                iron_ul = 45
+                
+            elif(this_user.age>18 and this_user.age <=30):
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
+                calcium = 1000
+                iron = 8
+                potassium = 3400
+                
+                calcium_ul = 2500
+                iron_ul = 45
+                
+            elif(this_user.age>30 and this_user.age <=50):
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
+                calcium = 1000
+                iron = 8
+                potassium =3400
+                
+                calcium_ul = 2500
+                iron_ul = 45
+                
+            elif(this_user.age>50 and this_user.age <=70):
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
+                calcium = 1000
+                iron = 8
+                potassium =3400
+                
+                calcium_ul = 2000
+                iron_ul = 45
+                
+            elif(this_user.age>70):
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
+                vitD = 20
+                
+                calcium = 1200 
+                iron = 8
+                potassium =3400
+                
+                calcium_ul = 2000
+                iron_ul = 45
+            
+            
+        elif(this_user.gender=='female'):
+            
+            if(this_user.age>8 and this_user.age<=13):
+                vitD = 15
+                vitC = 45
+                vitA = 600
+                vitE = 11
+                
+                vitD_ul = 100
+                vitC_ul = 1200
+                vitA_ul = 1700
+                vitE_ul = 600
+                
+                calcium = 1300
+                iron = 8
+                potassium = 2300
+                
+                calcium_ul = 3000
+                iron_ul = 40
+    
+            elif(this_user.age>13 and this_user.age <=18):
+                vitD = 15
+                vitC = 65
+                vitA = 700
+                vitE = 15
+                
+                vitD_ul = 100
+                vitC_ul = 1800
+                vitA_ul = 2800
+                vitE_ul = 800
+                
+                calcium = 1300
+                iron = 15
+                potassium = 2300
+                
+                calcium_ul = 3000
+                iron_ul = 45
+                
+            elif(this_user.age>18 and this_user.age <=30):
+                vitD = 15
+                vitC = 65
+                vitA = 700
+                vitE = 15
+                
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
+                calcium = 1000
+                iron = 18
+                potassium = 2600
+                
+                calcium_ul = 2500
+                iron_ul = 45
+                
+            elif(this_user.age>30 and this_user.age <=50):
+                vitD = 15
+                vitC = 65
+                vitA = 700
+                vitE = 15
+                
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
+                calcium = 1000
+                iron = 18
+                potassium = 2600
+                
+                calcium_ul = 2500
+                iron_ul = 45
+                
+            elif(this_user.age>50 and this_user.age <=70):
+                vitD = 15
+                vitC = 65
+                vitA = 700
+                vitE = 15
+                
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
+                calcium = 1200
+                iron = 8
+                potassium = 2600
+                
+                calcium_ul = 2000
+                iron_ul = 45
+                
+            elif(this_user.age>70):
+                vitD = 20
+                vitC = 65
+                vitA = 700
+                vitE = 15
+                
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
+                calcium = 1200
+                iron = 8
+                potassium = 2600
+                
+                calcium_ul = 2000
+                iron_ul = 45
+    
+    return_list = [energy, protein, fat, carbs, vitD, vitC, vitA, vitE, calcium, iron, potassium, vitD_ul, vitC_ul, vitA_ul, vitE_ul, calcium_ul, iron_ul]
+    #print(type(protein))
+     
+    nutrition_info = {"energy":energy, "protein":protein, "fat": fat, "carbs": carbs, "vitD": vitD, "vitC": vitC, "vitA": vitA, "vitE": vitE, "calcium": calcium, "iron": iron, "potassium": potassium, "vitD_ul":vitD_ul, "vitC_ul":vitC_ul, "vitA_ul":vitA_ul, "vitE_ul":vitE_ul, "calcium_ul":calcium_ul, "iron_ul":iron_ul}
+
+    # post information to nutrition table in db
+    user_nutrition = UserNutrition(userID, energy, protein, fat, carbs, calcium, iron, potassium, calcium_ul, iron_ul, vitA, vitD,vitC,vitE, vitA_ul, vitD_ul,vitC_ul,vitE_ul)
+    
+    db.session.add(user_nutrition)
+    db.session.commit()
+
     return format_user(thisUser)
 
 '''
@@ -1138,3 +1467,11 @@ def get_grocery_list(userID, weekID):
 def get_num_weeks(userID):
     get = db.session.query(WeeklyRecipes.week_number_ID).filter_by(userID = userID).count()
     return str(get)
+
+@app.route('/get_created_date/<userID>', methods=['GET'])
+def get_created_date(userID):
+    get = User.query.filter_by(userID = userID).one()
+    created = get.created_on
+    ret = str(created).split(' ')
+    ret = ret[0]
+    return str(ret)

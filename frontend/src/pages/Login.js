@@ -8,6 +8,8 @@ const LoginPage = () => {
      const backend = "http://localhost:5000"
      const [username, setUsername] = useState("");
      const [password, setPassword] = useState("");
+     const [currWeek, setCurrWeek] = useState("");
+
      const navigate = useNavigate();
 
      const handleLogin = async () => {
@@ -18,8 +20,20 @@ const LoginPage = () => {
           } else {
                localStorage.setItem("curruser", username);
                localStorage.setItem("curruserID", data.data.user[0].userID);
+
                navigate("/home");
           }
+
+          // week stuff
+          const curruserID = localStorage.getItem("curruserID");
+          const date = await axios.get(`${backend}/get_created_date/${curruserID}`)
+          print(date);
+          const currentWeek = Math.ceil((new Date().getTime() - new Date('2023-01-01').getTime()) / (7 * 24 * 60 * 60 * 1000));
+          
+          setCurrWeek(currentWeek.toString());
+          console.log("hi");
+          localStorage.setItem('currWeek', currentWeek.toString());
+
      };
 
      const goToSignup = () => {
