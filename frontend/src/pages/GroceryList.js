@@ -85,9 +85,6 @@ function GroceriesPage() {
     <div>
       <div style={{paddingBottom:"10vh"}} className="App" ><Header /></div>   
 
-
-
-
       <div>
         {buttonArray.map((name, index) => (
           <button onClick={() => {

@@ -2024,3 +2024,19 @@ def get_created_date(userID):
     ret = str(created).split(' ')
     ret = ret[0]
     return str(ret)
+
+@app.route('/get_user_grocery_lists/<userID>', methods=['GET'])
+def get_user_grocery_lists(userID):
+    
+    #grocery_lists_dict = {}
+    
+    get_gl = db.session.query(GroceryLists.grocery_list).filter_by(userID = userID).all()
+    get_gl_json = [info[0] for info in get_gl]
+    
+    get_weeks = db.session.query(GroceryLists.web_week_number).filter_by(userID = userID).all()
+    get_weeks_json = [info[0] for info in get_weeks]
+    #return(str(json_values))
+    
+    hash_map = {get_weeks_json[i]: get_gl_json[i] for i in range(len(get_weeks_json))}
+    
+    return(str(hash_map))
