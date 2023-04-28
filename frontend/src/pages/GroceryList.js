@@ -5,20 +5,6 @@ import { Header } from './../components/'
 import './Style.css';
 import './../components/Modal/Modal.css'
 
-function ButtonList(props) {
-  const buttonData = props.buttonData;
-
-  return (
-    <div>
-      {buttonData.map((item, index) => (
-        <button key={index} onClick={() => console.log(item)}>
-          {item}
-        </button>
-      ))}
-    </div>
-  );
-}
-
 function MyComponent({ myData, id }) {
   const myObject = myData[id];
 

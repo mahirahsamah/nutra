@@ -34,7 +34,7 @@ const ProfilePage = () => {
   //   fetchData()
   // })
 
-  useEffect(async () => {
+  /*useEffect(async () => {
     const result = await axios.get(`${backend}/getuserinfo?user=${currentUser}`);
     setUserData(result.data.user[0]);
     setGender(result.data.user[0].gender);
@@ -53,6 +53,28 @@ const ProfilePage = () => {
     setRestrictions(result.data.user[0].restrictions);
 
     // console.log("test"+ gender);
+  }, []);*/
+
+  useEffect(() => {
+    async function fetchData() {
+      const result = await axios.get(`${backend}/getuserinfo?user=${currentUser}`);
+      setUserData(result.data.user[0]);
+      setGender(result.data.user[0].gender);
+      setWeight_lbs(result.data.user[0].weight_lbs);
+      setAge(result.data.user[0].age);
+      setHeight_feet(result.data.user[0].height_feet);
+      setHeight_inches(result.data.user[0].height_inches);
+      setActivity_level(result.data.user[0].activity_level);
+      setVegetarian(result.data.user[0].vegetarian);
+      setVegan(result.data.user[0].vegan);
+      setGluten_free(result.data.user[0].gluten_free);
+      setKeto(result.data.user[0].keto);
+      setPaleo(result.data.user[0].paleo);
+      setPescetarian(result.data.user[0].pescetarian);
+      setPreferences(result.data.user[0].preferences);
+      setRestrictions(result.data.user[0].restrictions);
+    }
+    fetchData();
   }, []);
 
   const update = async () => {

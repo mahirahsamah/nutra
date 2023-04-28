@@ -140,18 +140,20 @@ class WeeklyRecipes(db.Model):
     __tablename__ = 'users_weekly_recipes_table'
     __table_args__ = {'schema': 'public'}
 
-    grocery_lists = relationship("GroceryLists")
-
+    #grocery_lists = relationship("GroceryLists")
+    
     week_number_ID = db.Column(db.Integer, primary_key=True)
+    web_week_number = db.Column(db.Integer)
     userID = db.Column(db.Integer, db.ForeignKey('public.users_table.userID'))
     recipeIDs = db.Column(db.String) # this is a string of comma-separated recipe IDs
 
     def __repr__(self):
         return f"User: {self.userID}"
     
-    def __init__(self, userID, recipeIDs):
+    def __init__(self, web_week_number, userID, recipeIDs):
         self.userID = userID
         self.recipeIDs = recipeIDs
+        self.web_week_number = web_week_number
 
 
 class Latency(db.Model):
@@ -174,7 +176,8 @@ class GroceryLists(db.Model):
     __table_args__ = {'schema': 'public'}
 
     listID = db.Column(db.Integer, primary_key=True)
-    week_number_ID = db.Column(db.Integer, db.ForeignKey('public.users_weekly_recipes_table.week_number_ID'))
+    #week_number_ID = db.Column(db.Integer, db.ForeignKey('public.users_weekly_recipes_table.week_number_ID'))
+    web_week_number = db.Column(db.Integer)
     userID = db.Column(db.Integer, db.ForeignKey('public.users_table.userID'))
     grocery_list = db.Column(db.String)
 
@@ -182,24 +185,231 @@ class GroceryLists(db.Model):
     def __repr__(self):
         return f"List ID: {self.listID}"
     
-    def __init__(self, userID, week_number_ID, grocery_list):
+    def __init__(self, web_week_number, userID, grocery_list):
         self.userID = userID
-        self.week_number_ID = week_number_ID
+        #self.week_number_ID = week_number_ID
         self.grocery_list = grocery_list
+        self.web_week_number =web_week_number
 
 @app.route('/groceries')
 def home():
     return "Test Page"
 
 
-@app.route('/post_recipes', methods=['POST'])
-def post_recipes():
+@app.route('/post_recipes/<userID>/<weekID>', methods=['POST','PUT'])
+def post_recipes(userID, weekID):
     userID = request.args.get('userID')
     recipe_string= request.args.get('recipe_string')
-    recipes = WeeklyRecipes(userID, recipe_string)
+    recipes = WeeklyRecipes(weekID, userID, recipe_string)
 
     db.session.add(recipes)
     db.session.commit()
+    
+    # post grocery list
+    recipe_ids = WeeklyRecipes.query.filter_by(userID = userID, web_week_number = weekID).one()
+    recipes = (recipe_ids.recipeIDs.replace(" ", "")).split(',')
+    
+    num_recipes = len(recipes)
+    
+    recipe_ingredients_info_json = {}
+    
+    find_by_nutrients_url = "https://api.spoonacular.com/recipes/{id}/ingredientWidget.json?apiKey=13cc54269ca54d258cf7b07e4383154c"
+    
+    grocery_list_map = {}
+    grocery_list_map["id"] = weekID
+    
+    for recipe in recipes:
+        add = "https://api.spoonacular.com/recipes/"+str(recipe)+"/ingredientWidget.json?apiKey=13cc54269ca54d258cf7b07e4383154c"
+        add_response = requests.get(add)
+        recipe_ingredients_info_json[str(recipe)] = add_response.json()
+        
+        for i in range(len(recipe_ingredients_info_json[recipe]["ingredients"])):
+            if (str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"]) in grocery_list_map):
+                
+                # then add to already existing amount
+                temp = float((grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])]).split(" ")[0])
+                
+                add = temp + float(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["value"])*(7/num_recipes)
+                
+                grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])] = str(round(add, 2))+ " " +str(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["unit"])
+                
+            else:
+                add = float(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["value"])*(7/num_recipes)
+                grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])] = str(round(add ,2) ) + " " +str(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["unit"])
+    
+    
+    #return json.dumps(grocery_list_map)
+    # post information to nutrition table in db
+    post_grocery_list = GroceryLists(weekID, userID, json.dumps(grocery_list_map))
+  
+    db.session.add(post_grocery_list)
+    db.session.commit()
+    
+    # get remaining ingredients
+    this_user = User.query.filter_by(userID = userID).one()
+    preferences = (this_user.preferences).split(',')
+    restrictions = (this_user.restrictions).split(',')
+    
+    includes = "&includeIngredients="+this_user.preferences.replace(" ", "")
+    excludes = "&excludeIngredients="+this_user.restrictions.replace(" ", "")
+
+    diet_string ="&diet="
+    diet_types=""
+    if this_user.gluten_free:
+        diet_types+=",gluten free"
+    if this_user.vegan:
+        diet_types+=",vegan"
+    if this_user.keto:
+        diet_types+=",ketogenic"
+    if this_user.vegetarian:
+        diet_types+=",vegetarian"
+    if this_user.paleo:
+        diet_types+=",paleo"
+    if this_user.pescetarian:
+        diet_types+=",pescetarian"
+        
+    diet_string+=diet_types[1:]
+
+    # get recipes IDs from the weekly recipes table
+    recipe_ids = WeeklyRecipes.query.filter_by(userID = userID, web_week_number = weekID).one()
+    recipes = (recipe_ids.recipeIDs.replace(" ", "")).split(',')
+
+    micronutrients = UserNutrition.query.filter_by(userID = userID).one()
+
+    energy = str(micronutrients.energy)
+
+    vitD = str(micronutrients.vitD)
+    vitC =str(micronutrients.vitC)
+    vitA = str(micronutrients.vitA)
+    vitE = str(micronutrients.vitE)
+    calcium = str(micronutrients.calcium)
+    iron = str(micronutrients.iron)
+    potassium = str(micronutrients.potassium)
+
+    # ULs
+    vitD_ul = str(micronutrients.vitD_ul-10)
+    vitC_ul = str(micronutrients.vitC_ul-200)
+    vitA_ul = str(micronutrients.vitA_ul-300)
+    vitE_ul = str(micronutrients.vitE_ul-100)
+    calcium_ul = str(micronutrients.calcium_ul - 200)
+    iron_ul = str(micronutrients.iron_ul - 5)
+
+    # total nutrition (sum) from recipes
+    energy_sum = 0
+    vitD_sum = 0
+    vitC_sum =0
+    vitA_sum = 0
+    vitE_sum = 0
+    calcium_sum =0 
+    iron_sum = 0
+    potassium_sum = 0
+
+    # one json object to hold all the nutrients in all the recipes
+    recipe_nutrition_info_json = {}
+
+    # get nutrients of all the recipe IDs
+    for recipe in recipes:
+        recipe_nutrients_url = f"https://api.spoonacular.com/recipes/{recipe}/nutritionWidget.json?apiKey={api_key}"
+        response = requests.get(recipe_nutrients_url)
+        recipe_nutrition_info_json[recipe]=response.json()
+        
+        energy_sum += float(recipe_nutrition_info_json[str(recipe)]["bad"][0]["amount"])
+
+        for i in range(len(recipe_nutrition_info_json[str(recipe)]["good"])):
+        
+            if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Calcium":
+                calcium_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+            if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin C":
+                vitC_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+            if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin A":
+                vitA_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+            if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin E":
+                vitE_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+            if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin D":
+                vitD_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+            if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin D":
+                iron_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+            if recipe_nutrition_info_json[str(recipe)]["good"][i]["title"] == "Vitamin D":
+                potassium_sum += float(recipe_nutrition_info_json[str(recipe)]["good"][i]["amount"][:-2])
+        
+    # remaining nutrients
+    energy_remaining = round(float(energy) - float(energy_sum), 2)
+    vitD_remaining = round(float(vitD) - float(vitD_sum), 2)
+    vitC_remaining = round(float(vitC) - float(vitC_sum), 2)
+    vitA_remaining = round(float(vitA) - float(vitA_sum), 2)
+    vitE_remaining = round(float(vitE) - float(vitE_sum), 2)
+    calcium_remaining = round(float(calcium) - float(calcium_sum), 2)
+    iron_remaining = round(float(iron) - float(iron_sum), 2)
+    potassium_remaining = round(float(potassium) - float(potassium_sum), 2)
+    
+    remaining_json = {"energy_remaining":energy_remaining, "vitD_remaining":vitD_remaining, "vitC_remaining":vitC_remaining, "vitA_remaining":vitA_remaining, "vitE_remaining":vitE_remaining, "calcium_remaining":calcium_remaining, "iron_remaining":iron_remaining, "potassium_remaining":potassium_remaining}
+    
+    for key, value in remaining_json.items():
+        if value <= 0:
+            remaining_json[key] = 0
+    #return remaining_json
+    # find the largest three nutrients they are missing
+
+    sorted_values = sorted(remaining_json.values(), reverse=True)
+    largest_values = {}
+    for key, value in remaining_json.items():
+        if value in sorted_values[:2]:
+            largest_values[key] = value
+
+    remaining_nutrients = list(largest_values.keys()) # nutrients to add in url query
+
+    nutrients_query = ""
+    for i in range(len(list(largest_values.keys()))):
+
+        if "energy" in remaining_nutrients[i]:
+            nutrients_query += "&minCalories="+str((float(list(largest_values.values())[i]))/2-25)+"&maxCalories="+str((float(list(largest_values.values())[i]))/2+50)
+        if "calcium" in remaining_nutrients[i]:
+            nutrients_query += "&minCalcium="+str((float(list(largest_values.values())[i]))/2-25)+"&maxCalcium="+str((float(list(largest_values.values())[i]))/2+50)
+        if "iron" in remaining_nutrients[i]:
+            nutrients_query += "&minIron="+str((float(list(largest_values.values())[i]))/2-1)+"&maxIron="+str((float(list(largest_values.values())[i]))/2+3)
+        if "potassium" in remaining_nutrients[i]:
+            nutrients_query += "&minPotassium="+str((float(list(largest_values.values())[i]))/2-250)+"&maxPotassium="+str((float(list(largest_values.values())[i]))/2+500)
+        if "vitD" in remaining_nutrients[i]:
+            nutrients_query += "&minVitaminD="+str((float(list(largest_values.values())[i]))/2-5)+"&maxVitaminD="+str((float(list(largest_values.values())[i]))/2+10)
+        if "vitA" in remaining_nutrients[i]:
+            nutrients_query += "&minVitaminA="+str((float(list(largest_values.values())[i]))/2-50)+"&maxVitaminA="+str((float(list(largest_values.values())[i]))/2+100)
+        if "vitC" in remaining_nutrients[i]:
+            nutrients_query += "&minVitaminC="+str((float(list(largest_values.values())[i]))/2-10)+"&maxVitaminC="+str((float(list(largest_values.values())[i]))/2+20)
+        if "vitE" in remaining_nutrients[i]:
+            nutrients_query += "&minVitaminE="+str((float(list(largest_values.values())[i]))/2-2)+"&maxVitaminE="+str((float(list(largest_values.values())[i]))/2+5)
+    
+    # find snacks that fulfill these remaining nutrients
+
+    find_remaining_url = "https://api.spoonacular.com/recipes/complexSearch"
+
+    # ingredient preferences are randomized, includes will be added less than 20% of the time due to how much it limits the results
+    micros_query_params = ""
+    micros_query_params = "apiKey=" + api_key + nutrients_query + diet_string+excludes+"&type=snack,drink,side dish,appetizer,salad,soup,fingerfood"
+
+    micros_query =  find_remaining_url + "?" + micros_query_params 
+    micros_response = (requests.get(micros_query)).json()
+    ids_list = []
+    for i in range(len(micros_response["results"])):
+        ids_list.append(micros_response["results"][i]["id"])
+
+    # choose at most two - no user choice
+    if len(ids_list) >2:
+        ids_list = random.sample(ids_list, 2)
+
+    ids_list_str = [str(val) for val in ids_list]
+
+    ids_string = ','.join(ids_list_str)
+    recipes_string = ','.join(recipes)
+
+    put_string = recipes_string + "," + ids_string
+
+    update = WeeklyRecipes.query.filter_by(web_week_number = weekID, userID = userID)
+    update.update(dict(recipeIDs = put_string))
+
+    db.session.commit()
+    
+    
+    
     return "recipe " + recipe_string + " added to " + userID
 
 def format_user(user):
@@ -731,6 +941,7 @@ def update_event(edit_column, userID):
     db.session.commit()
     return {'event':format_user(event.one())}
 
+
 @app.route('/get_nutrition/<userID>', methods=['GET', 'POST'])
 #def nutrients_amounts(gender, weight_lbs, age, height_feet, height_inches, activity_level):
 def get_nutrition(userID):
@@ -1045,16 +1256,16 @@ def get_nutrition(userID):
                 calcium_ul = 2000
                 iron_ul = 45
     
-    return_list = [energy, protein, fat, carbs, vitD, vitC, vitA, vitE, calcium, iron, potassium, vitD_ul, vitC_ul, vitA_ul, vitE_ul, calcium_ul, iron_ul]
+    #return_list = [energy, protein, fat, carbs, vitD, vitC, vitA, vitE, calcium, iron, potassium, vitD_ul, vitC_ul, vitA_ul, vitE_ul, calcium_ul, iron_ul]
     #print(type(protein))
      
     nutrition_info = {"energy":energy, "protein":protein, "fat": fat, "carbs": carbs, "vitD": vitD, "vitC": vitC, "vitA": vitA, "vitE": vitE, "calcium": calcium, "iron": iron, "potassium": potassium, "vitD_ul":vitD_ul, "vitC_ul":vitC_ul, "vitA_ul":vitA_ul, "vitE_ul":vitE_ul, "calcium_ul":calcium_ul, "iron_ul":iron_ul}
 
     # post information to nutrition table in db
-    user_nutrition = UserNutrition(userID, energy, protein, fat, carbs, calcium, iron, potassium, calcium_ul, iron_ul, vitA, vitD,vitC,vitE, vitA_ul, vitD_ul,vitC_ul,vitE_ul)
+    #user_nutrition = UserNutrition(userID, energy, protein, fat, carbs, calcium, iron, potassium, calcium_ul, iron_ul, vitA, vitD,vitC,vitE, vitA_ul, vitD_ul,vitC_ul,vitE_ul)
     
-    db.session.add(user_nutrition)
-    db.session.commit()
+    #db.session.add(user_nutrition)
+    #db.session.commit()
 
     return nutrition_info
     #return {"nutrients":return_list}
@@ -1076,7 +1287,7 @@ def get_restrictions(userID):
 def get_recipe_list(userID):
     # time start for function
     # time is in seconds
-    start_time = time.time()
+    #start_time = time.time()
     
     # get restrictions and preferences
     this_user = User.query.filter_by(userID = userID).one()
@@ -1164,19 +1375,20 @@ def get_recipe_list(userID):
     # having the micronutrients in the query params makes it more constricting. so i am just going to let the user choose from list of recipes and then fill the rest of the nutrients in with snacks
 
     macros_query =  find_by_nutrients_url + "?" + macros_query_params 
-    print(macros_query)
+    #print(macros_query)
     macros_response = requests.get(macros_query)
 
     # time end for function
-    end_time = time.time()
-    total_time = end_time - start_time
+    #end_time = time.time()
+    #total_time = end_time - start_time
 
-    time_taken = Latency("generate_recipes", total_time)
-    db.session.add(time_taken)
-    db.session.commit()
+    #time_taken = Latency("generate_recipes", total_time)
+    #db.session.add(time_taken)
+    #db.session.commit()
 
 
     return macros_response.json()
+
 
 # just run this one function when user selects their recipes 
 @app.route('/get_remaining_ingredients/<userID>/<weekID>', methods=['GET','PUT','POST']) # this function gets remaining ingredients AND posts the final grocery list to the db
@@ -1211,7 +1423,7 @@ def get_remaining_ingredients(userID, weekID):
     diet_string+=diet_types[1:]
 
     # get recipes IDs from the weekly recipes table
-    recipe_ids = WeeklyRecipes.query.filter_by(userID = userID, week_number_ID = weekID).one()
+    recipe_ids = WeeklyRecipes.query.filter_by(userID = userID, web_week_number = weekID).one()
     recipes = (recipe_ids.recipeIDs.replace(" ", "")).split(',')
 
     micronutrients = UserNutrition.query.filter_by(userID = userID).one()
@@ -1343,7 +1555,7 @@ def get_remaining_ingredients(userID, weekID):
 
     put_string = recipes_string + "," + ids_string
 
-    update = WeeklyRecipes.query.filter_by(week_number_ID = weekID, userID = userID)
+    update = WeeklyRecipes.query.filter_by(web_week_number = weekID, userID = userID)
     update.update(dict(recipeIDs = put_string))
 
     db.session.commit()
@@ -1358,7 +1570,7 @@ def get_remaining_ingredients(userID, weekID):
 
     # post grocery list:
 
-    recipe_ids = WeeklyRecipes.query.filter_by(userID = userID, week_number_ID = weekID).one()
+    recipe_ids = WeeklyRecipes.query.filter_by(userID = userID, web_week_number = weekID).one()
     recipes = (recipe_ids.recipeIDs.replace(" ", "")).split(',')
     
     num_recipes = len(recipes)
@@ -1405,7 +1617,7 @@ def post_grocery_list(userID, weekID):
     start_time = time.time()
 
     ###
-    recipe_ids = WeeklyRecipes.query.filter_by(userID = userID, week_number_ID = weekID).one()
+    recipe_ids = WeeklyRecipes.query.filter_by(userID = userID, web_week_number = weekID).one()
     recipes = (recipe_ids.recipeIDs.replace(" ", "")).split(',')
     
     num_recipes = len(recipes)
@@ -1457,7 +1669,7 @@ def post_grocery_list(userID, weekID):
 
 @app.route('/get_grocery_list/<userID>/<weekID>', methods=['GET'])
 def get_grocery_list(userID, weekID):
-    get =  GroceryLists.query.filter_by(userID = userID, week_number_ID = weekID).one()
+    get =  GroceryLists.query.filter_by(userID = userID, web_week_number = str(int(weekID)-1)).one()
     get_grocery_list = get.grocery_list
     grocery_dict = json.loads(get_grocery_list)
     print(grocery_dict)
@@ -1465,7 +1677,7 @@ def get_grocery_list(userID, weekID):
 
 @app.route('/get_num_weeks/<userID>', methods=['GET'])
 def get_num_weeks(userID):
-    get = db.session.query(WeeklyRecipes.week_number_ID).filter_by(userID = userID).count()
+    get = db.session.query(WeeklyRecipes.web_week_number).filter_by(userID = userID).count()
     return str(get)
 
 @app.route('/get_created_date/<userID>', methods=['GET'])

@@ -13,11 +13,6 @@ const LoginPage = () => {
 
      const navigate = useNavigate();
 
-     const uID = localStorage.getItem("curruserID");
-     const date = axios.get(`${backend}/get_created_date/${uID}`)
-     const dateString = '2022-01-01';
-     //const created_date = '';
-
      useEffect(() => {
           const uID = localStorage.getItem("curruserID");
           const fetchData = async () => {
@@ -40,8 +35,6 @@ const LoginPage = () => {
 
      const handleLogin = async () => {
           const data = await axios.get(`${backend}/checklogin?user=${username}&pass=${password}`)
-          
-          //const date = axios.get(`${backend}/get_created_date/${curruserID}`)
 
           if(data.data.user.length === 0){
                alert("No matching username and password combo.");
@@ -51,9 +44,6 @@ const LoginPage = () => {
 
                navigate("/home");
           }
-
-          
-
      };
 
      const goToSignup = () => {
