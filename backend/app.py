@@ -2037,6 +2037,6 @@ def get_user_grocery_lists(userID):
     get_weeks_json = [info[0] for info in get_weeks]
     #return(str(json_values))
     
-    hash_map = {get_weeks_json[i]: get_gl_json[i] for i in range(len(get_weeks_json))}
+    hash_map = {get_weeks_json[i]: json.loads(get_gl_json[i]) for i in range(len(get_weeks_json))}
     
-    return(str(hash_map))
+    return(json.dumps(hash_map))
