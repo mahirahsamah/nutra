@@ -880,9 +880,9 @@ def update_user():
     preferences = request.args.get('preferences')
     restrictions = request.args.get('restrictions')
 
-       
-
+    
     user = User.query.filter_by(username=user)
+    
     user.update(dict(
                     gender = gender, 
                     weight_lbs = weight_lbs,
@@ -900,6 +900,343 @@ def update_user():
                     restrictions = restrictions
                     ))
     db.session.commit()
+    '''
+    u = str(user.one()).split(' ')[1]
+
+    user = User.query.filter_by(username=u)
+    return(str(user.userID))
+    
+    
+    # post user nutrition 
+    energy = 0
+    protein = 0
+    fat = 0
+    carbs = 0
+    ree = 0
+
+    calcium = 0
+    iron = 0
+    potassium = 0
+    
+    calcium_ul = 0
+    iron_ul = 0
+
+    vitD = 0
+    vitC = 0
+    vitA = 0
+    vitE = 0
+    
+    vitD_ul = 0
+    vitC_ul = 0
+    vitA_ul = 0
+    vitE_ul = 0
+
+    #print("username: ", user)
+    #getuser = User.query.filter_by(username=user).one()
+    
+    #userID = getuser.userID
+    
+    
+    #this_user = User.query.filter_by(userID = userID).one()
+    #print(this_user.username)
+    #return this_user.username
+    
+    # returns an array in the format: [kcals, protein, fat, carbs, ...]
+    
+    # protein
+    # fats
+    # carbohydrates
+    # vitamins
+    # minerals
+
+    weight_kg =float(weight_lbs)/2.20462262185
+    height_cm = (float(height_feet) + float(height_inches)/12) * 30.48
+    
+    # MACROS
+    # ree: resting energy expenditure
+    if(gender=='male'):
+        ree = (10*float(weight_kg)) + (6.25*float(height_cm)) - (5 * float(age)) + 5
+    elif(gender == 'female'):
+        ree = (10*float(weight_kg)) + (6.25*float(height_cm)) - (5 * float(age)) - 161
+    #return [ree]
+    # energy with activity level
+    if(activity_level == 'sedentary'):
+        energy = ree*1.2
+    elif(activity_level == 'low'):
+        energy = ree*1.375
+    elif(activity_level == 'medium'):
+        energy = ree*1.55
+    elif(activity_level == 'high'):
+        energy = ree*1.725
+    
+    #return [energy]
+    # protein
+    protein =float(weight_lbs) * 0.825
+    
+    # fats
+    fat = (0.3*float(energy))/9
+    
+    # carbs
+    carbs = (float(energy) - (protein*4) - (fat*9))/4
+    
+    # MICROS
+    
+    # in the format of: [energy, vitD(micrograms/d), vitC(micrograms/d), vitA(micrograms/d), vitE(mg/d), calcium (mg/d), iron(mg/d), potassium (mg/d)]
+    
+    if(float(age)>=1 and float(age)<=3):
+        vitD = 15
+        vitC = 15
+        vitA = 300
+        vitE = 6
+        
+        vitD_ul = 63
+        vitC_ul = 400
+        vitA_ul = 600
+        vitE_ul = 200
+            
+        calcium = 700
+        iron = 7
+        potassium = 2000
+        
+        calcium_ul = 2500
+        iron_ul = 40
+        # NO potassium_ul
+        
+    elif(float(age)>3 and float(age)<=8):
+        vitD = 15
+        vitC = 25
+        vitA = 400
+        vitE = 7
+        
+        vitD_ul = 75
+        vitC_ul = 650
+        vitA_ul = 900
+        vitE_ul = 300
+        
+        calcium = 1000
+        iron = 10
+        potassium =2300
+        
+        calcium_ul = 2500
+        iron_ul = 40
+        # NO potassium_ul
+        
+    else:
+        if(gender=='male'):
+            vitD = 15
+            vitC = 90
+            vitA = 900
+            vitE = 15
+            
+            if(float(age)>8 and float(age)<=13):
+                vitC = 45
+                vitA = 600
+                vitE = 11
+                
+                vitD_ul = 100
+                vitC_ul = 1200
+                vitA_ul = 1700
+                vitE_ul = 600
+                
+                calcium = 1300
+                iron = 8
+                potassium =2500
+                
+                calcium_ul = 3000
+                iron_ul = 40
+                
+            elif(float(age)>13 and float(age) <=18):
+                vitC = 75
+                
+                vitD_ul = 100
+                vitC_ul = 1800
+                vitA_ul = 2800
+                vitE_ul = 800
+                
+                calcium = 1300
+                iron = 11
+                potassium = 3000
+                
+                calcium_ul = 3000
+                iron_ul = 45
+                
+            elif(float(age)>18 and float(age) <=30):
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
+                calcium = 1000
+                iron = 8
+                potassium = 3400
+                
+                calcium_ul = 2500
+                iron_ul = 45
+                
+            elif(float(age)>30 and float(age) <=50):
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
+                calcium = 1000
+                iron = 8
+                potassium =3400
+                
+                calcium_ul = 2500
+                iron_ul = 45
+                
+            elif(float(age)>50 and float(age) <=70):
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
+                calcium = 1000
+                iron = 8
+                potassium =3400
+                
+                calcium_ul = 2000
+                iron_ul = 45
+                
+            elif(float(age)>70):
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
+                vitD = 20
+                
+                calcium = 1200 
+                iron = 8
+                potassium =3400
+                
+                calcium_ul = 2000
+                iron_ul = 45
+            
+            
+        elif(gender=='female'):
+            
+            if(float(age)>8 and float(age)<=13):
+                vitD = 15
+                vitC = 45
+                vitA = 600
+                vitE = 11
+                
+                vitD_ul = 100
+                vitC_ul = 1200
+                vitA_ul = 1700
+                vitE_ul = 600
+                
+                calcium = 1300
+                iron = 8
+                potassium = 2300
+                
+                calcium_ul = 3000
+                iron_ul = 40
+    
+            elif(float(age)>13 and float(age) <=18):
+                vitD = 15
+                vitC = 65
+                vitA = 700
+                vitE = 15
+                
+                vitD_ul = 100
+                vitC_ul = 1800
+                vitA_ul = 2800
+                vitE_ul = 800
+                
+                calcium = 1300
+                iron = 15
+                potassium = 2300
+                
+                calcium_ul = 3000
+                iron_ul = 45
+                
+            elif(float(age)>18 and float(age) <=30):
+                vitD = 15
+                vitC = 65
+                vitA = 700
+                vitE = 15
+                
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
+                calcium = 1000
+                iron = 18
+                potassium = 2600
+                
+                calcium_ul = 2500
+                iron_ul = 45
+                
+            elif(float(age)>30 and float(age) <=50):
+                vitD = 15
+                vitC = 65
+                vitA = 700
+                vitE = 15
+                
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
+                calcium = 1000
+                iron = 18
+                potassium = 2600
+                
+                calcium_ul = 2500
+                iron_ul = 45
+                
+            elif(float(age)>50 and float(age) <=70):
+                vitD = 15
+                vitC = 65
+                vitA = 700
+                vitE = 15
+                
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
+                calcium = 1200
+                iron = 8
+                potassium = 2600
+                
+                calcium_ul = 2000
+                iron_ul = 45
+                
+            elif(float(age)>70):
+                vitD = 20
+                vitC = 65
+                vitA = 700
+                vitE = 15
+                
+                vitD_ul = 100
+                vitC_ul = 2000
+                vitA_ul = 3000
+                vitE_ul = 1000
+                
+                calcium = 1200
+                iron = 8
+                potassium = 2600
+                
+                calcium_ul = 2000
+                iron_ul = 45
+    
+    return_list = [energy, protein, fat, carbs, vitD, vitC, vitA, vitE, calcium, iron, potassium, vitD_ul, vitC_ul, vitA_ul, vitE_ul, calcium_ul, iron_ul]
+    #print(type(protein))
+     
+    nutrition_info = {"energy":energy, "protein":protein, "fat": fat, "carbs": carbs, "vitD": vitD, "vitC": vitC, "vitA": vitA, "vitE": vitE, "calcium": calcium, "iron": iron, "potassium": potassium, "vitD_ul":vitD_ul, "vitC_ul":vitC_ul, "vitA_ul":vitA_ul, "vitE_ul":vitE_ul, "calcium_ul":calcium_ul, "iron_ul":iron_ul}
+
+    # post information to nutrition table in db
+    user_nutrition = UserNutrition(user.userID, energy, protein, fat, carbs, calcium, iron, potassium, calcium_ul, iron_ul, vitA, vitD,vitC,vitE, vitA_ul, vitD_ul,vitC_ul,vitE_ul)
+    
+    db.session.add(user_nutrition)
+    db.session.commit()
+    '''
+    
     return {'user': format_user(user.one())}
 
 ### END THACH'S STUFF
@@ -1262,10 +1599,10 @@ def get_nutrition(userID):
     nutrition_info = {"energy":energy, "protein":protein, "fat": fat, "carbs": carbs, "vitD": vitD, "vitC": vitC, "vitA": vitA, "vitE": vitE, "calcium": calcium, "iron": iron, "potassium": potassium, "vitD_ul":vitD_ul, "vitC_ul":vitC_ul, "vitA_ul":vitA_ul, "vitE_ul":vitE_ul, "calcium_ul":calcium_ul, "iron_ul":iron_ul}
 
     # post information to nutrition table in db
-    #user_nutrition = UserNutrition(userID, energy, protein, fat, carbs, calcium, iron, potassium, calcium_ul, iron_ul, vitA, vitD,vitC,vitE, vitA_ul, vitD_ul,vitC_ul,vitE_ul)
+    user_nutrition = UserNutrition(userID, energy, protein, fat, carbs, calcium, iron, potassium, calcium_ul, iron_ul, vitA, vitD,vitC,vitE, vitA_ul, vitD_ul,vitC_ul,vitE_ul)
     
-    #db.session.add(user_nutrition)
-    #db.session.commit()
+    db.session.add(user_nutrition)
+    db.session.commit()
 
     return nutrition_info
     #return {"nutrients":return_list}
