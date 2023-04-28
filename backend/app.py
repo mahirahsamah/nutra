@@ -56,29 +56,29 @@ class User(db.Model):
     def __repr__(self):
         return f"User: {self.username}"
     
-    #def __init__(self, username, email, password):
-    #    self.username = username
-    #    self.email = email
-    #    self.password = password
+    def __init__(self, username, email, password):
+        self.username = username
+        self.email = email
+        self.password = password
     
-    def __init__(self, username, email, password, gender, weight_lbs, age, height_feet, height_inches, activity_level, vegetarian, vegan, gluten_free, keto, paleo, pescetarian, preferences, restricitons):
-         self.username = username
-         self.email = email
-         self.password = password
-         self.gender = gender
-         self.weight_lbs = weight_lbs
-         self.age = age
-         self.height_feet = height_feet
-         self.height_inches = height_inches
-         self.activity_level=activity_level
-         self.vegetarian = vegetarian
-         self.vegan = vegan
-         self.gluten_free = gluten_free
-         self.keto = keto
-         self.paleo = paleo
-         self.pescetarian = pescetarian
-         self.preferences = preferences
-         self.restrictions = restricitons
+    #def __init__(self, username, email, password, gender, weight_lbs, age, height_feet, height_inches, activity_level, vegetarian, vegan, gluten_free, keto, paleo, pescetarian, preferences, restricitons):
+    #     self.username = username
+    #     self.email = email
+    #     self.password = password
+    #     self.gender = gender
+    #     self.weight_lbs = weight_lbs
+    #     self.age = age
+    #     self.height_feet = height_feet
+    #     self.height_inches = height_inches
+    #     self.activity_level=activity_level
+    #     self.vegetarian = vegetarian
+    #     self.vegan = vegan
+    #     self.gluten_free = gluten_free
+    #     self.keto = keto
+    #     self.paleo = paleo
+    #     self.pescetarian = pescetarian
+    #     self.preferences = preferences
+   #      self.restrictions = restricitons
   
 
 class UserNutrition(db.Model):

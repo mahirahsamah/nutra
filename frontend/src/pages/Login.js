@@ -9,12 +9,40 @@ const LoginPage = () => {
      const [username, setUsername] = useState("");
      const [password, setPassword] = useState("");
      const [currWeek, setCurrWeek] = useState("");
+     const [userCreatedDate, setUserCreatedDate]= useState("");
 
      const navigate = useNavigate();
 
+     const uID = localStorage.getItem("curruserID");
+     const date = axios.get(`${backend}/get_created_date/${uID}`)
+     const dateString = '2022-01-01';
+     //const created_date = '';
+
+     useEffect(() => {
+          const uID = localStorage.getItem("curruserID");
+          const fetchData = async () => {
+            const response = await axios.get(`${backend}/get_created_date/${uID}`);
+            const userCreatedDate = response.data;
+            setUserCreatedDate(userCreatedDate);
+            //console.log(userCreatedDate)
+
+            const userCreationDate = new Date(userCreatedDate); // replace with the actual date from your database
+          const currentDate = new Date();
+          const diffInMs = currentDate - userCreationDate;
+          const wk = Math.floor(diffInMs / (7 * 24 * 60 * 60 * 1000));
+          setCurrWeek(wk);
+          };
+          
+          fetchData();
+     }, []);
+
+     localStorage.setItem("currWeek", currWeek);
+
      const handleLogin = async () => {
           const data = await axios.get(`${backend}/checklogin?user=${username}&pass=${password}`)
-     
+          
+          //const date = axios.get(`${backend}/get_created_date/${curruserID}`)
+
           if(data.data.user.length === 0){
                alert("No matching username and password combo.");
           } else {
@@ -24,15 +52,7 @@ const LoginPage = () => {
                navigate("/home");
           }
 
-          // week stuff
-          const curruserID = localStorage.getItem("curruserID");
-          const date = await axios.get(`${backend}/get_created_date/${curruserID}`)
-          print(date);
-          const currentWeek = Math.ceil((new Date().getTime() - new Date('2023-01-01').getTime()) / (7 * 24 * 60 * 60 * 1000));
           
-          setCurrWeek(currentWeek.toString());
-          console.log("hi");
-          localStorage.setItem('currWeek', currentWeek.toString());
 
      };
 
