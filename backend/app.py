@@ -9,7 +9,7 @@ import random
 from sqlalchemy import Column, Integer, String, DateTime, func
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:admin@localhost/capstone'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:11072000@localhost/capstone'
 db = SQLAlchemy(app)
 CORS(app)
 
@@ -238,8 +238,6 @@ def post_recipes(userID, weekID):
                 grocery_list_map[str(recipe_ingredients_info_json[recipe]["ingredients"][i]["name"])] = str(round(add ,2) ) + " " +str(recipe_ingredients_info_json[recipe]["ingredients"][i]["amount"]["us"]["unit"])
     
     
-    #return json.dumps(grocery_list_map)
-    # post information to nutrition table in db
     post_grocery_list = GroceryLists(weekID, userID, json.dumps(grocery_list_map))
   
     db.session.add(post_grocery_list)
@@ -407,8 +405,6 @@ def post_recipes(userID, weekID):
     update.update(dict(recipeIDs = put_string))
 
     db.session.commit()
-    
-    
     
     return "recipe " + recipe_string + " added to " + userID
 
@@ -1286,9 +1282,15 @@ def update_event(edit_column, userID):
     return {'event':format_user(event.one())}
 
 
-@app.route('/get_nutrition/<userID>', methods=['GET', 'POST'])
-#def nutrients_amounts(gender, weight_lbs, age, height_feet, height_inches, activity_level):
+@app.route('/get_nutrition/<userID>', methods=['GET'])
 def get_nutrition(userID):
+    this_user = UserNutrition.query.filter_by(userID = userID).one()
+    nutrition_info = {"energy":this_user.energy, "protein":this_user.protein, "fat": this_user.fat, "carbs": this_user.carbs, "vitD": this_user.vitD, "vitC": this_user.vitC, "vitA": this_user.vitA, "vitE": this_user.vitE, "calcium": this_user.calcium, "iron": this_user.iron, "potassium": this_user.potassium, "vitD_ul":this_user.vitD_ul, "vitC_ul":this_user.vitC_ul, "vitA_ul":this_user.vitA_ul, "vitE_ul":this_user.vitE_ul, "calcium_ul":this_user.calcium_ul, "iron_ul":this_user.iron_ul}
+    return nutrition_info 
+
+@app.route('/post_nutrition/<userID>', methods=['POST'])
+#def nutrients_amounts(gender, weight_lbs, age, height_feet, height_inches, activity_level):
+def post_nutrition(userID):
     energy = 0
     protein = 0
     fat = 0
@@ -1611,8 +1613,9 @@ def get_nutrition(userID):
     db.session.add(user_nutrition)
     db.session.commit()
 
-    return nutrition_info
+    #return nutrition_info
     #return {"nutrients":return_list}
+    return "user nutrition posted"
 
 
 @app.route('/get_preferences/<userID>', methods=['GET'])

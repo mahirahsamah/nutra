@@ -88,7 +88,7 @@ const ProfilePage = () => {
     localStorage.setItem("curruserID", response.data);
 
 
-    //const post_nutrition = await axios.post(`${backend}/get_nutrition/${response.data}`);
+    const post_nutrition = await axios.post(`${backend}/post_nutrition/${response.data}`);
   
 };
 useEffect(() => {
