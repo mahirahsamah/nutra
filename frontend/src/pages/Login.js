@@ -58,10 +58,9 @@ const LoginPage = () => {
                                    </button>
                               </li>
                               <li>
-                                   <button type="button" className={classes.go_signup_button} onClick={goToSignup}>
+                                   <button type="button" className={classes.submit_button} onClick={goToSignup}>
                                         Don't have an account? Make one now!
                                    </button>
-
                               </li>
                          </ul>
                     {/* </form> */}

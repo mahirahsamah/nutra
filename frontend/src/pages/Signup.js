@@ -72,7 +72,7 @@ const SignupPage = () => {
                                    </button>
                               </li>
                               <li>
-                                   <button type="button" className={classes.go_signup_button} onClick={goToLogin}>
+                                   <button type="button" className={classes.submit_button} onClick={goToLogin}>
                                         Have an account? Login now!
                                    </button>
 
