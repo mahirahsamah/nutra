@@ -276,7 +276,6 @@ def post_whole_user():
 
 
 
-### THACH'S STUFF
 # Checks for user and password match, returns user if exist
 @app.route('/checklogin', methods=['GET'])
 def check_login():
@@ -363,7 +362,9 @@ def update_user():
     db.session.commit()
     return {'user': format_user(user.one())}
 
-### END THACH'S STUFF
+@app.route('/updatelink', methods=['PUT'])
+def update_link():
+    return 1
 
 
 
