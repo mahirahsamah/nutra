@@ -850,6 +850,12 @@ def create_user():
     else:
         return {'user': users}
     
+@app.route('/get_user_id/<username>', methods=['GET'])
+def get_user_id(username):
+    result = User.query.filter_by(username=username).one()
+    id = result.userID
+    return str(id)
+    
 # Returns requsted user from username
 @app.route('/getuserinfo', methods=['GET'])
 def get_user_info():

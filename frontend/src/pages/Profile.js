@@ -7,6 +7,9 @@ import { Header } from './../components/'
 
 
 const ProfilePage = () => {
+
+  const [data, setData] = useState('');
+
   const currentUser = localStorage.getItem('curruser')
   const currentUserID = localStorage.getItem('curruserID')
   const backend = "http://localhost:5000"
@@ -78,11 +81,21 @@ const ProfilePage = () => {
 
   const update = async () => {
     const updateData = await axios.put(`${backend}/updateuser?user=${currentUser}&gender=${gender}&weight_lbs=${weight_lbs}&age=${age}&height_feet=${height_feet}&height_inches=${height_inches}&activity_level=${activity_level}&vegetarian=${vegetarian}&vegan=${vegan}&gluten_free=${gluten_free}&keto=${keto}&paleo=${paleo}&pescetarian=${pescetarian}&preferences=${preferences}&restrictions=${restrictions}`)
-    const postNutrition = await axios.post(`${backend}/get_nutrition/${currentUserID}`)
-    console.log(updateData.data)
 
+    const response = await axios.get(`${backend}/get_user_id/${currentUser}`);
+    setData(response.data);
+    console.log(response.data);
+    localStorage.setItem("curruserID", response.data);
+
+
+    //const post_nutrition = await axios.post(`${backend}/get_nutrition/${response.data}`);
   
 };
+useEffect(() => {
+  update();
+}, []);
+
+
   return (
     <div>
       <Header />
