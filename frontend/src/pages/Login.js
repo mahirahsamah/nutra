@@ -8,16 +8,40 @@ const LoginPage = () => {
      const backend = "http://localhost:5000"
      const [username, setUsername] = useState("");
      const [password, setPassword] = useState("");
+     const [currWeek, setCurrWeek] = useState("");
+     const [userCreatedDate, setUserCreatedDate]= useState("");
+
      const navigate = useNavigate();
+
+     useEffect(() => {
+          const uID = localStorage.getItem("curruserID");
+          const fetchData = async () => {
+            const response = await axios.get(`${backend}/get_created_date/${uID}`);
+            const userCreatedDate = response.data;
+            setUserCreatedDate(userCreatedDate);
+            //console.log(userCreatedDate)
+
+            const userCreationDate = new Date(userCreatedDate); // replace with the actual date from your database
+          const currentDate = new Date();
+          const diffInMs = currentDate - userCreationDate;
+          const wk = Math.floor(diffInMs / (7 * 24 * 60 * 60 * 1000));
+          setCurrWeek(wk);
+          };
+          
+          fetchData();
+     }, []);
+
+     localStorage.setItem("currWeek", currWeek);
 
      const handleLogin = async () => {
           const data = await axios.get(`${backend}/checklogin?user=${username}&pass=${password}`)
-     
+
           if(data.data.user.length === 0){
                alert("No matching username and password combo.");
           } else {
                localStorage.setItem("curruser", username);
                localStorage.setItem("curruserID", data.data.user[0].userID);
+
                navigate("/home");
           }
      };

@@ -5,20 +5,6 @@ import { Header } from './../components/'
 import './Style.css';
 import './../components/Modal/Modal.css'
 
-function ButtonList(props) {
-  const buttonData = props.buttonData;
-
-  return (
-    <div>
-      {buttonData.map((item, index) => (
-        <button key={index} onClick={() => console.log(item)}>
-          {item}
-        </button>
-      ))}
-    </div>
-  );
-}
-
 function MyComponent({ myData, id }) {
   const myObject = myData[id];
 
@@ -38,6 +24,8 @@ function GroceriesPage() {
 
     const [grocery_lists, set_grocery_lists] = useState([]);
     const [num_weeks, set_num_weeks] = useState([]);
+    const [weeks_list, set_weeks_list] = useState([]);
+    const [gls_list, set_gls_list] = useState([]);
 
     const [modal, setModal] = useState(false);
 
@@ -50,6 +38,11 @@ function GroceriesPage() {
     const handleClick = index => {
       setSelectedIndex(index);
     };
+
+    useEffect(()=>{
+      const curruserID = localStorage.getItem("curruserID");
+      
+    })
   
     useEffect(() => {
       const curruserID = localStorage.getItem("curruserID");
@@ -79,12 +72,30 @@ function GroceriesPage() {
         }
   
         set_grocery_lists(groceryArray);
-        console.log(groceryArray);
+        //console.log(groceryArray);
         
+      };
+
+      const get_weeks_list  = async () => {
+        axios.get(`${backend}/get_user_grocery_lists/${curruserID}`) //${backend}/getuserinfo?user=${currentUser
+        .then(response => {
+          
+          const wks_keys = Object.keys(response.data);
+          const gl_values = Object.values(response.data);
+
+          console.log(gl_values);
+          
+          set_weeks_list(wks_keys);
+          set_gls_list(gl_values);
+        })
+        .catch(error => {
+            console.error(error);
+        });
       };
       
       get_grocery_list();
       get_num_weeks();
+      get_weeks_list();
 
     }, []);
 
@@ -92,15 +103,13 @@ function GroceriesPage() {
     const n_int = parseInt(n, 10);
 
     const buttonNums = Array.from({ length: n_int }, (_, index) => index + 1);
-    const buttonArray = buttonNums.map(item => 'Week ' + item);
+    const buttonArray = weeks_list.map(item => 'Week ' + item);
+
     const buttonContent = grocery_lists;
 
   return (
     <div>
       <div style={{paddingBottom:"10vh"}} className="App" ><Header /></div>   
-
-
-
 
       <div>
         {buttonArray.map((name, index) => (
@@ -120,9 +129,9 @@ function GroceriesPage() {
               {selectedIndex !== null && (
                 <div key={selectedIndex}>
                   
-                  <h2>Grocery List for Week {selectedIndex + 1}</h2>
+                  <h2>Grocery List for Week {selectedIndex}</h2>
                   
-                  <MyComponent myData={grocery_lists} id={selectedIndex} />
+                  <MyComponent myData={gls_list} id={selectedIndex} />
 
                 </div>
               )}
