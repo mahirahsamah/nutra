@@ -13,15 +13,16 @@ import { useParams } from "react-router-dom";
 import './Ingredient.css';
 
 function Ingredient() {
-    
+    const backend = "http://localhost:5000"
 
     const [search,updateSearch] = useState();
     const [results, setResults] = useState([]);
     // const location = useLocation();
     const {term} = useParams();
     // const searchButton = document.getElementById('searchButton')
+    const navigate = useNavigate();
 
-    useEffect(async () => {
+    useEffect(() => {
         updateSearch("Search Term")
 
         if(term != undefined){
@@ -50,9 +51,9 @@ function Ingredient() {
             })
         }
     
-        console.log("Term Value: "+ term);
-        console.log("Search Value: " + search)
-      }, []);
+        // console.log("Term Value: "+ term);
+        // console.log("Search Value: " + search)
+      });
 
 
     const apiCall =() =>{
@@ -74,6 +75,11 @@ function Ingredient() {
         console.log(error);
         })
     }
+
+    const updateLink =() =>{
+        axios.put(`${backend}/updatelink`)
+        navigate('/groceries-page');
+    }
  
 
     return (
@@ -91,7 +97,7 @@ function Ingredient() {
                 //     <button>Select</button>
                 // </div>
                 
-                    <div class="card" style={{textAlign:"center"}}>
+                    <div class="card" style={{textAlign:"center"}} onClick={updateLink}>
                         <div class="card__image-container">
                             <img
                             src={val.product.main_image}
@@ -107,7 +113,6 @@ function Ingredient() {
                             </div>
                         </div>
                     </div>
-                
             ))}
             </section>
             </main>
