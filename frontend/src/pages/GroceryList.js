@@ -122,12 +122,13 @@ function GroceriesPage() {
         ))}
       </div>
 
+      <div>
       {modal && (
-        <div className="modal">
-          <div onClick={toggleModal} className="overlay">
-            <div className="modal-content">
+        <div className="modal" style={{textAlign:"center"}}>
+          <div onClick={toggleModal} className="overlay" style={{paddingTop: "20%",}}>
+            <div className="modal-content" style={{marginTop: "10vh",}}>
               {selectedIndex !== null && (
-                <div key={selectedIndex}>
+                <div key={selectedIndex} style={{paddingTop: "4%",}}>
                   
                   <h2>Grocery List for Week {selectedIndex}</h2>
                   
@@ -135,12 +136,12 @@ function GroceriesPage() {
 
                 </div>
               )}
-              <button className="close-modal" onClick={toggleModal}> close </button>
+              <button className="close-modal" onClick={toggleModal}> X </button>
             </div>
           </div>
         </div>
       )}
-
+      </div>
 
 
     </div>  
