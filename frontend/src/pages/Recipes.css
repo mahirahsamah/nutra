@@ -14,7 +14,7 @@
 }
 
 .image.selected {
-     border: 2px solid #007bff;
+     border: 2px solid #0eb13f;
 }
 
 p {
@@ -33,7 +33,7 @@ button {
      padding: 8px 16px;
      font-size: 18px;
      font-weight: bold;
-     background-color: #007bff;
+     background-color: #0eb13f;
      color: #fff;
      border: none;
      border-radius: 4px;
