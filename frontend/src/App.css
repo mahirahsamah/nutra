@@ -41,3 +41,11 @@ input, button{
     transform: rotate(360deg);
   }
 }
+
+.bg-image {
+  background-image: url("../images/bg.png");
+background-repeat: no-repeat;
+background-size: cover;
+height: 100vh;
+/*background-color: #0eb13f !important;*/
+}

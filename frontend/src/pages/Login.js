@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import classes from './Login.module.css';
+import backgroundImage from "../images/bg.png";
 
 
 const LoginPage = () => {
@@ -12,7 +13,6 @@ const LoginPage = () => {
      const [userCreatedDate, setUserCreatedDate]= useState("");
 
      const navigate = useNavigate();
-     console.log("hi");
 
      useEffect(() => {
           const uID = localStorage.getItem("curruserID");
@@ -55,9 +55,15 @@ const LoginPage = () => {
      };
 
      return (
+          
+          <div>
+               
+               <h1 className={classes.welcome}>Welcome to Nutra!</h1>
+               <h2 className={classes.plslogin}>Please log in:</h2>
           <div className={classes.contained}>
+               
                <div className={classes.login_box}>
-                    <h1>Login</h1>
+
                     {/* <form> */}
                          <ul>
                               <li>
@@ -92,6 +98,7 @@ const LoginPage = () => {
                          </ul>
                     {/* </form> */}
                </div>
+          </div>
           </div>
      );
 };

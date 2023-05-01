@@ -9,6 +9,7 @@ import { Header } from './../components/'
 const ProfilePage = () => {
 
   const [data, setData] = useState('');
+  const navigate = useNavigate();
 
   const currentUser = localStorage.getItem('curruser')
   const currentUserID = localStorage.getItem('curruserID')
@@ -89,6 +90,7 @@ const ProfilePage = () => {
 
 
     const post_nutrition = await axios.post(`${backend}/post_nutrition/${response.data}`);
+    //navigate('/home');
   
 };
 useEffect(() => {
@@ -99,10 +101,10 @@ useEffect(() => {
   return (
     <div>
       <Header />
-    
+      <h1 className={classes.welcome}>Please fill out your information</h1>
     <div className={classes.contained}>
       <div className={classes.form}>
-        <h1>User Info Form </h1>
+      
             <ul>
               <li key={userData.gender}>
                 Gender:
