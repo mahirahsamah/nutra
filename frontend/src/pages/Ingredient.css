@@ -8,6 +8,19 @@
   background-color: #303032;
 } */
 
+
+
+
+.input_field {
+  width: 30%;
+  padding: 10px;
+  margin-bottom: 10px; 
+  background-color: #e7e7e7;
+}
+
+
+
+
 main {
   display: grid;
   grid-template-columns: 1fr repeat(12, minmax(auto, 60px)) 1fr;

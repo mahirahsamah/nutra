@@ -21,9 +21,9 @@ function Ingredient() {
     const {term} = useParams();
     // const searchButton = document.getElementById('searchButton')
     const navigate = useNavigate();
+    // updateSearch("Search Term");
 
     useEffect(() => {
-        updateSearch("Search Term")
 
         if(term != undefined){
             updateSearch(term)
@@ -57,6 +57,7 @@ function Ingredient() {
 
 
     const apiCall =() =>{
+        console.log(search)
         // set up the request parameters
         const params = {
             api_key: "95EADE36B4524431B70F2249197BBA99",
@@ -85,7 +86,7 @@ function Ingredient() {
     return (
         <div style={{paddingBottom:"10vh", textAlign:"center"}} className="App" >
             <Header />
-            <input type="text" placeholder={search} onChange = {(e)=>{updateSearch(e.target.value);}}></input>
+            <input type="text" class="input_field" placeholder={search}  onChange = {(e)=>{updateSearch(e.target.value);}}></input>
             <button id="searchButton" onClick={()=>apiCall()}>Search</button>
             <main>
             <section class="cards" style={{paddingTop:"10vh", textAlign:"center"}}>
