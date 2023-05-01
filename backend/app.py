@@ -382,7 +382,7 @@ def post_recipes(userID, weekID):
 
     # ingredient preferences are randomized, includes will be added less than 20% of the time due to how much it limits the results
     micros_query_params = ""
-    micros_query_params = "apiKey=" + api_key + nutrients_query + diet_string+excludes+"&type=snack,drink,side dish,appetizer,salad,soup,fingerfood"
+    micros_query_params = "apiKey=" + api_key + nutrients_query + diet_string+excludes+"&number=30&type=snack,drink,side dish,appetizer,salad,soup,fingerfood"
 
     micros_query =  find_remaining_url + "?" + micros_query_params 
     micros_response = (requests.get(micros_query)).json()
@@ -1715,9 +1715,9 @@ def get_recipe_list(userID):
     
     # ingredient preferences are randomized, includes will be added less than 20% of the time due to how much it limits the results
     if(random.random() <= 0.2):
-        macros_query_params = "apiKey=" + api_key + "&minProtein="+str(float(protein)/2-20)+"&maxProtein="+str(float(protein)/2+20)+"&minFat="+str(float(fat)/2-20)+"&maxFat="+str(float(fat)/2+20)+"&minCarbs="+str(float(carbs)/2-20)+"&maxCarbs="+str(float(carbs)/2+20)+diet_string+includes+excludes+"&type=main course"
+        macros_query_params = "apiKey=" + api_key + "&number=30&minProtein="+str(float(protein)/2-20)+"&maxProtein="+str(float(protein)/2+20)+"&minFat="+str(float(fat)/2-20)+"&maxFat="+str(float(fat)/2+20)+"&minCarbs="+str(float(carbs)/2-20)+"&maxCarbs="+str(float(carbs)/2+20)+diet_string+includes+excludes+"&type=main course"
     else:
-        macros_query_params = "apiKey=" + api_key + "&minProtein="+str(float(protein)/2-20)+"&maxProtein="+str(float(protein)/2+20)+"&minFat="+str(float(fat)/2-20)+"&maxFat="+str(float(fat)/2+20)+"&minCarbs="+str(float(carbs)/2-20)+"&maxCarbs="+str(float(carbs)/2+20)+diet_string+excludes+"&type=main course"
+        macros_query_params = "apiKey=" + api_key + "&number=30&minProtein="+str(float(protein)/2-20)+"&maxProtein="+str(float(protein)/2+20)+"&minFat="+str(float(fat)/2-20)+"&maxFat="+str(float(fat)/2+20)+"&minCarbs="+str(float(carbs)/2-20)+"&maxCarbs="+str(float(carbs)/2+20)+diet_string+excludes+"&type=main course"
     
     # having the micronutrients in the query params makes it more constricting. so i am just going to let the user choose from list of recipes and then fill the rest of the nutrients in with snacks
 
@@ -1883,7 +1883,7 @@ def get_remaining_ingredients(userID, weekID):
 
     # ingredient preferences are randomized, includes will be added less than 20% of the time due to how much it limits the results
     micros_query_params = ""
-    micros_query_params = "apiKey=" + api_key + nutrients_query + diet_string+excludes+"&type=snack,drink,side dish,appetizer,salad,soup,fingerfood"
+    micros_query_params = "apiKey=" + api_key + nutrients_query + diet_string+excludes+"&number=30&type=snack,drink,side dish,appetizer,salad,soup,fingerfood"
 
     micros_query =  find_remaining_url + "?" + micros_query_params 
     micros_response = (requests.get(micros_query)).json()

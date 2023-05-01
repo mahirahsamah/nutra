@@ -26,7 +26,7 @@ const ImageGallery = ({ imageLinks, handleImageToggle }) => {
           await axios.post(`${backend}/post_recipes/${curruserID}/${currweek}?userID=${curruserID}&recipe_string=${idsString}`)
           //await axios.post(`${backend}/post_grocery_list/${curruserID}/${currweek}`)
 
-          navigate("/home");
+          navigate("/groceries-page");
           console.log(idsString);
      };
      
