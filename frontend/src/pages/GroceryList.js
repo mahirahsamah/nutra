@@ -110,7 +110,7 @@ function GroceriesPage() {
     const buttonContent = grocery_lists;
 
   return (
-    <div>
+    <div className="App">
       <div style={{paddingBottom:"10vh"}} className="App" ><Header /></div>   
 
       <div>

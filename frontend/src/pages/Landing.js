@@ -15,10 +15,10 @@ function LandingPage() {
      //Hello { localStorage.getItem('curruser') }!!
 
      return (
-          <div style={{paddingBottom:"10vh"}} className="App" >
+          <div style={{paddingBottom:"10vh"}} className={classes.App} >
                <Header />
                
-               <div style={{display:"flex", margin:"3vw"}}>
+               <div  className={classes.imgs} style={{display:"flex", margin:"3vw"}}>
                     <div>
                          <img style={{height:"100%", width: "100%"}} src={land1}></img>
                     </div>

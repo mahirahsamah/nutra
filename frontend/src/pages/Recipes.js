@@ -31,7 +31,7 @@ const ImageGallery = ({ imageLinks, handleImageToggle }) => {
      };
      
      return (
-          <div>
+          <div className="imggallery" >
                {imageLinks.map((link, index) => (
                <div key={index} className="image-container">
                     <img

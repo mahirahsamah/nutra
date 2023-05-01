@@ -99,7 +99,7 @@ useEffect(() => {
 
 
   return (
-    <div>
+    <div className="bg">
       <Header />
       <h1 className={classes.welcome}>Please fill out your information</h1>
     <div className={classes.contained}>

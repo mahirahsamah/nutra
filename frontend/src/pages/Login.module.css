@@ -18,6 +18,14 @@ ul {
      align-items: center;
 }
 
+.App{
+     background-image: url("../images/bg.png") !important;
+     
+     background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+
 .login_box {
      width: 40%;
      padding: 3%;

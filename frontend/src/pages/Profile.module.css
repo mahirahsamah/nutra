@@ -12,6 +12,7 @@ ul {
     justify-content: center;
     align-items: center;
     margin-top: 80px;
+    
     /* height: 100vh;  */
 }
 
@@ -28,6 +29,14 @@ ul {
     padding: 10px;
     margin-bottom: 10px; 
     background-color: #e7e7e7;
+}
+
+.bg{
+    background-image: url("../images/bg.png") !important;
+     
+     background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
 }
 
 .submit_button {

@@ -87,7 +87,7 @@ function Ingredient() {
         <div style={{paddingBottom:"10vh", textAlign:"center"}} className="App" >
             <Header />
             <input type="text" class="input_field" placeholder={search}  onChange = {(e)=>{updateSearch(e.target.value);}}></input>
-            <button id="searchButton" onClick={()=>apiCall()}>Search</button>
+            <button className="searchButton" id="searchButton" onClick={()=>apiCall()}>Search</button>
             <main>
             <section class="cards" style={{paddingTop:"10vh", textAlign:"center"}}>
             {results.map((val)=> (

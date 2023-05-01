@@ -43,3 +43,22 @@ button {
 button:hover {
      background-color: #0056b3;
 }
+
+.App{
+     background-image: url("../images/bg.png") !important;
+     
+     background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+
+.btn-modal{
+     position: relative;
+    bottom: 700px;
+}
+
+.imggallery{
+     position: relative;
+    top: 60px;
+    left: 30px;
+}

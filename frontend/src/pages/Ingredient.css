@@ -16,9 +16,16 @@
   padding: 10px;
   margin-bottom: 10px; 
   background-color: #e7e7e7;
+  position: absolute;
+  top: 150px;
+  right: 700px;
 }
 
-
+.searchButton{
+  position: absolute;
+  top: 135px;
+  right: 600px;
+}
 
 
 main {
