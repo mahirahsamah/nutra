@@ -6,6 +6,7 @@ import './Style.css';
 import './../components/Modal/Modal.css'
 
 function MyComponent({ myData, id }) {
+  //const backend = "http://localhost:3000/ingredient/";
   const myObject = myData[id];
 
   if (!myObject) {
@@ -13,7 +14,8 @@ function MyComponent({ myData, id }) {
   }
 
   const objectElements = Object.entries(myObject).map(([key, value]) => {
-    return <div key={key}>{key}: {value}</div>;
+    const backend = "http://localhost:3000/ingredient/" + key;
+    return <div key={key}><a href={backend}>{key}</a>: {value}</div>;
   });
 
   return <div>{objectElements}</div>;
