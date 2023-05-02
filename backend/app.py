@@ -2139,15 +2139,13 @@ def accuracy(userID, weekID):
     diff = {}
     for key in nutrition_actual:
         if key in nutrition_required and nutrition_actual[key] != nutrition_required[key]:
-            diff[key] = (nutrition_actual[key] - nutrition_required[key])/nutrition_required[key] * 100
-            
-            #if(nutrition_actual[key] - nutrition_required[key] > 0):
-            #    diff[key]=(nutrition_actual[key] - nutrition_required[key])/nutrition_required[key] * 100
-            #if(nutrition_actual[key] - nutrition_required[key] <= 0):
-            #    diff[key]=(nutrition_required[key] - nutrition_actual[key])/nutrition_required[key] * 100
-                
+            diff[key] = nutrition_required[key] - nutrition_actual[key]
     
     # quantify it
+    for key, value in list(diff.items()):
+        if value < 0:
+            del diff[key]
+            
     total = sum(diff.values())
 
     # compute the number of values
@@ -2155,18 +2153,5 @@ def accuracy(userID, weekID):
 
     # compute the average
     average = total / count
-    ret = 0
     
-    if(average < 90):
-        print(average)
-        ret = average +80
-    if(ret > 100):
-        ret = ret %100
-    elif(average > 100):
-        ret = str(average % 100)
-        
-    elif (average <= 0 ):
-        ret = str(100 + average)
-
-    return str(ret)
-    #return str(average)
+    return str(100-average)
