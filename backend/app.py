@@ -4,6 +4,7 @@ from sqlalchemy.orm import relationship
 from flask_cors import CORS
 import requests
 import json
+import re
 import time
 import random
 from sqlalchemy import Column, Integer, String, DateTime, func
@@ -2058,27 +2059,114 @@ def get_user_grocery_lists(userID):
 def accuracy(userID, weekID):
     # calculate user requirements
     this_user = UserNutrition.query.filter_by(userID = userID).one()
-    nutrition_required = {"energy":this_user.energy, "protein":this_user.protein, "fat": this_user.fat, "carbs": this_user.carbs, "vitD": this_user.vitD, "vitC": this_user.vitC, "vitA": this_user.vitA, "vitE": this_user.vitE, "calcium": this_user.calcium, "iron": this_user.iron, "potassium": this_user.potassium, "vitD_ul":this_user.vitD_ul, "vitC_ul":this_user.vitC_ul, "vitA_ul":this_user.vitA_ul, "vitE_ul":this_user.vitE_ul, "calcium_ul":this_user.calcium_ul, "iron_ul":this_user.iron_ul}
+    nutrition_required = {"energy":this_user.energy, "protein":this_user.protein, "fat": this_user.fat, "carbs": this_user.carbs, "vitD": this_user.vitD, "vitC": this_user.vitC, "vitA": this_user.vitA, "vitE": this_user.vitE, "calcium": this_user.calcium, "iron": this_user.iron, "potassium": this_user.potassium}
     
     # calcualte recipes nutrition
     user_recipes = WeeklyRecipes.query.filter_by(userID = userID, web_week_number = weekID).one()
     recipes_list = user_recipes.recipeIDs.split(',')
-    #return recipes_list
+    recipe_nutrition_list = []
     
     for i in range(len(recipes_list)):
         id = recipes_list[i]
-        find_nutrients_url = "https://api.spoonacular.com/recipes?apiKey=" + api_key+ "/" +str(id)+"/nutritionWidget.json"
+        find_nutrients_url = "https://api.spoonacular.com/recipes/" +str(id)+"/nutritionWidget.json?apiKey=" + api_key
         macros_response = requests.get(find_nutrients_url)
-        return macros_response.json()
-        
-        
+        recipe_nutrition_list.append(macros_response.json())
     
-    # url
+    calories_total = 0
+    protein_total = 0
+    fat_total = 0
+    carbs_total = 0
+    vitD_total = 0
+    vitC_total = 0
+    vitA_total = 0
+    vitE_total = 0
+    calcium_total = 0
+    iron_total =0
+    potassium_total = 0
     
-    #macros_query_params = "apiKey=" + api_key + "&number=30&minProtein="+str(float(protein)/2-20)+"&maxProtein="+str(float(protein)/2+20)+"&minFat="+str(float(fat)/2-20)+"&maxFat="+str(float(fat)/2+20)+"&maxCarbs="+str(float(carbs)/2+20)+diet_string+includes+excludes+"&type=main course"
-    #macros_query =  find_by_nutrients_url + "?" + macros_query_params 
-    #print(macros_query)
-    #macros_response = requests.get(macros_query)
-    #return macros_response.json()
-    #return str(user_recipes.recipeIDs)
-     
+    #re.sub('\p{L}', '', string, flags=re.UNICODE)
+    
+    for i in range(len(recipe_nutrition_list)):
+        
+        #calories_total += float(recipe_nutrition_list[i]["bad"][0]["amount"])
+        cal = next((item['amount'] for item in recipe_nutrition_list[i]['bad'] if item['title'] == 'Calories'), None)
+        cal_temp = cal if cal is not None else 0
+        calories_total += float(re.sub('\D', '', str(cal_temp)))
+
+        pr = next((item['amount'] for item in recipe_nutrition_list[i]['good'] if item['title'] == 'Protein'), None)
+        pr_temp = pr if pr is not None else 0
+        protein_total += float(re.sub('\D', '', str(pr_temp)))
+        
+        ft = next((item['amount'] for item in recipe_nutrition_list[i]['bad'] if item['title'] == 'Fat'), None)
+        ft_temp = ft if ft is not None else 0
+        fat_total += float(re.sub('\D', '', str(ft_temp)))
+        
+        cb = next((item['amount'] for item in recipe_nutrition_list[i]['bad'] if item['title'] == 'Carbohydrates'), None)
+        cb_temp = cb if cb is not None else 0
+        carbs_total += float(re.sub('\D', '', str(cb_temp)))
+
+        vD = next((item['amount'] for item in recipe_nutrition_list[i]['good'] if item['title'] == 'Vitamin D'), None)
+        vD_temp = vD if vD is not None else 0
+        vitD_total += float(re.sub('\D', '', str(vD_temp)))
+
+        vC = next((item['amount'] for item in recipe_nutrition_list[i]['good'] if item['title'] == 'Vitamin C'), None)
+        vC_temp = vC if vC is not None else 0
+        vitC_total += float(re.sub('\D', '', str(vC_temp)))
+        
+        vA = next((item['amount'] for item in recipe_nutrition_list[i]['good'] if item['title'] == 'Vitamin A'), None)
+        vA_temp = vA if vA is not None else 0
+        vitA_total += float(re.sub('\D', '', str(vA_temp)))
+ 
+        vE = next((item['amount'] for item in recipe_nutrition_list[i]['good'] if item['title'] == 'Vitamin E'), None)
+        vE_temp = vE if vE is not None else 0
+        vitE_total += float(re.sub('\D', '', str(vE_temp)))
+        
+        cc = next((item['amount'] for item in recipe_nutrition_list[i]['good'] if item['title'] == 'Calcium'), None)
+        cc_temp = cc if cc is not None else 0
+        calcium_total += float(re.sub('\D', '', str(cc_temp)))
+        
+        ir = next((item['amount'] for item in recipe_nutrition_list[i]['good'] if item['title'] == 'Iron'), None)
+        ir_temp = ir if ir is not None else 0
+        iron_total += float(re.sub('\D', '', str(ir_temp)))
+        
+        pt = next((item['amount'] for item in recipe_nutrition_list[i]['good'] if item['title'] == 'Potassium'), None)
+        pt_temp = pt if pt is not None else 0
+        potassium_total += float(re.sub('\D', '', str(pt_temp)))
+        
+    nutrition_actual = {"energy":calories_total, "protein":protein_total, "fat": fat_total, "carbs": carbs_total, "vitD": vitD_total, "vitC": vitC_total, "vitA": vitA_total, "vitE": vitE_total, "calcium": calcium_total, "iron": iron_total, "potassium": potassium_total}
+    
+    # calculate differences
+    diff = {}
+    for key in nutrition_actual:
+        if key in nutrition_required and nutrition_actual[key] != nutrition_required[key]:
+            diff[key] = (nutrition_actual[key] - nutrition_required[key])/nutrition_required[key] * 100
+            
+            #if(nutrition_actual[key] - nutrition_required[key] > 0):
+            #    diff[key]=(nutrition_actual[key] - nutrition_required[key])/nutrition_required[key] * 100
+            #if(nutrition_actual[key] - nutrition_required[key] <= 0):
+            #    diff[key]=(nutrition_required[key] - nutrition_actual[key])/nutrition_required[key] * 100
+                
+    
+    # quantify it
+    total = sum(diff.values())
+
+    # compute the number of values
+    count = len(diff)
+
+    # compute the average
+    average = total / count
+    ret = 0
+    
+    if(average < 90):
+        print(average)
+        ret = average +80
+    if(ret > 100):
+        ret = ret %100
+    elif(average > 100):
+        ret = str(average % 100)
+        
+    elif (average <= 0 ):
+        ret = str(100 + average)
+
+    return str(ret)
+    #return str(average)
