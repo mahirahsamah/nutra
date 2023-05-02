@@ -503,19 +503,21 @@ def post_whole_user():
     
     # MACROS
     # ree: resting energy expenditure
-    if(this_user.gender=='male'):
+    if(this_user.gender=='male' or this_user.gender=='Male'):
         ree = (10*weight_kg) + (6.25*height_cm) - (5 * this_user.age) + 5
-    elif(this_user.gender == 'female'):
+    elif(this_user.gender == 'female' or this_user.gender=='Female'):
         ree = (10*weight_kg) + (6.25*height_cm) - (5 * this_user.age) - 161
     #return [ree]
     # energy with activity level
-    if(this_user.activity_level == 'sedentary'):
+    if(this_user.activity_level == 'sedentary' or this_user.activity_level == 'Sedentary'):
         energy = ree*1.2
-    elif(this_user.activity_level == 'low'):
+    elif(this_user.activity_level == 'low' or this_user.activity_level == 'Low'):
         energy = ree*1.375
-    elif(this_user.activity_level == 'medium'):
+    elif(this_user.activity_level == 'medium' or this_user.activity_level == 'Medium'):
         energy = ree*1.55
-    elif(this_user.activity_level == 'high'):
+        print("HEREE")
+        #energy = ree*1.375
+    elif(this_user.activity_level == 'high' or this_user.activity_level == 'High'):
         energy = ree*1.725
     
     #return [energy]
@@ -571,7 +573,7 @@ def post_whole_user():
         # NO potassium_ul
         
     else:
-        if(this_user.gender=='male'):
+        if(this_user.gender=='male' or this_user.gender=='Male'):
             vitD = 15
             vitC = 90
             vitA = 900
@@ -664,7 +666,7 @@ def post_whole_user():
                 iron_ul = 45
             
             
-        elif(this_user.gender=='female'):
+        elif(this_user.gender=='female' or this_user.gender=='Female'):
             
             if(this_user.age>8 and this_user.age<=13):
                 vitD = 15
@@ -1291,7 +1293,7 @@ def get_nutrition(userID):
 @app.route('/post_nutrition/<userID>', methods=['POST'])
 #def nutrients_amounts(gender, weight_lbs, age, height_feet, height_inches, activity_level):
 def post_nutrition(userID):
-    energy = 0
+    #energy = 0
     protein = 0
     fat = 0
     carbs = 0
@@ -1331,19 +1333,21 @@ def post_nutrition(userID):
     
     # MACROS
     # ree: resting energy expenditure
-    if(this_user.gender=='male'):
+    if(this_user.gender=='male' or this_user.gender=='Male'):
         ree = (10*weight_kg) + (6.25*height_cm) - (5 * this_user.age) + 5
-    elif(this_user.gender == 'female'):
+    elif(this_user.gender == 'female' or this_user.gender=='Female'):
         ree = (10*weight_kg) + (6.25*height_cm) - (5 * this_user.age) - 161
     #return [ree]
     # energy with activity level
     if(this_user.activity_level == 'sedentary'):
         energy = ree*1.2
-    elif(this_user.activity_level == 'low'):
+    elif(this_user.activity_level == 'low'or this_user.activity_level == 'Low'):
         energy = ree*1.375
-    elif(this_user.activity_level == 'medium'):
+    elif(this_user.activity_level == 'medium'or this_user.activity_level == 'Medium'):
         energy = ree*1.55
-    elif(this_user.activity_level == 'high'):
+        #energy = ree*1.375
+        print("HEREE 2")
+    elif(this_user.activity_level == 'high' or this_user.activity_level == 'High'):
         energy = ree*1.725
     
     #return [energy]
@@ -1399,7 +1403,7 @@ def post_nutrition(userID):
         # NO potassium_ul
         
     else:
-        if(this_user.gender=='male'):
+        if(this_user.gender=='male'or this_user.gender=='Male'):
             vitD = 15
             vitC = 90
             vitA = 900
@@ -1492,7 +1496,7 @@ def post_nutrition(userID):
                 iron_ul = 45
             
             
-        elif(this_user.gender=='female'):
+        elif(this_user.gender=='female' or this_user.gender=='Female'):
             
             if(this_user.age>8 and this_user.age<=13):
                 vitD = 15
@@ -1715,9 +1719,9 @@ def get_recipe_list(userID):
     
     # ingredient preferences are randomized, includes will be added less than 20% of the time due to how much it limits the results
     if(random.random() <= 0.2):
-        macros_query_params = "apiKey=" + api_key + "&number=30&minProtein="+str(float(protein)/2-20)+"&maxProtein="+str(float(protein)/2+20)+"&minFat="+str(float(fat)/2-20)+"&maxFat="+str(float(fat)/2+20)+"&minCarbs="+str(float(carbs)/2-20)+"&maxCarbs="+str(float(carbs)/2+20)+diet_string+includes+excludes+"&type=main course"
+        macros_query_params = "apiKey=" + api_key + "&number=30&minProtein="+str(float(protein)/2-20)+"&maxProtein="+str(float(protein)/2+20)+"&minFat="+str(float(fat)/2-20)+"&maxFat="+str(float(fat)/2+20)+"&maxCarbs="+str(float(carbs)/2+20)+diet_string+includes+excludes+"&type=main course"
     else:
-        macros_query_params = "apiKey=" + api_key + "&number=30&minProtein="+str(float(protein)/2-20)+"&maxProtein="+str(float(protein)/2+20)+"&minFat="+str(float(fat)/2-20)+"&maxFat="+str(float(fat)/2+20)+"&minCarbs="+str(float(carbs)/2-20)+"&maxCarbs="+str(float(carbs)/2+20)+diet_string+excludes+"&type=main course"
+        macros_query_params = "apiKey=" + api_key + "&number=30&minProtein="+str(float(protein)/2-20)+"&maxProtein="+str(float(protein)/2+20)+"&minFat="+str(float(fat)/2-20)+"&maxFat="+str(float(fat)/2+20)+"&maxCarbs="+str(float(carbs)/2+20)+diet_string+excludes+"&type=main course"
     
     # having the micronutrients in the query params makes it more constricting. so i am just going to let the user choose from list of recipes and then fill the rest of the nutrients in with snacks
 
@@ -2049,3 +2053,32 @@ def get_user_grocery_lists(userID):
     hash_map = {get_weeks_json[i]: json.loads(get_gl_json[i]) for i in range(len(get_weeks_json))}
     
     return(json.dumps(hash_map))
+
+@app.route('/accuracy/<userID>/<weekID>', methods=['GET'])
+def accuracy(userID, weekID):
+    # calculate user requirements
+    this_user = UserNutrition.query.filter_by(userID = userID).one()
+    nutrition_required = {"energy":this_user.energy, "protein":this_user.protein, "fat": this_user.fat, "carbs": this_user.carbs, "vitD": this_user.vitD, "vitC": this_user.vitC, "vitA": this_user.vitA, "vitE": this_user.vitE, "calcium": this_user.calcium, "iron": this_user.iron, "potassium": this_user.potassium, "vitD_ul":this_user.vitD_ul, "vitC_ul":this_user.vitC_ul, "vitA_ul":this_user.vitA_ul, "vitE_ul":this_user.vitE_ul, "calcium_ul":this_user.calcium_ul, "iron_ul":this_user.iron_ul}
+    
+    # calcualte recipes nutrition
+    user_recipes = WeeklyRecipes.query.filter_by(userID = userID, web_week_number = weekID).one()
+    recipes_list = user_recipes.recipeIDs.split(',')
+    #return recipes_list
+    
+    for i in range(len(recipes_list)):
+        id = recipes_list[i]
+        find_nutrients_url = "https://api.spoonacular.com/recipes?apiKey=" + api_key+ "/" +str(id)+"/nutritionWidget.json"
+        macros_response = requests.get(find_nutrients_url)
+        return macros_response.json()
+        
+        
+    
+    # url
+    
+    #macros_query_params = "apiKey=" + api_key + "&number=30&minProtein="+str(float(protein)/2-20)+"&maxProtein="+str(float(protein)/2+20)+"&minFat="+str(float(fat)/2-20)+"&maxFat="+str(float(fat)/2+20)+"&maxCarbs="+str(float(carbs)/2+20)+diet_string+includes+excludes+"&type=main course"
+    #macros_query =  find_by_nutrients_url + "?" + macros_query_params 
+    #print(macros_query)
+    #macros_response = requests.get(macros_query)
+    #return macros_response.json()
+    #return str(user_recipes.recipeIDs)
+     
