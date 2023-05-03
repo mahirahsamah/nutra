@@ -13,7 +13,7 @@ import { useParams } from "react-router-dom";
 import './Ingredient.css';
 
 function Ingredient() {
-    const backend = "http://localhost:5000"
+    const backend = "https://nutra-backend.herokuapp.com"
 
     const [search,updateSearch] = useState();
     const [results, setResults] = useState([]);

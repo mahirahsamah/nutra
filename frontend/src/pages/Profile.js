@@ -13,7 +13,7 @@ const ProfilePage = () => {
 
   const currentUser = localStorage.getItem('curruser')
   const currentUserID = localStorage.getItem('curruserID')
-  const backend = "http://localhost:5000"
+  const backend = "https://nutra-backend.herokuapp.com"
   const [gender, setGender] = useState("");
   const [weight_lbs, setWeight_lbs] = useState("");
   const [age, setAge] = useState("");

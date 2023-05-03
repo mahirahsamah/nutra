@@ -6,7 +6,7 @@ import classes from './Login.module.css';
 
 
 const SignupPage = () => {
-     const backend = "http://localhost:5000"
+     const backend = "https://nutra-backend.herokuapp.com"
      const [email, setEmail] = useState("");
      const [username, setUsername] = useState("");
      const [password, setPassword] = useState("");

@@ -10,7 +10,7 @@ import random
 from sqlalchemy import Column, Integer, String, DateTime, func
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:11072000@localhost/capstone'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://upbbafxmdcwxer:75e4035b36f4808c80388070f881cdf4e0c61b8636d89898ef5a0d3e94e11fd2@ec2-44-213-151-75.compute-1.amazonaws.com:5432/dcfl18eqf8qh21'
 db = SQLAlchemy(app)
 CORS(app)
 
@@ -192,7 +192,7 @@ class GroceryLists(db.Model):
         self.grocery_list = grocery_list
         self.web_week_number =web_week_number
 
-@app.route('/groceries')
+@app.route('/')
 def home():
     return "Test Page"
 
@@ -1671,7 +1671,7 @@ def get_recipe_list(userID):
     
    #user_diet = [this_user.vegetarian, this_user.vegan, this_user.halal, this_user.kosher, this_user.gluten_free, this_user.dairy_free, this_user.lactose_int, this_user.low_sodium, this_user.low_carb, this_user.high_protein, this_user.keto, this_user.paleo]
     
-    nutrients_response = requests.get(f'http://localhost:5000/get_nutrition/{userID}')
+    nutrients_response = requests.get(f'https://nutra-backend.herokuapp.com/get_nutrition/{userID}')
     nutrients_amounts = nutrients_response.json()
 
     # first find recipes by nutrients

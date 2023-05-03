@@ -19,7 +19,7 @@ const ImageGallery = ({ imageLinks, handleImageToggle }) => {
 
      //WeeklyRecipes
      const sendLinks = async () => {
-          const backend = "http://localhost:5000";
+          const backend = "https://nutra-backend.herokuapp.com";
           const idsString = selectedImages.join(',');
           const curruserID = localStorage.getItem("curruserID");
           const currweek = localStorage.getItem("currWeek");
@@ -58,7 +58,7 @@ const ImageGallery = ({ imageLinks, handleImageToggle }) => {
      );
 };
 function RecipesPage() {
-     const backend = "http://localhost:5000";
+     const backend = "https://nutra-backend.herokuapp.com";
      const curruserID = localStorage.getItem("curruserID");
      //const [data, setData] = useState(null);
      const [link_arr, setLink] = useState([]);

@@ -14,7 +14,7 @@ function MyComponent({ myData, id }) {
   }
 
   const objectElements = Object.entries(myObject).map(([key, value]) => {
-    const backend = "http://localhost:3000/ingredient/" + key;
+    const backend = "https://nutra-frontend.herokuapp.com/ingredient/" + key;
     return <div className="txts" key={key}><a  href={backend}>{key}</a>: {value}</div>;
   });
 
@@ -22,7 +22,7 @@ function MyComponent({ myData, id }) {
 }
 
 function GroceriesPage() {
-    const backend = "http://localhost:5000";
+    const backend = "https://nutra-backend.herokuapp.com";
 
     const [grocery_lists, set_grocery_lists] = useState([]);
     const [num_weeks, set_num_weeks] = useState([]);

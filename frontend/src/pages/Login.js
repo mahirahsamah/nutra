@@ -6,7 +6,7 @@ import backgroundImage from "../images/bg.png";
 
 
 const LoginPage = () => {
-     const backend = "http://localhost:5000"
+     const backend = "https://nutra-backend.herokuapp.com"
      const [username, setUsername] = useState("");
      const [password, setPassword] = useState("");
      const [currWeek, setCurrWeek] = useState("");
