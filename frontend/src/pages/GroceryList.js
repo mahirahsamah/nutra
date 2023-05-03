@@ -15,7 +15,7 @@ function MyComponent({ myData, id }) {
 
   const objectElements = Object.entries(myObject).map(([key, value]) => {
     const backend = "http://localhost:3000/ingredient/" + key;
-    return <div key={key}><a href={backend}>{key}</a>: {value}</div>;
+    return <div className="txts" key={key}><a  href={backend}>{key}</a>: {value}</div>;
   });
 
   return <div>{objectElements}</div>;
@@ -148,11 +148,11 @@ function GroceriesPage() {
               {selectedIndex !== null && (
                 <div key={selectedIndex} style={{paddingTop: "4%",}}>
                   
-                  <h2>Grocery List for Week {selectedIndex}</h2>
+                  <h3>Grocery List for Week {selectedIndex}</h3>
 
                   <br></br>
 
-                  <h3>This grocery list fulfills {get_accuracy}% of your nutrition!</h3>
+                  <h5>This grocery list fulfills {get_accuracy}% of your nutrition!</h5>
 
                   <br></br>
                   

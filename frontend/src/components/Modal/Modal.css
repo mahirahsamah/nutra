@@ -9,6 +9,10 @@ body.active-modal {
     font-size: 18px;
 }
 
+.txts{
+    font-size: 11px;
+}
+
 .modal, .overlay {
     width: 100vw;
     height: 100vh;
@@ -17,6 +21,8 @@ body.active-modal {
     right: 0;
     bottom: 0;
     position: fixed;
+    color: rgba(13, 69, 32);
+    
 }
 
 .overlay {
@@ -33,6 +39,7 @@ body.active-modal {
     border-radius: 3px;
     max-width: 600px;
     min-width: 300px;
+    overflow-y: scroll;
 }
 
 .close-modal {

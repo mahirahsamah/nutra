@@ -25,7 +25,7 @@ const ImageGallery = ({ imageLinks, handleImageToggle }) => {
           const currweek = localStorage.getItem("currWeek");
           await axios.post(`${backend}/post_recipes/${curruserID}/${currweek}?userID=${curruserID}&recipe_string=${idsString}`)
           //await axios.post(`${backend}/post_grocery_list/${curruserID}/${currweek}`)
-
+          window.alert("Recipe selection successful.");
           navigate("/groceries-page");
           //console.log(idsString);
      };
@@ -50,7 +50,7 @@ const ImageGallery = ({ imageLinks, handleImageToggle }) => {
                </div>
                ))}
 
-               <button onClick={() => sendLinks()}>
+               <button className="gallery-btn" onClick={() => sendLinks()}>
                     Submit
                </button>
 
@@ -101,12 +101,12 @@ function RecipesPage() {
          
           <div style={{paddingBottom:"10vh"}} className="App" >
                <Header />
-               
+               <div  className="gallery">
                <ImageGallery
                imageLinks={link_arr}
                handleImageToggle={handleImageToggle}
                />
-
+               </div>
           </div>
      );
 
