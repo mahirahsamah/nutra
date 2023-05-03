@@ -21,14 +21,14 @@ const LoginPage = () => {
             const userCreatedDate = response.data;
             setUserCreatedDate(userCreatedDate);
             
-            console.log(userCreatedDate);
+            //console.log(userCreatedDate);
 
             const userCreationDate = new Date(userCreatedDate); // replace with the actual date from your database
           const currentDate = new Date();
           const diffInMs = currentDate - userCreationDate;
           const wk = Math.floor(diffInMs / (7 * 24 * 60 * 60 * 1000));
           setCurrWeek(wk);
-          console.log(wk);
+          //console.log(wk);
           };
           
           fetchData();

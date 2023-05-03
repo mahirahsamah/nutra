@@ -25,9 +25,9 @@ const ImageGallery = ({ imageLinks, handleImageToggle }) => {
           const currweek = localStorage.getItem("currWeek");
           await axios.post(`${backend}/post_recipes/${curruserID}/${currweek}?userID=${curruserID}&recipe_string=${idsString}`)
           //await axios.post(`${backend}/post_grocery_list/${curruserID}/${currweek}`)
-
+          window.alert("Recipe selection successful.");
           navigate("/groceries-page");
-          console.log(idsString);
+          //console.log(idsString);
      };
      
      return (
@@ -50,7 +50,7 @@ const ImageGallery = ({ imageLinks, handleImageToggle }) => {
                </div>
                ))}
 
-               <button onClick={() => sendLinks()}>
+               <button className="gallery-btn" onClick={() => sendLinks()}>
                     Submit
                </button>
 
@@ -68,9 +68,9 @@ function RecipesPage() {
                axios.get(`${backend}/get_recipe_list/${curruserID}`)
                //.then(response => {console.log(response.data.results);})
                .then(response => {
-                    console.log(response.data.results);
+                    //console.log(response.data.results);
                     //setData(response.data.results);
-                    console.log(response);
+                    //console.log(response);
                     const links_index = response.data.results.map(entity => {
                          return {
                               image: entity.image,
@@ -92,7 +92,7 @@ function RecipesPage() {
      }, []);
 
      const handleImageToggle = (link) => {
-          console.log(`Image link: ${link} toggled`);
+          //console.log(`Image link: ${link} toggled`);
           // Do something with the selected image link
      };
      
@@ -101,12 +101,12 @@ function RecipesPage() {
          
           <div style={{paddingBottom:"10vh"}} className="App" >
                <Header />
-               
+               <div  className="gallery">
                <ImageGallery
                imageLinks={link_arr}
                handleImageToggle={handleImageToggle}
                />
-
+               </div>
           </div>
      );
 

@@ -1,0 +1,48 @@
+
+
+
+
+.App{
+     background-image: url("../images/bg.png") !important;
+     
+     background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+
+.submit_button {
+     width: 100%;
+     padding: 10px;
+     background-color: #0eb13f;
+     color: #ffffff;
+     border: none;
+     border-radius: 5px;
+     cursor: pointer;
+}  
+.go_signup_button {
+     border: none;
+     background-color: white;
+}
+
+
+
+.imgs{
+     position: relative;
+     top: 10px;
+}
+.message {
+     display:"flex";
+}
+.intro{
+     display: flex;
+     margin-left: 5%;
+     margin-right: 5%;
+     font-size: 200%;
+     
+}
+.introh1{
+     margin-left: 30%;
+     font-size:400%;
+     font-family:Arial, Helvetica, sans-serif
+}
+

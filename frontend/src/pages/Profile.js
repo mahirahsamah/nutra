@@ -81,21 +81,26 @@ const ProfilePage = () => {
   }, []);
 
   const update = async () => {
+    
     const updateData = await axios.put(`${backend}/updateuser?user=${currentUser}&gender=${gender}&weight_lbs=${weight_lbs}&age=${age}&height_feet=${height_feet}&height_inches=${height_inches}&activity_level=${activity_level}&vegetarian=${vegetarian}&vegan=${vegan}&gluten_free=${gluten_free}&keto=${keto}&paleo=${paleo}&pescetarian=${pescetarian}&preferences=${preferences}&restrictions=${restrictions}`)
 
     const response = await axios.get(`${backend}/get_user_id/${currentUser}`);
     setData(response.data);
-    console.log(response.data);
+    //console.log(response.data);
     localStorage.setItem("curruserID", response.data);
 
 
     const post_nutrition = await axios.post(`${backend}/post_nutrition/${response.data}`);
-    //navigate('/home');
+    window.alert("Your profile was updated!");
   
 };
+
+
 useEffect(() => {
   update();
+
 }, []);
+
 
 
   return (
@@ -110,7 +115,7 @@ useEffect(() => {
                 Gender:
                 <input
                 type="text"
-                placeholder="Gender"
+                placeholder="gender"
                 className={classes.input_field}
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
@@ -151,7 +156,7 @@ useEffect(() => {
               </li>
 
               <li key={userData.height_inches}>
-                Heigt in Inches:
+                Height in Inches:
                 <input
                 type="text"
                 placeholder="in"
@@ -165,7 +170,7 @@ useEffect(() => {
                 Activity Level:
                 <input
                 type="text"
-                placeholder="Low/Medium/High"
+                placeholder="low/medium/high"
                 className={classes.input_field}
                 value={activity_level}
                 onChange={(e) => setActivity_level(e.target.value)}

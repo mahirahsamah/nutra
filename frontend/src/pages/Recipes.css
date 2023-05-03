@@ -48,17 +48,30 @@ button:hover {
      background-image: url("../images/bg.png") !important;
      
      background-repeat: no-repeat;
-  background-size: cover;
-  height: 100vh;
+     background-size: cover;
+     height: 100vh;
+
+}
+
+.gallery{
+     margin-left: 60px;
+     margin-top: 35px;
 }
 
 .btn-modal{
      position: relative;
-    bottom: 700px;
+    bottom: 600px;
 }
 
 .imggallery{
      position: relative;
     top: 60px;
     left: 30px;
+}
+
+.gallery-btn{
+     position: absolute;
+     top: 1550px;
+    right: 750px;
+    
 }

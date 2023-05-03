@@ -21,14 +21,14 @@ const SignupPage = () => {
             const userCreatedDate = response.data;
             setUserCreatedDate(userCreatedDate);
             
-            console.log(userCreatedDate);
+            //console.log(userCreatedDate);
 
             const userCreationDate = new Date(userCreatedDate); // replace with the actual date from your database
           const currentDate = new Date();
           const diffInMs = currentDate - userCreationDate;
           const wk = Math.floor(diffInMs / (7 * 24 * 60 * 60 * 1000));
           setCurrWeek(wk);
-          console.log(wk);
+          //console.log(wk);
           };
           
           fetchData();
@@ -38,7 +38,7 @@ const SignupPage = () => {
 
      const handleMakeAccount = async () => {
           const data = await axios.post(`${backend}/createuser?user=${username}&pass=${password}&email=${email}`)
-          console.log(data)
+          //console.log(data)
 
           if(email.length === 0 || username.length === 0 || password.length === 0){
                alert("Missing field");

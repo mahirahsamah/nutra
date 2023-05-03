@@ -8,9 +8,10 @@
     justify-content: center;
     align-items: center;
     margin-left: 30px;
-    font-size: 23px;
-    color: inherit;
+    font-size: 21px;
+    color: rgba(13, 69, 32);
     text-decoration: inherit;
     text-transform: uppercase;
     outline: none;
+    font-family:Arial, Helvetica, sans-serif
   }

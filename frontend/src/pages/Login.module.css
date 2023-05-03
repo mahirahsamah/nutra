@@ -33,7 +33,7 @@ ul {
      border-radius: 7px;
      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
      position: relative;
-     bottom: -50px;
+     bottom: -110px;
 }
 
 .input_field {
@@ -64,7 +64,7 @@ ul {
 .welcome{
      text-align: center;
      position: absolute;
-     top: 150px;
+     top: 20%;
      left: 50%;
      transform: translateX(-50%);
      font-family: 'Times New Roman', Times, serif;
@@ -80,7 +80,7 @@ ul {
 .plslogin{
      text-align: center;
      position: absolute;
-  top: 230px;
+  top: 32%;
   left: 50%;
   transform: translateX(-50%);
      font-family: 'Times New Roman', Times, serif;
@@ -91,4 +91,21 @@ ul {
     1px -1px 0 #fff,
     -1px 1px 0 #fff,
     1px 1px 0 #fff;
+}
+
+
+.imgs{
+     position: relative;
+     top: 80px;
+     left: 50px;
+}
+
+.intro{
+     position: absolute;
+     top: 200px;
+     left: 600px;
+}
+
+.introp1{
+     width: 500px;
 }
