@@ -28,12 +28,13 @@ function GroceriesPage() {
     const [num_weeks, set_num_weeks] = useState([]);
     const [weeks_list, set_weeks_list] = useState([]);
     const [gls_list, set_gls_list] = useState([]);
+    const [get_accuracy, set_get_accuracy] = useState([]);
 
     const [modal, setModal] = useState(false);
 
     const toggleModal=()=>{
       setModal(!modal)
-      console.log(modal);
+      //console.log(modal);
     }
 
     const [selectedIndex, setSelectedIndex] = useState(null);
@@ -85,7 +86,7 @@ function GroceriesPage() {
           const wks_keys = Object.keys(response.data);
           const gl_values = Object.values(response.data);
 
-          console.log(gl_values);
+          //console.log(gl_values);
           
           set_weeks_list(wks_keys);
           set_gls_list(gl_values);
@@ -94,9 +95,24 @@ function GroceriesPage() {
             console.error(error);
         });
       };
+
+      const get_accuracy  = async () => {
+        const currweek = localStorage.getItem("currWeek");
+
+        axios.get(`${backend}/accuracy/${curruserID}/${currweek}`) //${backend}/getuserinfo?user=${currentUser
+        .then(response => {
+
+          console.log(response.data);
+          set_get_accuracy(response.data);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+      };
       
       get_grocery_list();
       get_num_weeks();
+      get_accuracy();
       get_weeks_list();
 
     }, []);
@@ -133,6 +149,12 @@ function GroceriesPage() {
                 <div key={selectedIndex} style={{paddingTop: "4%",}}>
                   
                   <h2>Grocery List for Week {selectedIndex}</h2>
+
+                  <br></br>
+
+                  <h3>This grocery list fulfills {get_accuracy}% of your nutrition!</h3>
+
+                  <br></br>
                   
                   <MyComponent myData={gls_list} id={selectedIndex} />
 

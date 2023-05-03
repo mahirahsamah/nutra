@@ -27,7 +27,7 @@ function Ingredient() {
 
         if(term != undefined){
             updateSearch(term)
-            console.log("Search Value: "+ search);
+            //console.log("Search Value: "+ search);
             
 
             // set up the request parameters
@@ -38,16 +38,16 @@ function Ingredient() {
                 type: "search"
             }
 
-            console.log("Params: "+ params.search_term)
+            //console.log("Params: "+ params.search_term)
             // make the http GET request to RedCircle API
             axios.get('https://api.redcircleapi.com/request', { params })
             .then(response => {
                 // print the JSON response from RedCircle API
-                console.log(JSON.stringify(response.data, 0, 2));
+                //console.log(JSON.stringify(response.data, 0, 2));
                 setResults(response.data.search_results);
             }).catch(error => {
             // catch and print the error
-            console.log(error);
+            //console.log(error);
             })
         }
     
@@ -57,7 +57,7 @@ function Ingredient() {
 
 
     const apiCall =() =>{
-        console.log(search)
+        //console.log(search)
         // set up the request parameters
         const params = {
             api_key: "95EADE36B4524431B70F2249197BBA99",
@@ -69,11 +69,11 @@ function Ingredient() {
         axios.get('https://api.redcircleapi.com/request', { params })
         .then(response => {
             // print the JSON response from RedCircle API
-            console.log(JSON.stringify(response.data, 0, 2));
+            //console.log(JSON.stringify(response.data, 0, 2));
             setResults(response.data.search_results);
         }).catch(error => {
         // catch and print the error
-        console.log(error);
+        //console.log(error);
         })
     }
 

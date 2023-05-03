@@ -85,7 +85,7 @@ const ProfilePage = () => {
 
     const response = await axios.get(`${backend}/get_user_id/${currentUser}`);
     setData(response.data);
-    console.log(response.data);
+    //console.log(response.data);
     localStorage.setItem("curruserID", response.data);
 
 

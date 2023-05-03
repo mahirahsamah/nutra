@@ -27,7 +27,7 @@ const ImageGallery = ({ imageLinks, handleImageToggle }) => {
           //await axios.post(`${backend}/post_grocery_list/${curruserID}/${currweek}`)
 
           navigate("/groceries-page");
-          console.log(idsString);
+          //console.log(idsString);
      };
      
      return (
@@ -68,9 +68,9 @@ function RecipesPage() {
                axios.get(`${backend}/get_recipe_list/${curruserID}`)
                //.then(response => {console.log(response.data.results);})
                .then(response => {
-                    console.log(response.data.results);
+                    //console.log(response.data.results);
                     //setData(response.data.results);
-                    console.log(response);
+                    //console.log(response);
                     const links_index = response.data.results.map(entity => {
                          return {
                               image: entity.image,
@@ -92,7 +92,7 @@ function RecipesPage() {
      }, []);
 
      const handleImageToggle = (link) => {
-          console.log(`Image link: ${link} toggled`);
+          //console.log(`Image link: ${link} toggled`);
           // Do something with the selected image link
      };
      

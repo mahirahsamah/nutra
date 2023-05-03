@@ -217,7 +217,7 @@ def post_recipes(userID, weekID):
     find_by_nutrients_url = "https://api.spoonacular.com/recipes/{id}/ingredientWidget.json?apiKey=13cc54269ca54d258cf7b07e4383154c"
     
     grocery_list_map = {}
-    grocery_list_map["id"] = weekID
+    #grocery_list_map["id"] = weekID
     
     for recipe in recipes:
         add = "https://api.spoonacular.com/recipes/"+str(recipe)+"/ingredientWidget.json?apiKey=13cc54269ca54d258cf7b07e4383154c"
@@ -2153,5 +2153,13 @@ def accuracy(userID, weekID):
 
     # compute the average
     average = total / count
+    ret = average
+    if (average > 100):
+        ret = 80  + ((average-100)/3)
     
-    return str(100-average)
+    if (average < 80):
+        ret = average + (20/3)
+    
+    
+    
+    return str(int(ret))
