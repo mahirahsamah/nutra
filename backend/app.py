@@ -410,7 +410,14 @@ def post_recipes(userID, weekID):
     return "recipe " + recipe_string + " added to " + userID
 
 def format_user(user):
-    """Formats user entity into json"""
+    """
+    Formats user entity into json
+    
+    :param user user: user entity
+    
+    :return: user in new format
+    :rtype: json
+    """
     return{
         "userID": user.userID,
         "username": user.username,
@@ -818,7 +825,16 @@ def post_whole_user():
 # Checks for user and password match, returns user if exist
 @app.route('/checklogin', methods=['GET'])
 def check_login():
-    """Checks for user and password match, returns user if exist"""
+    """
+    Checks for user and password match, returns user if exist
+
+    :param string user: inputted username
+    :param string pass: inputted password
+
+    :return: return array of users that match login details
+    :rtype: User array[]
+    """
+
     user = request.args.get('user')
     pss = request.args.get('pass')
     result = User.query.filter_by(username=user, password=pss)
@@ -831,7 +847,16 @@ def check_login():
 # Creates account if username is unique
 @app.route('/createuser', methods=['POST'])
 def create_user():
-    """Creates account if username is unique"""
+    """
+    Creates account if username is unique
+
+    :param string user: inputted username
+    :param string pss: inputted password
+    :param string eml: inputted email
+
+    :return: returns array of user with matching usernames
+    :rtype: User array[]
+    """
     user = request.args.get('user')
     pss = request.args.get('pass')
     eml = request.args.get('email')
@@ -853,7 +878,14 @@ def create_user():
     
 @app.route('/get_user_id/<username>', methods=['GET'])
 def get_user_id(username):
-    """returns user id from username"""
+    """
+    returns user id from username
+    
+    :param string username: username
+
+    :return: string id of user
+    :rtype: string
+    """
     result = User.query.filter_by(username=username).one()
     id = result.userID
     return str(id)
@@ -861,7 +893,14 @@ def get_user_id(username):
 # Returns requsted user from username
 @app.route('/getuserinfo', methods=['GET'])
 def get_user_info():
-    """Returns user in json from username"""
+    """
+    Returns user in json from username
+
+    :param string username: username
+
+    :return: returns user entity
+    :rtype: json
+    """
     user = request.args.get('user')
     result = User.query.filter_by(username=user)
     users = []
@@ -873,7 +912,28 @@ def get_user_info():
 # Updates user
 @app.route('/updateuser', methods=['PUT'])
 def update_user():
-    """Updates all user info"""
+    """
+    Updates all user info
+    
+    :param string user: username of user
+    :param string gender: gender of user, can only be male or female
+    :param int weight_lbs: weight of user in pounds
+    :param int age: age of user
+    :param int height_feet: feet component of height
+    :param int height_inches: inch component of height
+    :param string activity_level: activity level of user, can be low, medium, or high
+    :param bool vegetarian: user vegetarian preference
+    :param bool vegan: user vegan preference
+    :param bool gluten_Free: user gluten_free preference
+    :param bool keto: user keto preference
+    :param bool paleo: user paleo preference
+    :param bool pescetarian: user pescetarian preference
+    :param string preferences: what the user likes, more results with that word will pop up, must be comma seperated
+    :param string restrictions: things the user don't like, will be filtered out, must be comma seperated
+
+    :return: new user
+    :rtype: json
+    """
     user = request.args.get('user')
     gender = request.args.get('gender')
     weight_lbs = request.args.get('weight_lbs')

@@ -527,12 +527,41 @@ customized per-model by overriding <code class="xref py py-attr docutils literal
 <dt class="sig sig-object py" id="app.check_login">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">check_login</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#check_login"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.check_login" title="Permalink to this definition"></a></dt>
 <dd><p>Checks for user and password match, returns user if exist</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user</strong> (<em>string</em>) – inputted username</p></li>
+<li><p><strong>pass</strong> (<em>string</em>) – inputted password</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>return array of users that match login details</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>User array[]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.create_user">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">create_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#create_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.create_user" title="Permalink to this definition"></a></dt>
 <dd><p>Creates account if username is unique</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user</strong> (<em>string</em>) – inputted username</p></li>
+<li><p><strong>pss</strong> (<em>string</em>) – inputted password</p></li>
+<li><p><strong>eml</strong> (<em>string</em>) – inputted email</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>returns array of user with matching usernames</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>User array[]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -544,6 +573,17 @@ customized per-model by overriding <code class="xref py py-attr docutils literal
 <dt class="sig sig-object py" id="app.format_user">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">format_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#format_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.format_user" title="Permalink to this definition"></a></dt>
 <dd><p>Formats user entity into json</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user</strong> (<em>user</em>) – user entity</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>user in new format</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>json</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -600,12 +640,34 @@ customized per-model by overriding <code class="xref py py-attr docutils literal
 <dt class="sig sig-object py" id="app.get_user_id">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_user_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_user_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_user_id" title="Permalink to this definition"></a></dt>
 <dd><p>returns user id from username</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>username</strong> (<em>string</em>) – username</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string id of user</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.get_user_info">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_user_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_user_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_user_info" title="Permalink to this definition"></a></dt>
 <dd><p>Returns user in json from username</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>username</strong> (<em>string</em>) – username</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>returns user entity</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>json</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -652,6 +714,33 @@ customized per-model by overriding <code class="xref py py-attr docutils literal
 <dt class="sig sig-object py" id="app.update_user">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">update_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#update_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.update_user" title="Permalink to this definition"></a></dt>
 <dd><p>Updates all user info</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user</strong> (<em>string</em>) – username of user</p></li>
+<li><p><strong>gender</strong> (<em>string</em>) – gender of user, can only be male or female</p></li>
+<li><p><strong>weight_lbs</strong> (<em>int</em>) – weight of user in pounds</p></li>
+<li><p><strong>age</strong> (<em>int</em>) – age of user</p></li>
+<li><p><strong>height_feet</strong> (<em>int</em>) – feet component of height</p></li>
+<li><p><strong>height_inches</strong> (<em>int</em>) – inch component of height</p></li>
+<li><p><strong>activity_level</strong> (<em>string</em>) – activity level of user, can be low, medium, or high</p></li>
+<li><p><strong>vegetarian</strong> (<em>bool</em>) – user vegetarian preference</p></li>
+<li><p><strong>vegan</strong> (<em>bool</em>) – user vegan preference</p></li>
+<li><p><strong>gluten_Free</strong> (<em>bool</em>) – user gluten_free preference</p></li>
+<li><p><strong>keto</strong> (<em>bool</em>) – user keto preference</p></li>
+<li><p><strong>paleo</strong> (<em>bool</em>) – user paleo preference</p></li>
+<li><p><strong>pescetarian</strong> (<em>bool</em>) – user pescetarian preference</p></li>
+<li><p><strong>preferences</strong> (<em>string</em>) – what the user likes, more results with that word will pop up, must be comma seperated</p></li>
+<li><p><strong>restrictions</strong> (<em>string</em>) – things the user don’t like, will be filtered out, must be comma seperated</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>new user</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>json</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

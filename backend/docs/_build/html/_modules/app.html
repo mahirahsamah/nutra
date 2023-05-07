@@ -479,7 +479,14 @@
     <span class="k">return</span> <span class="s2">&quot;recipe &quot;</span> <span class="o">+</span> <span class="n">recipe_string</span> <span class="o">+</span> <span class="s2">&quot; added to &quot;</span> <span class="o">+</span> <span class="n">userID</span></div>
 
 <div class="viewcode-block" id="format_user"><a class="viewcode-back" href="../app.html#app.format_user">[docs]</a><span class="k">def</span> <span class="nf">format_user</span><span class="p">(</span><span class="n">user</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Formats user entity into json&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Formats user entity into json</span>
+<span class="sd">    </span>
+<span class="sd">    :param user user: user entity</span>
+<span class="sd">    </span>
+<span class="sd">    :return: user in new format</span>
+<span class="sd">    :rtype: json</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span><span class="p">{</span>
         <span class="s2">&quot;userID&quot;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">userID</span><span class="p">,</span>
         <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">,</span>
@@ -887,7 +894,16 @@
 <span class="c1"># Checks for user and password match, returns user if exist</span>
 <div class="viewcode-block" id="check_login"><a class="viewcode-back" href="../app.html#app.check_login">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/checklogin&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">check_login</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks for user and password match, returns user if exist&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks for user and password match, returns user if exist</span>
+
+<span class="sd">    :param string user: inputted username</span>
+<span class="sd">    :param string pass: inputted password</span>
+
+<span class="sd">    :return: return array of users that match login details</span>
+<span class="sd">    :rtype: User array[]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span>
     <span class="n">pss</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pass&#39;</span><span class="p">)</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">pss</span><span class="p">)</span>
@@ -900,7 +916,16 @@
 <span class="c1"># Creates account if username is unique</span>
 <div class="viewcode-block" id="create_user"><a class="viewcode-back" href="../app.html#app.create_user">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/createuser&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">create_user</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates account if username is unique&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates account if username is unique</span>
+
+<span class="sd">    :param string user: inputted username</span>
+<span class="sd">    :param string pss: inputted password</span>
+<span class="sd">    :param string eml: inputted email</span>
+
+<span class="sd">    :return: returns array of user with matching usernames</span>
+<span class="sd">    :rtype: User array[]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span>
     <span class="n">pss</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pass&#39;</span><span class="p">)</span>
     <span class="n">eml</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">)</span>
@@ -922,7 +947,14 @@
     
 <div class="viewcode-block" id="get_user_id"><a class="viewcode-back" href="../app.html#app.get_user_id">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/get_user_id/&lt;username&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">get_user_id</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;returns user id from username&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    returns user id from username</span>
+<span class="sd">    </span>
+<span class="sd">    :param string username: username</span>
+
+<span class="sd">    :return: string id of user</span>
+<span class="sd">    :rtype: string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
     <span class="nb">id</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">userID</span>
     <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span></div>
@@ -930,7 +962,14 @@
 <span class="c1"># Returns requsted user from username</span>
 <div class="viewcode-block" id="get_user_info"><a class="viewcode-back" href="../app.html#app.get_user_info">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/getuserinfo&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">get_user_info</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns user in json from username&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns user in json from username</span>
+
+<span class="sd">    :param string username: username</span>
+
+<span class="sd">    :return: returns user entity</span>
+<span class="sd">    :rtype: json</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
     <span class="n">users</span> <span class="o">=</span> <span class="p">[]</span>
@@ -942,7 +981,28 @@
 <span class="c1"># Updates user</span>
 <div class="viewcode-block" id="update_user"><a class="viewcode-back" href="../app.html#app.update_user">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/updateuser&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PUT&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">update_user</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Updates all user info&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Updates all user info</span>
+<span class="sd">    </span>
+<span class="sd">    :param string user: username of user</span>
+<span class="sd">    :param string gender: gender of user, can only be male or female</span>
+<span class="sd">    :param int weight_lbs: weight of user in pounds</span>
+<span class="sd">    :param int age: age of user</span>
+<span class="sd">    :param int height_feet: feet component of height</span>
+<span class="sd">    :param int height_inches: inch component of height</span>
+<span class="sd">    :param string activity_level: activity level of user, can be low, medium, or high</span>
+<span class="sd">    :param bool vegetarian: user vegetarian preference</span>
+<span class="sd">    :param bool vegan: user vegan preference</span>
+<span class="sd">    :param bool gluten_Free: user gluten_free preference</span>
+<span class="sd">    :param bool keto: user keto preference</span>
+<span class="sd">    :param bool paleo: user paleo preference</span>
+<span class="sd">    :param bool pescetarian: user pescetarian preference</span>
+<span class="sd">    :param string preferences: what the user likes, more results with that word will pop up, must be comma seperated</span>
+<span class="sd">    :param string restrictions: things the user don&#39;t like, will be filtered out, must be comma seperated</span>
+
+<span class="sd">    :return: new user</span>
+<span class="sd">    :rtype: json</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span>
     <span class="n">gender</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;gender&#39;</span><span class="p">)</span>
     <span class="n">weight_lbs</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;weight_lbs&#39;</span><span class="p">)</span>
