@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>app module &mdash; Nutra Backend 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="backend" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Nutra Backend
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">backend</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">app module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#app.GroceryLists"><code class="docutils literal notranslate"><span class="pre">GroceryLists</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#app.GroceryLists.grocery_list"><code class="docutils literal notranslate"><span class="pre">GroceryLists.grocery_list</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.GroceryLists.listID"><code class="docutils literal notranslate"><span class="pre">GroceryLists.listID</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.GroceryLists.query"><code class="docutils literal notranslate"><span class="pre">GroceryLists.query</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.GroceryLists.userID"><code class="docutils literal notranslate"><span class="pre">GroceryLists.userID</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.GroceryLists.web_week_number"><code class="docutils literal notranslate"><span class="pre">GroceryLists.web_week_number</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#app.Latency"><code class="docutils literal notranslate"><span class="pre">Latency</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#app.Latency.function_id"><code class="docutils literal notranslate"><span class="pre">Latency.function_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.Latency.function_name"><code class="docutils literal notranslate"><span class="pre">Latency.function_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.Latency.query"><code class="docutils literal notranslate"><span class="pre">Latency.query</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.Latency.time_taken_s"><code class="docutils literal notranslate"><span class="pre">Latency.time_taken_s</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#app.User"><code class="docutils literal notranslate"><span class="pre">User</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#app.User.activity_level"><code class="docutils literal notranslate"><span class="pre">User.activity_level</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.User.age"><code class="docutils literal notranslate"><span class="pre">User.age</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.User.created_on"><code class="docutils literal notranslate"><span class="pre">User.created_on</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.User.email"><code class="docutils literal notranslate"><span class="pre">User.email</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.User.gender"><code class="docutils literal notranslate"><span class="pre">User.gender</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.User.gluten_free"><code class="docutils literal notranslate"><span class="pre">User.gluten_free</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.User.grocery_lists"><code class="docutils literal notranslate"><span class="pre">User.grocery_lists</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.User.height_feet"><code class="docutils literal notranslate"><span class="pre">User.height_feet</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.User.height_inches"><code class="docutils literal notranslate"><span class="pre">User.height_inches</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.User.keto"><code class="docutils literal notranslate"><span class="pre">User.keto</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.User.nutrition"><code class="docutils literal notranslate"><span class="pre">User.nutrition</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.User.paleo"><code class="docutils literal notranslate"><span class="pre">User.paleo</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.User.password"><code class="docutils literal notranslate"><span class="pre">User.password</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.User.pescetarian"><code class="docutils literal notranslate"><span class="pre">User.pescetarian</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.User.preferences"><code class="docutils literal notranslate"><span class="pre">User.preferences</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.User.query"><code class="docutils literal notranslate"><span class="pre">User.query</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.User.restrictions"><code class="docutils literal notranslate"><span class="pre">User.restrictions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.User.userID"><code class="docutils literal notranslate"><span class="pre">User.userID</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.User.username"><code class="docutils literal notranslate"><span class="pre">User.username</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.User.vegan"><code class="docutils literal notranslate"><span class="pre">User.vegan</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.User.vegetarian"><code class="docutils literal notranslate"><span class="pre">User.vegetarian</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.User.weight_lbs"><code class="docutils literal notranslate"><span class="pre">User.weight_lbs</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#app.UserNutrition"><code class="docutils literal notranslate"><span class="pre">UserNutrition</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#app.UserNutrition.calcium"><code class="docutils literal notranslate"><span class="pre">UserNutrition.calcium</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.UserNutrition.calcium_ul"><code class="docutils literal notranslate"><span class="pre">UserNutrition.calcium_ul</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.UserNutrition.carbs"><code class="docutils literal notranslate"><span class="pre">UserNutrition.carbs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.UserNutrition.energy"><code class="docutils literal notranslate"><span class="pre">UserNutrition.energy</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.UserNutrition.fat"><code class="docutils literal notranslate"><span class="pre">UserNutrition.fat</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.UserNutrition.iron"><code class="docutils literal notranslate"><span class="pre">UserNutrition.iron</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.UserNutrition.iron_ul"><code class="docutils literal notranslate"><span class="pre">UserNutrition.iron_ul</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.UserNutrition.nutritionID"><code class="docutils literal notranslate"><span class="pre">UserNutrition.nutritionID</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.UserNutrition.potassium"><code class="docutils literal notranslate"><span class="pre">UserNutrition.potassium</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.UserNutrition.protein"><code class="docutils literal notranslate"><span class="pre">UserNutrition.protein</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.UserNutrition.query"><code class="docutils literal notranslate"><span class="pre">UserNutrition.query</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.UserNutrition.userID"><code class="docutils literal notranslate"><span class="pre">UserNutrition.userID</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.UserNutrition.vitA"><code class="docutils literal notranslate"><span class="pre">UserNutrition.vitA</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.UserNutrition.vitA_ul"><code class="docutils literal notranslate"><span class="pre">UserNutrition.vitA_ul</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.UserNutrition.vitC"><code class="docutils literal notranslate"><span class="pre">UserNutrition.vitC</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.UserNutrition.vitC_ul"><code class="docutils literal notranslate"><span class="pre">UserNutrition.vitC_ul</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.UserNutrition.vitD"><code class="docutils literal notranslate"><span class="pre">UserNutrition.vitD</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.UserNutrition.vitD_ul"><code class="docutils literal notranslate"><span class="pre">UserNutrition.vitD_ul</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.UserNutrition.vitE"><code class="docutils literal notranslate"><span class="pre">UserNutrition.vitE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.UserNutrition.vitE_ul"><code class="docutils literal notranslate"><span class="pre">UserNutrition.vitE_ul</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#app.WeeklyRecipes"><code class="docutils literal notranslate"><span class="pre">WeeklyRecipes</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#app.WeeklyRecipes.query"><code class="docutils literal notranslate"><span class="pre">WeeklyRecipes.query</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.WeeklyRecipes.recipeIDs"><code class="docutils literal notranslate"><span class="pre">WeeklyRecipes.recipeIDs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.WeeklyRecipes.userID"><code class="docutils literal notranslate"><span class="pre">WeeklyRecipes.userID</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.WeeklyRecipes.web_week_number"><code class="docutils literal notranslate"><span class="pre">WeeklyRecipes.web_week_number</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app.WeeklyRecipes.week_number_ID"><code class="docutils literal notranslate"><span class="pre">WeeklyRecipes.week_number_ID</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#app.accuracy"><code class="docutils literal notranslate"><span class="pre">accuracy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.check_login"><code class="docutils literal notranslate"><span class="pre">check_login()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.create_user"><code class="docutils literal notranslate"><span class="pre">create_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.delete_event"><code class="docutils literal notranslate"><span class="pre">delete_event()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.format_user"><code class="docutils literal notranslate"><span class="pre">format_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.get_created_date"><code class="docutils literal notranslate"><span class="pre">get_created_date()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.get_events"><code class="docutils literal notranslate"><span class="pre">get_events()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.get_grocery_list"><code class="docutils literal notranslate"><span class="pre">get_grocery_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.get_num_weeks"><code class="docutils literal notranslate"><span class="pre">get_num_weeks()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.get_nutrition"><code class="docutils literal notranslate"><span class="pre">get_nutrition()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.get_preferences"><code class="docutils literal notranslate"><span class="pre">get_preferences()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.get_recipe_list"><code class="docutils literal notranslate"><span class="pre">get_recipe_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.get_remaining_ingredients"><code class="docutils literal notranslate"><span class="pre">get_remaining_ingredients()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.get_restrictions"><code class="docutils literal notranslate"><span class="pre">get_restrictions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.get_user_grocery_lists"><code class="docutils literal notranslate"><span class="pre">get_user_grocery_lists()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.get_user_id"><code class="docutils literal notranslate"><span class="pre">get_user_id()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.get_user_info"><code class="docutils literal notranslate"><span class="pre">get_user_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.home"><code class="docutils literal notranslate"><span class="pre">home()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.post_grocery_list"><code class="docutils literal notranslate"><span class="pre">post_grocery_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.post_nutrition"><code class="docutils literal notranslate"><span class="pre">post_nutrition()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.post_recipes"><code class="docutils literal notranslate"><span class="pre">post_recipes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.post_whole_user"><code class="docutils literal notranslate"><span class="pre">post_whole_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.single_event"><code class="docutils literal notranslate"><span class="pre">single_event()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.update_event"><code class="docutils literal notranslate"><span class="pre">update_event()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.update_link"><code class="docutils literal notranslate"><span class="pre">update_link()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app.update_user"><code class="docutils literal notranslate"><span class="pre">update_user()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Nutra Backend</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">backend</a></li>
+      <li class="breadcrumb-item active">app module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/app.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-app">
+<span id="app-module"></span><h1>app module<a class="headerlink" href="#module-app" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="app.GroceryLists">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">GroceryLists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">web_week_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">userID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grocery_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#GroceryLists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.GroceryLists" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.GroceryLists.grocery_list">
+<span class="sig-name descname"><span class="pre">grocery_list</span></span><a class="headerlink" href="#app.GroceryLists.grocery_list" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.GroceryLists.listID">
+<span class="sig-name descname"><span class="pre">listID</span></span><a class="headerlink" href="#app.GroceryLists.listID" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.GroceryLists.query">
+<span class="sig-name descname"><span class="pre">query</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">t.ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Query</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#app.GroceryLists.query" title="Permalink to this definition"></a></dt>
+<dd><p>A SQLAlchemy query for a model. Equivalent to <code class="docutils literal notranslate"><span class="pre">db.session.query(Model)</span></code>. Can be
+customized per-model by overriding <code class="xref py py-attr docutils literal notranslate"><span class="pre">query_class</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The query interface is considered legacy in SQLAlchemy. Prefer using
+<code class="docutils literal notranslate"><span class="pre">session.execute(select())</span></code> instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.GroceryLists.userID">
+<span class="sig-name descname"><span class="pre">userID</span></span><a class="headerlink" href="#app.GroceryLists.userID" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.GroceryLists.web_week_number">
+<span class="sig-name descname"><span class="pre">web_week_number</span></span><a class="headerlink" href="#app.GroceryLists.web_week_number" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="app.Latency">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">Latency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_taken_s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#Latency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.Latency" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.Latency.function_id">
+<span class="sig-name descname"><span class="pre">function_id</span></span><a class="headerlink" href="#app.Latency.function_id" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.Latency.function_name">
+<span class="sig-name descname"><span class="pre">function_name</span></span><a class="headerlink" href="#app.Latency.function_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.Latency.query">
+<span class="sig-name descname"><span class="pre">query</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">t.ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Query</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#app.Latency.query" title="Permalink to this definition"></a></dt>
+<dd><p>A SQLAlchemy query for a model. Equivalent to <code class="docutils literal notranslate"><span class="pre">db.session.query(Model)</span></code>. Can be
+customized per-model by overriding <code class="xref py py-attr docutils literal notranslate"><span class="pre">query_class</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The query interface is considered legacy in SQLAlchemy. Prefer using
+<code class="docutils literal notranslate"><span class="pre">session.execute(select())</span></code> instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.Latency.time_taken_s">
+<span class="sig-name descname"><span class="pre">time_taken_s</span></span><a class="headerlink" href="#app.Latency.time_taken_s" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="app.User">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">User</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#User"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.User" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.User.activity_level">
+<span class="sig-name descname"><span class="pre">activity_level</span></span><a class="headerlink" href="#app.User.activity_level" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.User.age">
+<span class="sig-name descname"><span class="pre">age</span></span><a class="headerlink" href="#app.User.age" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.User.created_on">
+<span class="sig-name descname"><span class="pre">created_on</span></span><a class="headerlink" href="#app.User.created_on" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.User.email">
+<span class="sig-name descname"><span class="pre">email</span></span><a class="headerlink" href="#app.User.email" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.User.gender">
+<span class="sig-name descname"><span class="pre">gender</span></span><a class="headerlink" href="#app.User.gender" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.User.gluten_free">
+<span class="sig-name descname"><span class="pre">gluten_free</span></span><a class="headerlink" href="#app.User.gluten_free" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.User.grocery_lists">
+<span class="sig-name descname"><span class="pre">grocery_lists</span></span><a class="headerlink" href="#app.User.grocery_lists" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.User.height_feet">
+<span class="sig-name descname"><span class="pre">height_feet</span></span><a class="headerlink" href="#app.User.height_feet" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.User.height_inches">
+<span class="sig-name descname"><span class="pre">height_inches</span></span><a class="headerlink" href="#app.User.height_inches" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.User.keto">
+<span class="sig-name descname"><span class="pre">keto</span></span><a class="headerlink" href="#app.User.keto" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.User.nutrition">
+<span class="sig-name descname"><span class="pre">nutrition</span></span><a class="headerlink" href="#app.User.nutrition" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.User.paleo">
+<span class="sig-name descname"><span class="pre">paleo</span></span><a class="headerlink" href="#app.User.paleo" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.User.password">
+<span class="sig-name descname"><span class="pre">password</span></span><a class="headerlink" href="#app.User.password" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.User.pescetarian">
+<span class="sig-name descname"><span class="pre">pescetarian</span></span><a class="headerlink" href="#app.User.pescetarian" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.User.preferences">
+<span class="sig-name descname"><span class="pre">preferences</span></span><a class="headerlink" href="#app.User.preferences" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.User.query">
+<span class="sig-name descname"><span class="pre">query</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">t.ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Query</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#app.User.query" title="Permalink to this definition"></a></dt>
+<dd><p>A SQLAlchemy query for a model. Equivalent to <code class="docutils literal notranslate"><span class="pre">db.session.query(Model)</span></code>. Can be
+customized per-model by overriding <code class="xref py py-attr docutils literal notranslate"><span class="pre">query_class</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The query interface is considered legacy in SQLAlchemy. Prefer using
+<code class="docutils literal notranslate"><span class="pre">session.execute(select())</span></code> instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.User.restrictions">
+<span class="sig-name descname"><span class="pre">restrictions</span></span><a class="headerlink" href="#app.User.restrictions" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.User.userID">
+<span class="sig-name descname"><span class="pre">userID</span></span><a class="headerlink" href="#app.User.userID" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.User.username">
+<span class="sig-name descname"><span class="pre">username</span></span><a class="headerlink" href="#app.User.username" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.User.vegan">
+<span class="sig-name descname"><span class="pre">vegan</span></span><a class="headerlink" href="#app.User.vegan" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.User.vegetarian">
+<span class="sig-name descname"><span class="pre">vegetarian</span></span><a class="headerlink" href="#app.User.vegetarian" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.User.weight_lbs">
+<span class="sig-name descname"><span class="pre">weight_lbs</span></span><a class="headerlink" href="#app.User.weight_lbs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="app.UserNutrition">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">UserNutrition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protein</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">carbs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calcium</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iron</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">potassium</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calcium_ul</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iron_ul</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vitA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vitD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vitC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vitE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vitA_ul</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vitD_ul</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vitC_ul</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vitE_ul</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#UserNutrition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.UserNutrition" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.UserNutrition.calcium">
+<span class="sig-name descname"><span class="pre">calcium</span></span><a class="headerlink" href="#app.UserNutrition.calcium" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.UserNutrition.calcium_ul">
+<span class="sig-name descname"><span class="pre">calcium_ul</span></span><a class="headerlink" href="#app.UserNutrition.calcium_ul" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.UserNutrition.carbs">
+<span class="sig-name descname"><span class="pre">carbs</span></span><a class="headerlink" href="#app.UserNutrition.carbs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.UserNutrition.energy">
+<span class="sig-name descname"><span class="pre">energy</span></span><a class="headerlink" href="#app.UserNutrition.energy" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.UserNutrition.fat">
+<span class="sig-name descname"><span class="pre">fat</span></span><a class="headerlink" href="#app.UserNutrition.fat" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.UserNutrition.iron">
+<span class="sig-name descname"><span class="pre">iron</span></span><a class="headerlink" href="#app.UserNutrition.iron" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.UserNutrition.iron_ul">
+<span class="sig-name descname"><span class="pre">iron_ul</span></span><a class="headerlink" href="#app.UserNutrition.iron_ul" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.UserNutrition.nutritionID">
+<span class="sig-name descname"><span class="pre">nutritionID</span></span><a class="headerlink" href="#app.UserNutrition.nutritionID" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.UserNutrition.potassium">
+<span class="sig-name descname"><span class="pre">potassium</span></span><a class="headerlink" href="#app.UserNutrition.potassium" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.UserNutrition.protein">
+<span class="sig-name descname"><span class="pre">protein</span></span><a class="headerlink" href="#app.UserNutrition.protein" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.UserNutrition.query">
+<span class="sig-name descname"><span class="pre">query</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">t.ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Query</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#app.UserNutrition.query" title="Permalink to this definition"></a></dt>
+<dd><p>A SQLAlchemy query for a model. Equivalent to <code class="docutils literal notranslate"><span class="pre">db.session.query(Model)</span></code>. Can be
+customized per-model by overriding <code class="xref py py-attr docutils literal notranslate"><span class="pre">query_class</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The query interface is considered legacy in SQLAlchemy. Prefer using
+<code class="docutils literal notranslate"><span class="pre">session.execute(select())</span></code> instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.UserNutrition.userID">
+<span class="sig-name descname"><span class="pre">userID</span></span><a class="headerlink" href="#app.UserNutrition.userID" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.UserNutrition.vitA">
+<span class="sig-name descname"><span class="pre">vitA</span></span><a class="headerlink" href="#app.UserNutrition.vitA" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.UserNutrition.vitA_ul">
+<span class="sig-name descname"><span class="pre">vitA_ul</span></span><a class="headerlink" href="#app.UserNutrition.vitA_ul" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.UserNutrition.vitC">
+<span class="sig-name descname"><span class="pre">vitC</span></span><a class="headerlink" href="#app.UserNutrition.vitC" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.UserNutrition.vitC_ul">
+<span class="sig-name descname"><span class="pre">vitC_ul</span></span><a class="headerlink" href="#app.UserNutrition.vitC_ul" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.UserNutrition.vitD">
+<span class="sig-name descname"><span class="pre">vitD</span></span><a class="headerlink" href="#app.UserNutrition.vitD" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.UserNutrition.vitD_ul">
+<span class="sig-name descname"><span class="pre">vitD_ul</span></span><a class="headerlink" href="#app.UserNutrition.vitD_ul" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.UserNutrition.vitE">
+<span class="sig-name descname"><span class="pre">vitE</span></span><a class="headerlink" href="#app.UserNutrition.vitE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.UserNutrition.vitE_ul">
+<span class="sig-name descname"><span class="pre">vitE_ul</span></span><a class="headerlink" href="#app.UserNutrition.vitE_ul" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="app.WeeklyRecipes">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">WeeklyRecipes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">web_week_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">userID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recipeIDs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#WeeklyRecipes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.WeeklyRecipes" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.WeeklyRecipes.query">
+<span class="sig-name descname"><span class="pre">query</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">t.ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Query</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#app.WeeklyRecipes.query" title="Permalink to this definition"></a></dt>
+<dd><p>A SQLAlchemy query for a model. Equivalent to <code class="docutils literal notranslate"><span class="pre">db.session.query(Model)</span></code>. Can be
+customized per-model by overriding <code class="xref py py-attr docutils literal notranslate"><span class="pre">query_class</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The query interface is considered legacy in SQLAlchemy. Prefer using
+<code class="docutils literal notranslate"><span class="pre">session.execute(select())</span></code> instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.WeeklyRecipes.recipeIDs">
+<span class="sig-name descname"><span class="pre">recipeIDs</span></span><a class="headerlink" href="#app.WeeklyRecipes.recipeIDs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.WeeklyRecipes.userID">
+<span class="sig-name descname"><span class="pre">userID</span></span><a class="headerlink" href="#app.WeeklyRecipes.userID" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.WeeklyRecipes.web_week_number">
+<span class="sig-name descname"><span class="pre">web_week_number</span></span><a class="headerlink" href="#app.WeeklyRecipes.web_week_number" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.WeeklyRecipes.week_number_ID">
+<span class="sig-name descname"><span class="pre">week_number_ID</span></span><a class="headerlink" href="#app.WeeklyRecipes.week_number_ID" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.accuracy">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">accuracy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weekID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.accuracy" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.check_login">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">check_login</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#check_login"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.check_login" title="Permalink to this definition"></a></dt>
+<dd><p>Checks for user and password match, returns user if exist</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.create_user">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">create_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#create_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.create_user" title="Permalink to this definition"></a></dt>
+<dd><p>Creates account if username is unique</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.delete_event">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">delete_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#delete_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.delete_event" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.format_user">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">format_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#format_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.format_user" title="Permalink to this definition"></a></dt>
+<dd><p>Formats user entity into json</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.get_created_date">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_created_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_created_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_created_date" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.get_events">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_events</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_events" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.get_grocery_list">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_grocery_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weekID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_grocery_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_grocery_list" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.get_num_weeks">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_num_weeks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_num_weeks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_num_weeks" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.get_nutrition">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_nutrition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_nutrition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_nutrition" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.get_preferences">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_preferences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_preferences"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_preferences" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.get_recipe_list">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_recipe_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_recipe_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_recipe_list" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.get_remaining_ingredients">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_remaining_ingredients</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weekID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_remaining_ingredients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_remaining_ingredients" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.get_restrictions">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_restrictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_restrictions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_restrictions" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.get_user_grocery_lists">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_user_grocery_lists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_user_grocery_lists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_user_grocery_lists" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.get_user_id">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_user_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_user_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_user_id" title="Permalink to this definition"></a></dt>
+<dd><p>returns user id from username</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.get_user_info">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_user_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_user_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_user_info" title="Permalink to this definition"></a></dt>
+<dd><p>Returns user in json from username</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.home">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">home</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#home"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.home" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.post_grocery_list">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">post_grocery_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weekID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#post_grocery_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.post_grocery_list" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.post_nutrition">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">post_nutrition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#post_nutrition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.post_nutrition" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.post_recipes">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">post_recipes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weekID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#post_recipes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.post_recipes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.post_whole_user">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">post_whole_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#post_whole_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.post_whole_user" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.single_event">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">single_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#single_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.single_event" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.update_event">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">update_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edit_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">userID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#update_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.update_event" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.update_link">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">update_link</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#update_link"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.update_link" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.update_user">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">update_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#update_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.update_user" title="Permalink to this definition"></a></dt>
+<dd><p>Updates all user info</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="backend" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ninetails.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

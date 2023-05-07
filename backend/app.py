@@ -10,7 +10,7 @@ import random
 from sqlalchemy import Column, Integer, String, DateTime, func
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:11072000@localhost/capstone'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:admin@localhost/capstone'
 db = SQLAlchemy(app)
 CORS(app)
 
@@ -410,6 +410,7 @@ def post_recipes(userID, weekID):
     return "recipe " + recipe_string + " added to " + userID
 
 def format_user(user):
+    """Formats user entity into json"""
     return{
         "userID": user.userID,
         "username": user.username,
@@ -817,6 +818,7 @@ def post_whole_user():
 # Checks for user and password match, returns user if exist
 @app.route('/checklogin', methods=['GET'])
 def check_login():
+    """Checks for user and password match, returns user if exist"""
     user = request.args.get('user')
     pss = request.args.get('pass')
     result = User.query.filter_by(username=user, password=pss)
@@ -829,6 +831,7 @@ def check_login():
 # Creates account if username is unique
 @app.route('/createuser', methods=['POST'])
 def create_user():
+    """Creates account if username is unique"""
     user = request.args.get('user')
     pss = request.args.get('pass')
     eml = request.args.get('email')
@@ -850,6 +853,7 @@ def create_user():
     
 @app.route('/get_user_id/<username>', methods=['GET'])
 def get_user_id(username):
+    """returns user id from username"""
     result = User.query.filter_by(username=username).one()
     id = result.userID
     return str(id)
@@ -857,6 +861,7 @@ def get_user_id(username):
 # Returns requsted user from username
 @app.route('/getuserinfo', methods=['GET'])
 def get_user_info():
+    """Returns user in json from username"""
     user = request.args.get('user')
     result = User.query.filter_by(username=user)
     users = []
@@ -868,6 +873,7 @@ def get_user_info():
 # Updates user
 @app.route('/updateuser', methods=['PUT'])
 def update_user():
+    """Updates all user info"""
     user = request.args.get('user')
     gender = request.args.get('gender')
     weight_lbs = request.args.get('weight_lbs')
