@@ -619,7 +619,19 @@ customized per-model by overriding <code class="xref py py-attr docutils literal
 <dl class="py function">
 <dt class="sig sig-object py" id="app.get_recipe_list">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_recipe_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_recipe_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_recipe_list" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Gets recipe list made for user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>userID</strong> (<em>integer</em>) – list is returned for this user.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of strings containing information for each recipe is given to the user.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List(strings)</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.get_remaining_ingredients">
@@ -688,7 +700,22 @@ customized per-model by overriding <code class="xref py py-attr docutils literal
 <dl class="py function">
 <dt class="sig sig-object py" id="app.post_recipes">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">post_recipes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weekID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#post_recipes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.post_recipes" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Posts grocery list to WeeklyRecipes db for given userID at given weekID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>userID</strong> (<em>integer</em>) – list is posted to this user.</p></li>
+<li><p><strong>weekID</strong> (<em>integer</em>) – list is posted at this week.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>none</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>none</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.post_whole_user">

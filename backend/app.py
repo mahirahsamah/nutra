@@ -199,6 +199,15 @@ def home():
 
 @app.route('/post_recipes/<userID>/<weekID>', methods=['POST','PUT'])
 def post_recipes(userID, weekID):
+    """
+    Posts grocery list to WeeklyRecipes db for given userID at given weekID.
+
+    :param integer userID: list is posted to this user.
+    :param integer weekID: list is posted at this week.
+
+    :return: none
+    :rtype: none
+    """ 
     userID = request.args.get('userID')
     recipe_string= request.args.get('recipe_string')
     recipes = WeeklyRecipes(weekID, userID, recipe_string)
@@ -1703,6 +1712,14 @@ def get_restrictions(userID):
 
 @app.route('/get_recipe_list/<userID>', methods=['GET'])
 def get_recipe_list(userID):
+    """
+    Gets recipe list made for user 
+
+    :param integer userID: list is returned for this user.
+
+    :return: list of strings containing information for each recipe is given to the user. 
+    :rtype: List(strings)
+    """ 
     # time start for function
     # time is in seconds
     #start_time = time.time()

@@ -268,6 +268,15 @@
 
 <div class="viewcode-block" id="post_recipes"><a class="viewcode-back" href="../app.html#app.post_recipes">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/post_recipes/&lt;userID&gt;/&lt;weekID&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span><span class="s1">&#39;PUT&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">post_recipes</span><span class="p">(</span><span class="n">userID</span><span class="p">,</span> <span class="n">weekID</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Posts grocery list to WeeklyRecipes db for given userID at given weekID.</span>
+
+<span class="sd">    :param integer userID: list is posted to this user.</span>
+<span class="sd">    :param integer weekID: list is posted at this week.</span>
+
+<span class="sd">    :return: none</span>
+<span class="sd">    :rtype: none</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
     <span class="n">userID</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;userID&#39;</span><span class="p">)</span>
     <span class="n">recipe_string</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;recipe_string&#39;</span><span class="p">)</span>
     <span class="n">recipes</span> <span class="o">=</span> <span class="n">WeeklyRecipes</span><span class="p">(</span><span class="n">weekID</span><span class="p">,</span> <span class="n">userID</span><span class="p">,</span> <span class="n">recipe_string</span><span class="p">)</span>
@@ -1772,6 +1781,14 @@
 
 <div class="viewcode-block" id="get_recipe_list"><a class="viewcode-back" href="../app.html#app.get_recipe_list">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/get_recipe_list/&lt;userID&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">get_recipe_list</span><span class="p">(</span><span class="n">userID</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gets recipe list made for user </span>
+
+<span class="sd">    :param integer userID: list is returned for this user.</span>
+
+<span class="sd">    :return: list of strings containing information for each recipe is given to the user. </span>
+<span class="sd">    :rtype: List(strings)</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
     <span class="c1"># time start for function</span>
     <span class="c1"># time is in seconds</span>
     <span class="c1">#start_time = time.time()</span>
