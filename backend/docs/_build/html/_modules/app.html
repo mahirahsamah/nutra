@@ -87,6 +87,15 @@
 <span class="n">api_key</span> <span class="o">=</span> <span class="s2">&quot;13cc54269ca54d258cf7b07e4383154c&quot;</span>
 
 <div class="viewcode-block" id="User"><a class="viewcode-back" href="../app.html#app.User">[docs]</a><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is a SQLAlchemy table for storing user data.</span>
+
+<span class="sd">    :param db: A SQLAlchemy database object.</span>
+
+<span class="sd">    :return: A SQLAlchemy table object representing the User table.</span>
+<span class="sd">    :rtype: SQLAlchemy table object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;users_table&#39;</span>
     <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;schema&#39;</span><span class="p">:</span> <span class="s1">&#39;public&#39;</span><span class="p">}</span>
@@ -152,6 +161,15 @@
   
 
 <div class="viewcode-block" id="UserNutrition"><a class="viewcode-back" href="../app.html#app.UserNutrition">[docs]</a><span class="k">class</span> <span class="nc">UserNutrition</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is a SQLAlchemy table for storing user nutrition data.</span>
+
+<span class="sd">    :param db: A SQLAlchemy database object.</span>
+
+<span class="sd">    :return: A SQLAlchemy table object representing the UserNutrition table.</span>
+<span class="sd">    :rtype: SQLAlchemy table object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;users_nutrition_table&#39;</span>
     <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;schema&#39;</span><span class="p">:</span> <span class="s1">&#39;public&#39;</span><span class="p">}</span>
@@ -207,6 +225,16 @@
 
 
 <div class="viewcode-block" id="WeeklyRecipes"><a class="viewcode-back" href="../app.html#app.WeeklyRecipes">[docs]</a><span class="k">class</span> <span class="nc">WeeklyRecipes</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is a SQLAlchemy table for storing recipes the user chooses every week.</span>
+
+<span class="sd">    :param db: A SQLAlchemy database object.</span>
+
+<span class="sd">    :return: A SQLAlchemy table object representing the WeeklyRecipes table.</span>
+<span class="sd">    :rtype: SQLAlchemy table object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;users_weekly_recipes_table&#39;</span>
     <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;schema&#39;</span><span class="p">:</span> <span class="s1">&#39;public&#39;</span><span class="p">}</span>
 
@@ -227,6 +255,16 @@
 
 
 <div class="viewcode-block" id="Latency"><a class="viewcode-back" href="../app.html#app.Latency">[docs]</a><span class="k">class</span> <span class="nc">Latency</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is a SQLAlchemy table for storing the latency data of backend functions.</span>
+
+<span class="sd">    :param db: A SQLAlchemy database object.</span>
+
+<span class="sd">    :return: A SQLAlchemy table object representing the Latency table.</span>
+<span class="sd">    :rtype: SQLAlchemy table object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;latency_table&#39;</span>
     <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;schema&#39;</span><span class="p">:</span> <span class="s1">&#39;public&#39;</span><span class="p">}</span>
 
@@ -242,6 +280,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">time_taken_s</span> <span class="o">=</span> <span class="n">time_taken_s</span></div>
 
 <div class="viewcode-block" id="GroceryLists"><a class="viewcode-back" href="../app.html#app.GroceryLists">[docs]</a><span class="k">class</span> <span class="nc">GroceryLists</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is a SQLAlchemy table for storing the weekly grocery lists for the user.</span>
+
+<span class="sd">    :param db: A SQLAlchemy database object.</span>
+
+<span class="sd">    :return: A SQLAlchemy table object representing the GroceryLists table.</span>
+<span class="sd">    :rtype: SQLAlchemy table object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;grocery_lists_table&#39;</span>
     <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;schema&#39;</span><span class="p">:</span> <span class="s1">&#39;public&#39;</span><span class="p">}</span>
 
@@ -261,8 +309,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">grocery_list</span> <span class="o">=</span> <span class="n">grocery_list</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">web_week_number</span> <span class="o">=</span><span class="n">web_week_number</span></div>
 
-<div class="viewcode-block" id="home"><a class="viewcode-back" href="../app.html#app.home">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/groceries&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="home"><a class="viewcode-back" href="../app.html#app.home">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">home</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is a function that returns the root path.</span>
+
+<span class="sd">    :return: An empty page saying &quot;Test Page.&quot;</span>
+<span class="sd">    :rtype: String</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s2">&quot;Test Page&quot;</span></div>
 
 
@@ -506,6 +560,12 @@
 <span class="c1"># POST ALL</span>
 <div class="viewcode-block" id="post_whole_user"><a class="viewcode-back" href="../app.html#app.post_whole_user">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/post_whole_user&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">post_whole_user</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function is used to post user account information and user nutrition information into a local database if the front-end is not yet developed.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        JSON: a JSON object of the user information that was posted when this function was run.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span>
     <span class="n">email</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]</span>
     <span class="n">password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]</span>
@@ -1323,53 +1383,34 @@
     <span class="k">return</span> <span class="mi">1</span></div>
 
 
-
-
-<span class="c1"># get all users</span>
-<div class="viewcode-block" id="get_events"><a class="viewcode-back" href="../app.html#app.get_events">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/get_users_info&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">get_events</span><span class="p">():</span>
-    <span class="n">events</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">userID</span><span class="o">.</span><span class="n">asc</span><span class="p">())</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-    <span class="n">event_list</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">events</span><span class="p">:</span>
-        <span class="n">event_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">format_user</span><span class="p">(</span><span class="n">event</span><span class="p">))</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;events&#39;</span><span class="p">:</span> <span class="n">event_list</span><span class="p">}</span></div>
-
-<span class="c1"># get single user</span>
-<div class="viewcode-block" id="single_event"><a class="viewcode-back" href="../app.html#app.single_event">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/get_user/&lt;userID&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">single_event</span><span class="p">(</span><span class="n">userID</span><span class="p">):</span>
-    <span class="n">event</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">userID</span> <span class="o">=</span> <span class="n">userID</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
-    <span class="n">formatted_event</span> <span class="o">=</span> <span class="n">format_user</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;event&#39;</span><span class="p">:</span><span class="n">formatted_event</span><span class="p">}</span></div>
-
-<span class="c1"># delete an event</span>
-<div class="viewcode-block" id="delete_event"><a class="viewcode-back" href="../app.html#app.delete_event">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/delete_user/&lt;userID&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;DELETE&#39;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">delete_event</span><span class="p">(</span><span class="n">userID</span><span class="p">):</span>
-    <span class="n">event</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">userID</span><span class="o">=</span><span class="n">userID</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
-    <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
-    <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Event (id: </span><span class="si">{</span><span class="n">userID</span><span class="si">}</span><span class="s1">) deleted.&#39;</span></div>
-
-<span class="c1"># edit a user -- NOT DONE</span>
-<div class="viewcode-block" id="update_event"><a class="viewcode-back" href="../app.html#app.update_event">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/edit_user/&lt;edit_column&gt;/&lt;userID&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PUT&#39;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">update_event</span><span class="p">(</span><span class="n">edit_column</span><span class="p">,</span> <span class="n">userID</span><span class="p">):</span>
-    <span class="n">event</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">userID</span><span class="o">=</span><span class="n">userID</span><span class="p">)</span>
-    <span class="n">to_edit</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="n">edit_column</span><span class="p">]</span>
-    <span class="c1">#return to_edit</span>
-    <span class="n">event</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">edit_column</span><span class="o">=</span><span class="n">to_edit</span><span class="p">))</span>
-    <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;event&#39;</span><span class="p">:</span><span class="n">format_user</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">one</span><span class="p">())}</span></div>
-
-
 <div class="viewcode-block" id="get_nutrition"><a class="viewcode-back" href="../app.html#app.get_nutrition">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/get_nutrition/&lt;userID&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">get_nutrition</span><span class="p">(</span><span class="n">userID</span><span class="p">):</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieve nutrition information for a given user.</span>
+
+<span class="sd">    :param integer userID: An integer representing the unique identifier of the user.</span>
+
+<span class="sd">    :return: A dictionary of strings containing nutrition information for the specified user.</span>
+<span class="sd">    :rtype: String dictionary</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
     <span class="n">this_user</span> <span class="o">=</span> <span class="n">UserNutrition</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">userID</span> <span class="o">=</span> <span class="n">userID</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
     <span class="n">nutrition_info</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;energy&quot;</span><span class="p">:</span><span class="n">this_user</span><span class="o">.</span><span class="n">energy</span><span class="p">,</span> <span class="s2">&quot;protein&quot;</span><span class="p">:</span><span class="n">this_user</span><span class="o">.</span><span class="n">protein</span><span class="p">,</span> <span class="s2">&quot;fat&quot;</span><span class="p">:</span> <span class="n">this_user</span><span class="o">.</span><span class="n">fat</span><span class="p">,</span> <span class="s2">&quot;carbs&quot;</span><span class="p">:</span> <span class="n">this_user</span><span class="o">.</span><span class="n">carbs</span><span class="p">,</span> <span class="s2">&quot;vitD&quot;</span><span class="p">:</span> <span class="n">this_user</span><span class="o">.</span><span class="n">vitD</span><span class="p">,</span> <span class="s2">&quot;vitC&quot;</span><span class="p">:</span> <span class="n">this_user</span><span class="o">.</span><span class="n">vitC</span><span class="p">,</span> <span class="s2">&quot;vitA&quot;</span><span class="p">:</span> <span class="n">this_user</span><span class="o">.</span><span class="n">vitA</span><span class="p">,</span> <span class="s2">&quot;vitE&quot;</span><span class="p">:</span> <span class="n">this_user</span><span class="o">.</span><span class="n">vitE</span><span class="p">,</span> <span class="s2">&quot;calcium&quot;</span><span class="p">:</span> <span class="n">this_user</span><span class="o">.</span><span class="n">calcium</span><span class="p">,</span> <span class="s2">&quot;iron&quot;</span><span class="p">:</span> <span class="n">this_user</span><span class="o">.</span><span class="n">iron</span><span class="p">,</span> <span class="s2">&quot;potassium&quot;</span><span class="p">:</span> <span class="n">this_user</span><span class="o">.</span><span class="n">potassium</span><span class="p">,</span> <span class="s2">&quot;vitD_ul&quot;</span><span class="p">:</span><span class="n">this_user</span><span class="o">.</span><span class="n">vitD_ul</span><span class="p">,</span> <span class="s2">&quot;vitC_ul&quot;</span><span class="p">:</span><span class="n">this_user</span><span class="o">.</span><span class="n">vitC_ul</span><span class="p">,</span> <span class="s2">&quot;vitA_ul&quot;</span><span class="p">:</span><span class="n">this_user</span><span class="o">.</span><span class="n">vitA_ul</span><span class="p">,</span> <span class="s2">&quot;vitE_ul&quot;</span><span class="p">:</span><span class="n">this_user</span><span class="o">.</span><span class="n">vitE_ul</span><span class="p">,</span> <span class="s2">&quot;calcium_ul&quot;</span><span class="p">:</span><span class="n">this_user</span><span class="o">.</span><span class="n">calcium_ul</span><span class="p">,</span> <span class="s2">&quot;iron_ul&quot;</span><span class="p">:</span><span class="n">this_user</span><span class="o">.</span><span class="n">iron_ul</span><span class="p">}</span>
     <span class="k">return</span> <span class="n">nutrition_info</span> </div>
 
 <div class="viewcode-block" id="post_nutrition"><a class="viewcode-back" href="../app.html#app.post_nutrition">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/post_nutrition/&lt;userID&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
-<span class="c1">#def nutrients_amounts(gender, weight_lbs, age, height_feet, height_inches, activity_level):</span>
 <span class="k">def</span> <span class="nf">post_nutrition</span><span class="p">(</span><span class="n">userID</span><span class="p">):</span>
-    <span class="c1">#energy = 0</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add nutrition information for a given user to the database.</span>
+
+<span class="sd">    :param integer userID: An integer representing the unique identifier of the user.</span>
+
+<span class="sd">    :return: A string indicating that the user&#39;s nutrition information was successfully added to the database.</span>
+<span class="sd">    :rtype: String</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
     <span class="n">protein</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">fat</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">carbs</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1693,28 +1734,52 @@
     <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">user_nutrition</span><span class="p">)</span>
     <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 
-    <span class="c1">#return nutrition_info</span>
-    <span class="c1">#return {&quot;nutrients&quot;:return_list}</span>
     <span class="k">return</span> <span class="s2">&quot;user nutrition posted&quot;</span></div>
 
 
 <div class="viewcode-block" id="get_preferences"><a class="viewcode-back" href="../app.html#app.get_preferences">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/get_preferences/&lt;userID&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">get_preferences</span><span class="p">(</span><span class="n">userID</span><span class="p">):</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieve a user&#39;s preferences from the database.</span>
+
+<span class="sd">    :param integer userID: An integer representing the unique identifier of the user.</span>
+
+<span class="sd">    :return: A list of strings representing the user&#39;s preferences.</span>
+<span class="sd">    :rtype: String list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
     <span class="n">this_user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">userID</span> <span class="o">=</span> <span class="n">userID</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
     <span class="n">preferences</span> <span class="o">=</span> <span class="p">(</span><span class="n">this_user</span><span class="o">.</span><span class="n">preferences</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">preferences</span> </div>
 
 <div class="viewcode-block" id="get_restrictions"><a class="viewcode-back" href="../app.html#app.get_restrictions">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/get_restrictions/&lt;userID&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">get_restrictions</span><span class="p">(</span><span class="n">userID</span><span class="p">):</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieve a user&#39;s dietary restrictions from the database.</span>
+
+<span class="sd">    :param integer userID: An integer representing the unique identifier of the user.</span>
+
+<span class="sd">    :return: A list of strings representing the user&#39;s dietary restrictions.</span>
+<span class="sd">    :rtype: String list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
     <span class="n">this_user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">userID</span> <span class="o">=</span> <span class="n">userID</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
     <span class="n">restrictions</span> <span class="o">=</span> <span class="p">(</span><span class="n">this_user</span><span class="o">.</span><span class="n">restrictions</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">restrictions</span></div>
 
 <div class="viewcode-block" id="get_recipe_list"><a class="viewcode-back" href="../app.html#app.get_recipe_list">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/get_recipe_list/&lt;userID&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">get_recipe_list</span><span class="p">(</span><span class="n">userID</span><span class="p">):</span>
-    <span class="c1"># time start for function</span>
-    <span class="c1"># time is in seconds</span>
-    <span class="c1">#start_time = time.time()</span>
+<span class="w">     </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieve a list of recipes from Spoonacular based on a user&#39;s dietary preferences and restrictions.</span>
+
+<span class="sd">    :param integer userID: An integer representing the unique identifier of the user.</span>
+
+<span class="sd">    :return: A JSON object representing recipes the user can choose from.</span>
+<span class="sd">    :rtype: JSON</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="c1"># get restrictions and preferences</span>
     <span class="n">this_user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">userID</span> <span class="o">=</span> <span class="n">userID</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
@@ -1802,24 +1867,23 @@
     <span class="c1"># having the micronutrients in the query params makes it more constricting. so i am just going to let the user choose from list of recipes and then fill the rest of the nutrients in with snacks</span>
 
     <span class="n">macros_query</span> <span class="o">=</span>  <span class="n">find_by_nutrients_url</span> <span class="o">+</span> <span class="s2">&quot;?&quot;</span> <span class="o">+</span> <span class="n">macros_query_params</span> 
-    <span class="c1">#print(macros_query)</span>
     <span class="n">macros_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">macros_query</span><span class="p">)</span>
-
-    <span class="c1"># time end for function</span>
-    <span class="c1">#end_time = time.time()</span>
-    <span class="c1">#total_time = end_time - start_time</span>
-
-    <span class="c1">#time_taken = Latency(&quot;generate_recipes&quot;, total_time)</span>
-    <span class="c1">#db.session.add(time_taken)</span>
-    <span class="c1">#db.session.commit()</span>
-
 
     <span class="k">return</span> <span class="n">macros_response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span></div>
 
 
 <span class="c1"># just run this one function when user selects their recipes </span>
 <div class="viewcode-block" id="get_remaining_ingredients"><a class="viewcode-back" href="../app.html#app.get_remaining_ingredients">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/get_remaining_ingredients/&lt;userID&gt;/&lt;weekID&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span><span class="s1">&#39;PUT&#39;</span><span class="p">,</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span> <span class="c1"># this function gets remaining ingredients AND posts the final grocery list to the db</span>
-<span class="k">def</span> <span class="nf">get_remaining_ingredients</span><span class="p">(</span><span class="n">userID</span><span class="p">,</span> <span class="n">weekID</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_remaining_ingredients</span><span class="p">(</span><span class="n">userID</span><span class="p">,</span> <span class="n">weekID</span><span class="p">):</span>    
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    After calculating the remaining nutrients the user needs by subtracting nutrients received via user-chosen recipes from nutrients required for the user, this function finds snacks the user can eat to fulfill the remaining ingredients.</span>
+
+<span class="sd">    :param integer userID: An integer representing the unique identifier of the user.</span>
+<span class="sd">    :param integer weekID: An integer representing the unique identifier of the week.</span>
+
+<span class="sd">    :return: A string indicating that the snacks have been successfully input into the database.</span>
+<span class="sd">    :rtype: String</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># time start for function</span>
     <span class="c1"># time is in seconds</span>
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -2038,6 +2102,15 @@
     
 <div class="viewcode-block" id="post_grocery_list"><a class="viewcode-back" href="../app.html#app.post_grocery_list">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/post_grocery_list/&lt;userID&gt;/&lt;weekID&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">post_grocery_list</span><span class="p">(</span><span class="n">userID</span><span class="p">,</span> <span class="n">weekID</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Posts into database the ingredients of the recipes the user chose. </span>
+<span class="sd">    </span>
+<span class="sd">    :param integer userID: An integer representing the unique identifier of the user.</span>
+<span class="sd">    :param integer weekID: An integer representing the unique identifier of the week.</span>
+
+<span class="sd">    :return: A string indicating that the ingredients have been successfully input into the database.</span>
+<span class="sd">    :rtype: String</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="c1"># time start for function</span>
     <span class="c1"># time is in seconds</span>
@@ -2095,6 +2168,16 @@
 
 <div class="viewcode-block" id="get_grocery_list"><a class="viewcode-back" href="../app.html#app.get_grocery_list">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/get_grocery_list/&lt;userID&gt;/&lt;weekID&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">get_grocery_list</span><span class="p">(</span><span class="n">userID</span><span class="p">,</span> <span class="n">weekID</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieves the grocery list from database for a given user for a given week. </span>
+<span class="sd">    </span>
+<span class="sd">    :param integer userID: An integer representing the unique identifier of the user.</span>
+<span class="sd">    :param integer weekID: An integer representing the unique identifier of the week.</span>
+
+<span class="sd">    :return: A dictionary containing the grocery list.</span>
+<span class="sd">    :rtype: Dictionary</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
     <span class="n">get</span> <span class="o">=</span>  <span class="n">GroceryLists</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">userID</span> <span class="o">=</span> <span class="n">userID</span><span class="p">,</span> <span class="n">web_week_number</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">weekID</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
     <span class="n">get_grocery_list</span> <span class="o">=</span> <span class="n">get</span><span class="o">.</span><span class="n">grocery_list</span>
     <span class="n">grocery_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">get_grocery_list</span><span class="p">)</span>
@@ -2103,11 +2186,27 @@
 
 <div class="viewcode-block" id="get_num_weeks"><a class="viewcode-back" href="../app.html#app.get_num_weeks">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/get_num_weeks/&lt;userID&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">get_num_weeks</span><span class="p">(</span><span class="n">userID</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieves the number of weeks a particular user has been active. </span>
+<span class="sd">    </span>
+<span class="sd">    :param integer userID: An integer representing the unique identifier of the user.</span>
+
+<span class="sd">    :return: A string of the number of weeks.</span>
+<span class="sd">    :rtype: String</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">get</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">WeeklyRecipes</span><span class="o">.</span><span class="n">web_week_number</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">userID</span> <span class="o">=</span> <span class="n">userID</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
     <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">get</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="get_created_date"><a class="viewcode-back" href="../app.html#app.get_created_date">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/get_created_date/&lt;userID&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">get_created_date</span><span class="p">(</span><span class="n">userID</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieves the date the user was created. </span>
+<span class="sd">    </span>
+<span class="sd">    :param integer userID: An integer representing the unique identifier of the user.</span>
+
+<span class="sd">    :return: A string of user creation date.</span>
+<span class="sd">    :rtype: String</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">get</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">userID</span> <span class="o">=</span> <span class="n">userID</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
     <span class="n">created</span> <span class="o">=</span> <span class="n">get</span><span class="o">.</span><span class="n">created_on</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">created</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
@@ -2116,6 +2215,14 @@
 
 <div class="viewcode-block" id="get_user_grocery_lists"><a class="viewcode-back" href="../app.html#app.get_user_grocery_lists">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/get_user_grocery_lists/&lt;userID&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">get_user_grocery_lists</span><span class="p">(</span><span class="n">userID</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieves all the grocery lists of the user. </span>
+<span class="sd">    </span>
+<span class="sd">    :param integer userID: An integer representing the unique identifier of the user.</span>
+
+<span class="sd">    :return: A hash map containing the week number and the grocery list corresponding to that week number.</span>
+<span class="sd">    :rtype: Hash map</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="c1">#grocery_lists_dict = {}</span>
     
@@ -2132,6 +2239,15 @@
 
 <div class="viewcode-block" id="accuracy"><a class="viewcode-back" href="../app.html#app.accuracy">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/accuracy/&lt;userID&gt;/&lt;weekID&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="n">userID</span><span class="p">,</span> <span class="n">weekID</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function calculates how accurately the user&#39;s chosen recipes fulfill their nutritional requirements. </span>
+<span class="sd">    </span>
+<span class="sd">    :param integer userID: An integer representing the unique identifier of the user.</span>
+<span class="sd">    :param integer weekID: An integer representing the unique identifier of the week.</span>
+
+<span class="sd">    :return: A string of the percentage of the user&#39;s nutritional needs met by the chosen recipes.</span>
+<span class="sd">    :rtype: String</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># calculate user requirements</span>
     <span class="n">this_user</span> <span class="o">=</span> <span class="n">UserNutrition</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">userID</span> <span class="o">=</span> <span class="n">userID</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
     <span class="n">nutrition_required</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;energy&quot;</span><span class="p">:</span><span class="n">this_user</span><span class="o">.</span><span class="n">energy</span><span class="p">,</span> <span class="s2">&quot;protein&quot;</span><span class="p">:</span><span class="n">this_user</span><span class="o">.</span><span class="n">protein</span><span class="p">,</span> <span class="s2">&quot;fat&quot;</span><span class="p">:</span> <span class="n">this_user</span><span class="o">.</span><span class="n">fat</span><span class="p">,</span> <span class="s2">&quot;carbs&quot;</span><span class="p">:</span> <span class="n">this_user</span><span class="o">.</span><span class="n">carbs</span><span class="p">,</span> <span class="s2">&quot;vitD&quot;</span><span class="p">:</span> <span class="n">this_user</span><span class="o">.</span><span class="n">vitD</span><span class="p">,</span> <span class="s2">&quot;vitC&quot;</span><span class="p">:</span> <span class="n">this_user</span><span class="o">.</span><span class="n">vitC</span><span class="p">,</span> <span class="s2">&quot;vitA&quot;</span><span class="p">:</span> <span class="n">this_user</span><span class="o">.</span><span class="n">vitA</span><span class="p">,</span> <span class="s2">&quot;vitE&quot;</span><span class="p">:</span> <span class="n">this_user</span><span class="o">.</span><span class="n">vitE</span><span class="p">,</span> <span class="s2">&quot;calcium&quot;</span><span class="p">:</span> <span class="n">this_user</span><span class="o">.</span><span class="n">calcium</span><span class="p">,</span> <span class="s2">&quot;iron&quot;</span><span class="p">:</span> <span class="n">this_user</span><span class="o">.</span><span class="n">iron</span><span class="p">,</span> <span class="s2">&quot;potassium&quot;</span><span class="p">:</span> <span class="n">this_user</span><span class="o">.</span><span class="n">potassium</span><span class="p">}</span>

@@ -117,10 +117,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#app.accuracy"><code class="docutils literal notranslate"><span class="pre">accuracy()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#app.check_login"><code class="docutils literal notranslate"><span class="pre">check_login()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#app.create_user"><code class="docutils literal notranslate"><span class="pre">create_user()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#app.delete_event"><code class="docutils literal notranslate"><span class="pre">delete_event()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#app.format_user"><code class="docutils literal notranslate"><span class="pre">format_user()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#app.get_created_date"><code class="docutils literal notranslate"><span class="pre">get_created_date()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#app.get_events"><code class="docutils literal notranslate"><span class="pre">get_events()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#app.get_grocery_list"><code class="docutils literal notranslate"><span class="pre">get_grocery_list()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#app.get_num_weeks"><code class="docutils literal notranslate"><span class="pre">get_num_weeks()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#app.get_nutrition"><code class="docutils literal notranslate"><span class="pre">get_nutrition()</span></code></a></li>
@@ -136,8 +134,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#app.post_nutrition"><code class="docutils literal notranslate"><span class="pre">post_nutrition()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#app.post_recipes"><code class="docutils literal notranslate"><span class="pre">post_recipes()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#app.post_whole_user"><code class="docutils literal notranslate"><span class="pre">post_whole_user()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#app.single_event"><code class="docutils literal notranslate"><span class="pre">single_event()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#app.update_event"><code class="docutils literal notranslate"><span class="pre">update_event()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#app.update_link"><code class="docutils literal notranslate"><span class="pre">update_link()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#app.update_user"><code class="docutils literal notranslate"><span class="pre">update_user()</span></code></a></li>
 </ul>
@@ -177,6 +173,18 @@
 <dt class="sig sig-object py" id="app.GroceryLists">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">GroceryLists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">web_week_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">userID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grocery_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#GroceryLists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.GroceryLists" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>This is a SQLAlchemy table for storing the weekly grocery lists for the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>db</strong> – A SQLAlchemy database object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A SQLAlchemy table object representing the GroceryLists table.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>SQLAlchemy table object</p>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="app.GroceryLists.grocery_list">
 <span class="sig-name descname"><span class="pre">grocery_list</span></span><a class="headerlink" href="#app.GroceryLists.grocery_list" title="Permalink to this definition"></a></dt>
@@ -215,6 +223,18 @@ customized per-model by overriding <code class="xref py py-attr docutils literal
 <dt class="sig sig-object py" id="app.Latency">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">Latency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_taken_s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#Latency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.Latency" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>This is a SQLAlchemy table for storing the latency data of backend functions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>db</strong> – A SQLAlchemy database object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A SQLAlchemy table object representing the Latency table.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>SQLAlchemy table object</p>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="app.Latency.function_id">
 <span class="sig-name descname"><span class="pre">function_id</span></span><a class="headerlink" href="#app.Latency.function_id" title="Permalink to this definition"></a></dt>
@@ -248,6 +268,18 @@ customized per-model by overriding <code class="xref py py-attr docutils literal
 <dt class="sig sig-object py" id="app.User">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">User</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#User"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.User" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>This is a SQLAlchemy table for storing user data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>db</strong> – A SQLAlchemy database object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A SQLAlchemy table object representing the User table.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>SQLAlchemy table object</p>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="app.User.activity_level">
 <span class="sig-name descname"><span class="pre">activity_level</span></span><a class="headerlink" href="#app.User.activity_level" title="Permalink to this definition"></a></dt>
@@ -371,6 +403,18 @@ customized per-model by overriding <code class="xref py py-attr docutils literal
 <dt class="sig sig-object py" id="app.UserNutrition">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">UserNutrition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protein</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">carbs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calcium</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iron</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">potassium</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calcium_ul</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iron_ul</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vitA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vitD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vitC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vitE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vitA_ul</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vitD_ul</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vitC_ul</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vitE_ul</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#UserNutrition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.UserNutrition" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>This is a SQLAlchemy table for storing user nutrition data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>db</strong> – A SQLAlchemy database object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A SQLAlchemy table object representing the UserNutrition table.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>SQLAlchemy table object</p>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="app.UserNutrition.calcium">
 <span class="sig-name descname"><span class="pre">calcium</span></span><a class="headerlink" href="#app.UserNutrition.calcium" title="Permalink to this definition"></a></dt>
@@ -484,6 +528,18 @@ customized per-model by overriding <code class="xref py py-attr docutils literal
 <dt class="sig sig-object py" id="app.WeeklyRecipes">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">WeeklyRecipes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">web_week_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">userID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recipeIDs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#WeeklyRecipes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.WeeklyRecipes" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>This is a SQLAlchemy table for storing recipes the user chooses every week.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>db</strong> – A SQLAlchemy database object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A SQLAlchemy table object representing the WeeklyRecipes table.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>SQLAlchemy table object</p>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="app.WeeklyRecipes.query">
 <span class="sig-name descname"><span class="pre">query</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">t.ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Query</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#app.WeeklyRecipes.query" title="Permalink to this definition"></a></dt>
@@ -521,7 +577,22 @@ customized per-model by overriding <code class="xref py py-attr docutils literal
 <dl class="py function">
 <dt class="sig sig-object py" id="app.accuracy">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">accuracy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weekID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.accuracy" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>This function calculates how accurately the user’s chosen recipes fulfill their nutritional requirements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>userID</strong> (<em>integer</em>) – An integer representing the unique identifier of the user.</p></li>
+<li><p><strong>weekID</strong> (<em>integer</em>) – An integer representing the unique identifier of the week.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A string of the percentage of the user’s nutritional needs met by the chosen recipes.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.check_login">
@@ -536,11 +607,6 @@ customized per-model by overriding <code class="xref py py-attr docutils literal
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="app.delete_event">
-<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">delete_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#delete_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.delete_event" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="app.format_user">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">format_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#format_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.format_user" title="Permalink to this definition"></a></dt>
 <dd><p>Formats user entity into json</p>
@@ -549,52 +615,161 @@ customized per-model by overriding <code class="xref py py-attr docutils literal
 <dl class="py function">
 <dt class="sig sig-object py" id="app.get_created_date">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_created_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_created_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_created_date" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="app.get_events">
-<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_events</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_events" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Retrieves the date the user was created.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>userID</strong> (<em>integer</em>) – An integer representing the unique identifier of the user.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A string of user creation date.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.get_grocery_list">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_grocery_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weekID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_grocery_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_grocery_list" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Retrieves the grocery list from database for a given user for a given week.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>userID</strong> (<em>integer</em>) – An integer representing the unique identifier of the user.</p></li>
+<li><p><strong>weekID</strong> (<em>integer</em>) – An integer representing the unique identifier of the week.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the grocery list.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.get_num_weeks">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_num_weeks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_num_weeks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_num_weeks" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Retrieves the number of weeks a particular user has been active.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>userID</strong> (<em>integer</em>) – An integer representing the unique identifier of the user.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A string of the number of weeks.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.get_nutrition">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_nutrition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_nutrition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_nutrition" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Retrieve nutrition information for a given user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>userID</strong> (<em>integer</em>) – An integer representing the unique identifier of the user.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary of strings containing nutrition information for the specified user.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String dictionary</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.get_preferences">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_preferences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_preferences"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_preferences" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Retrieve a user’s preferences from the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>userID</strong> (<em>integer</em>) – An integer representing the unique identifier of the user.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of strings representing the user’s preferences.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String list</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.get_recipe_list">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_recipe_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_recipe_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_recipe_list" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Retrieve a list of recipes from Spoonacular based on a user’s dietary preferences and restrictions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>userID</strong> (<em>integer</em>) – An integer representing the unique identifier of the user.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A JSON object representing recipes the user can choose from.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.get_remaining_ingredients">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_remaining_ingredients</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weekID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_remaining_ingredients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_remaining_ingredients" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>After calculating the remaining nutrients the user needs by subtracting nutrients received via user-chosen recipes from nutrients required for the user, this function finds snacks the user can eat to fulfill the remaining ingredients.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>userID</strong> (<em>integer</em>) – An integer representing the unique identifier of the user.</p></li>
+<li><p><strong>weekID</strong> (<em>integer</em>) – An integer representing the unique identifier of the week.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A string indicating that the snacks have been successfully input into the database.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.get_restrictions">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_restrictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_restrictions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_restrictions" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Retrieve a user’s dietary restrictions from the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>userID</strong> (<em>integer</em>) – An integer representing the unique identifier of the user.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of strings representing the user’s dietary restrictions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String list</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.get_user_grocery_lists">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_user_grocery_lists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#get_user_grocery_lists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.get_user_grocery_lists" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Retrieves all the grocery lists of the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>userID</strong> (<em>integer</em>) – An integer representing the unique identifier of the user.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A hash map containing the week number and the grocery list corresponding to that week number.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Hash map</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.get_user_id">
@@ -611,17 +786,53 @@ customized per-model by overriding <code class="xref py py-attr docutils literal
 <dl class="py function">
 <dt class="sig sig-object py" id="app.home">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">home</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#home"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.home" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>This is a function that returns the root path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An empty page saying “Test Page.”</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.post_grocery_list">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">post_grocery_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weekID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#post_grocery_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.post_grocery_list" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Posts into database the ingredients of the recipes the user chose.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>userID</strong> (<em>integer</em>) – An integer representing the unique identifier of the user.</p></li>
+<li><p><strong>weekID</strong> (<em>integer</em>) – An integer representing the unique identifier of the week.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A string indicating that the ingredients have been successfully input into the database.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.post_nutrition">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">post_nutrition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#post_nutrition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.post_nutrition" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Add nutrition information for a given user to the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>userID</strong> (<em>integer</em>) – An integer representing the unique identifier of the user.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A string indicating that the user’s nutrition information was successfully added to the database.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.post_recipes">
@@ -631,17 +842,12 @@ customized per-model by overriding <code class="xref py py-attr docutils literal
 <dl class="py function">
 <dt class="sig sig-object py" id="app.post_whole_user">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">post_whole_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#post_whole_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.post_whole_user" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="app.single_event">
-<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">single_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#single_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.single_event" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="app.update_event">
-<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">update_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edit_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">userID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#update_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app.update_event" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>This function is used to post user account information and user nutrition information into a local database if the front-end is not yet developed.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>JSON: a JSON object of the user information that was posted when this function was run.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.update_link">
