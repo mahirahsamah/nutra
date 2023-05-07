@@ -18,6 +18,14 @@ CORS(app)
 api_key = "13cc54269ca54d258cf7b07e4383154c"
 
 class User(db.Model):
+    """
+    This is a SQLAlchemy table for storing user data.
+
+    :param db: A SQLAlchemy database object.
+
+    :return: A SQLAlchemy table object representing the User table.
+    :rtype: SQLAlchemy table object
+    """
 
     __tablename__ = 'users_table'
     __table_args__ = {'schema': 'public'}
@@ -83,6 +91,14 @@ class User(db.Model):
   
 
 class UserNutrition(db.Model):
+    """
+    This is a SQLAlchemy table for storing user nutrition data.
+
+    :param db: A SQLAlchemy database object.
+
+    :return: A SQLAlchemy table object representing the UserNutrition table.
+    :rtype: SQLAlchemy table object
+    """
 
     __tablename__ = 'users_nutrition_table'
     __table_args__ = {'schema': 'public'}
@@ -138,6 +154,15 @@ class UserNutrition(db.Model):
 
 
 class WeeklyRecipes(db.Model):
+    """
+    This is a SQLAlchemy table for storing recipes the user chooses every week.
+
+    :param db: A SQLAlchemy database object.
+
+    :return: A SQLAlchemy table object representing the WeeklyRecipes table.
+    :rtype: SQLAlchemy table object
+    """
+    
     __tablename__ = 'users_weekly_recipes_table'
     __table_args__ = {'schema': 'public'}
 
@@ -158,6 +183,15 @@ class WeeklyRecipes(db.Model):
 
 
 class Latency(db.Model):
+    """
+    This is a SQLAlchemy table for storing the latency data of backend functions.
+
+    :param db: A SQLAlchemy database object.
+
+    :return: A SQLAlchemy table object representing the Latency table.
+    :rtype: SQLAlchemy table object
+    """
+    
     __tablename__ = 'latency_table'
     __table_args__ = {'schema': 'public'}
 
@@ -173,6 +207,14 @@ class Latency(db.Model):
         self.time_taken_s = time_taken_s
 
 class GroceryLists(db.Model):
+    """
+    This is a SQLAlchemy table for storing the weekly grocery lists for the user.
+
+    :param db: A SQLAlchemy database object.
+
+    :return: A SQLAlchemy table object representing the GroceryLists table.
+    :rtype: SQLAlchemy table object
+    """
     __tablename__ = 'grocery_lists_table'
     __table_args__ = {'schema': 'public'}
 
@@ -192,8 +234,14 @@ class GroceryLists(db.Model):
         self.grocery_list = grocery_list
         self.web_week_number =web_week_number
 
-@app.route('/groceries')
+@app.route('/')
 def home():
+    """
+    This is a function that returns the root path.
+
+    :return: An empty page saying "Test Page."
+    :rtype: String
+    """
     return "Test Page"
 
 
@@ -453,6 +501,13 @@ def format_user(user):
 # POST ALL
 @app.route('/post_whole_user', methods=['POST'])
 def post_whole_user():
+
+    """
+    This function is used to post user account information and user nutrition information into a local database if the front-end is not yet developed.
+    
+    :return: user in new format
+    :rtype: json
+    """
     username = request.json['username']
     email = request.json['email']
     password = request.json['password']
@@ -1324,44 +1379,16 @@ def update_link():
 
 
 
-
-# get all users
-@app.route('/get_users_info', methods=['GET'])
-def get_events():
-    events = User.query.order_by(User.userID.asc()).all()
-    event_list = []
-    for event in events:
-        event_list.append(format_user(event))
-    return {'events': event_list}
-
-# get single user
-@app.route('/get_user/<userID>', methods=['GET'])
-def single_event(userID):
-    event = User.query.filter_by(userID = userID).one()
-    formatted_event = format_user(event)
-    return {'event':formatted_event}
-
-# delete an event
-@app.route('/delete_user/<userID>', methods=['DELETE'])
-def delete_event(userID):
-    event = User.query.filter_by(userID=userID).one()
-    db.session.delete(event)
-    db.session.commit()
-    return f'Event (id: {userID}) deleted.'
-
-# edit a user -- NOT DONE
-@app.route('/edit_user/<edit_column>/<userID>', methods=['PUT'])
-def update_event(edit_column, userID):
-    event = User.query.filter_by(userID=userID)
-    to_edit = request.json[edit_column]
-    #return to_edit
-    event.update(dict(edit_column=to_edit))
-    db.session.commit()
-    return {'event':format_user(event.one())}
-
-
 @app.route('/get_nutrition/<userID>', methods=['GET'])
 def get_nutrition(userID):
+    """
+    Retrieve nutrition information for a given user.
+
+    :param integer userID: An integer representing the unique identifier of the user.
+
+    :return: A dictionary of strings containing nutrition information for the specified user.
+    :rtype: String dictionary
+    """
     this_user = UserNutrition.query.filter_by(userID = userID).one()
     nutrition_info = {"energy":this_user.energy, "protein":this_user.protein, "fat": this_user.fat, "carbs": this_user.carbs, "vitD": this_user.vitD, "vitC": this_user.vitC, "vitA": this_user.vitA, "vitE": this_user.vitE, "calcium": this_user.calcium, "iron": this_user.iron, "potassium": this_user.potassium, "vitD_ul":this_user.vitD_ul, "vitC_ul":this_user.vitC_ul, "vitA_ul":this_user.vitA_ul, "vitE_ul":this_user.vitE_ul, "calcium_ul":this_user.calcium_ul, "iron_ul":this_user.iron_ul}
     return nutrition_info 
@@ -1369,6 +1396,14 @@ def get_nutrition(userID):
 @app.route('/post_nutrition/<userID>', methods=['POST'])
 #def nutrients_amounts(gender, weight_lbs, age, height_feet, height_inches, activity_level):
 def post_nutrition(userID):
+    """
+    Add nutrition information for a given user to the database.
+
+    :param integer userID: An integer representing the unique identifier of the user.
+
+    :return: A string indicating that the user's nutrition information was successfully added to the database.
+    :rtype: String
+    """
     #energy = 0
     protein = 0
     fat = 0
@@ -1700,12 +1735,28 @@ def post_nutrition(userID):
 
 @app.route('/get_preferences/<userID>', methods=['GET'])
 def get_preferences(userID):
+    """
+    Retrieve a user's preferences from the database.
+
+    :param integer userID: An integer representing the unique identifier of the user.
+
+    :return: A list of strings representing the user's preferences.
+    :rtype: String list
+    """
     this_user = User.query.filter_by(userID = userID).one()
     preferences = (this_user.preferences).split(',')
     return preferences 
 
 @app.route('/get_restrictions/<userID>', methods=['GET'])
 def get_restrictions(userID):
+    """
+    Retrieve a user's dietary restrictions from the database.
+
+    :param integer userID: An integer representing the unique identifier of the user.
+
+    :return: A list of strings representing the user's dietary restrictions.
+    :rtype: String list
+    """
     this_user = User.query.filter_by(userID = userID).one()
     restrictions = (this_user.restrictions).split(',')
     return restrictions
@@ -1828,6 +1879,15 @@ def get_recipe_list(userID):
 # just run this one function when user selects their recipes 
 @app.route('/get_remaining_ingredients/<userID>/<weekID>', methods=['GET','PUT','POST']) # this function gets remaining ingredients AND posts the final grocery list to the db
 def get_remaining_ingredients(userID, weekID):
+    """
+    After calculating the remaining nutrients the user needs by subtracting nutrients received via user-chosen recipes from nutrients required for the user, this function finds snacks the user can eat to fulfill the remaining ingredients.
+
+    :param integer userID: An integer representing the unique identifier of the user.
+    :param integer weekID: An integer representing the unique identifier of the week.
+
+    :return: A string indicating that the snacks have been successfully input into the database.
+    :rtype: String
+    """
     # time start for function
     # time is in seconds
     start_time = time.time()
@@ -2046,6 +2106,15 @@ def get_remaining_ingredients(userID, weekID):
     
 @app.route('/post_grocery_list/<userID>/<weekID>', methods=['GET','POST'])
 def post_grocery_list(userID, weekID):
+    """
+    Posts into database the ingredients of the recipes the user chose. 
+    
+    :param integer userID: An integer representing the unique identifier of the user.
+    :param integer weekID: An integer representing the unique identifier of the week.
+
+    :return: A string indicating that the ingredients have been successfully input into the database.
+    :rtype: String
+    """
     
     # time start for function
     # time is in seconds
@@ -2103,6 +2172,15 @@ def post_grocery_list(userID, weekID):
 
 @app.route('/get_grocery_list/<userID>/<weekID>', methods=['GET'])
 def get_grocery_list(userID, weekID):
+    """
+    Retrieves the grocery list from database for a given user for a given week. 
+    
+    :param integer userID: An integer representing the unique identifier of the user.
+    :param integer weekID: An integer representing the unique identifier of the week.
+
+    :return: A dictionary containing the grocery list.
+    :rtype: Dictionary
+    """
     get =  GroceryLists.query.filter_by(userID = userID, web_week_number = str(int(weekID)-1)).one()
     get_grocery_list = get.grocery_list
     grocery_dict = json.loads(get_grocery_list)
@@ -2111,11 +2189,27 @@ def get_grocery_list(userID, weekID):
 
 @app.route('/get_num_weeks/<userID>', methods=['GET'])
 def get_num_weeks(userID):
+    """
+    Retrieves the number of weeks a particular user has been active. 
+    
+    :param integer userID: An integer representing the unique identifier of the user.
+
+    :return: A string of the number of weeks.
+    :rtype: String
+    """
     get = db.session.query(WeeklyRecipes.web_week_number).filter_by(userID = userID).count()
     return str(get)
 
 @app.route('/get_created_date/<userID>', methods=['GET'])
 def get_created_date(userID):
+    """
+    Retrieves the date the user was created. 
+    
+    :param integer userID: An integer representing the unique identifier of the user.
+
+    :return: A string of user creation date.
+    :rtype: String
+    """
     get = User.query.filter_by(userID = userID).one()
     created = get.created_on
     ret = str(created).split(' ')
@@ -2124,6 +2218,14 @@ def get_created_date(userID):
 
 @app.route('/get_user_grocery_lists/<userID>', methods=['GET'])
 def get_user_grocery_lists(userID):
+    """
+    Retrieves all the grocery lists of the user. 
+    
+    :param integer userID: An integer representing the unique identifier of the user.
+
+    :return: A hash map containing the week number and the grocery list corresponding to that week number.
+    :rtype: Hash map
+    """
     
     #grocery_lists_dict = {}
     
@@ -2140,6 +2242,15 @@ def get_user_grocery_lists(userID):
 
 @app.route('/accuracy/<userID>/<weekID>', methods=['GET'])
 def accuracy(userID, weekID):
+    """
+    This function calculates how accurately the user's chosen recipes fulfill their nutritional requirements. 
+    
+    :param integer userID: An integer representing the unique identifier of the user.
+    :param integer weekID: An integer representing the unique identifier of the week.
+
+    :return: A string of the percentage of the user's nutritional needs met by the chosen recipes.
+    :rtype: String
+    """
     # calculate user requirements
     this_user = UserNutrition.query.filter_by(userID = userID).one()
     nutrition_required = {"energy":this_user.energy, "protein":this_user.protein, "fat": this_user.fat, "carbs": this_user.carbs, "vitD": this_user.vitD, "vitC": this_user.vitC, "vitA": this_user.vitA, "vitE": this_user.vitE, "calcium": this_user.calcium, "iron": this_user.iron, "potassium": this_user.potassium}
